@@ -39,6 +39,8 @@ int main() {
     std::setlocale(LC_ALL, "rus");
     bool pause = false;
     bool trackDraw = true;
+    bool spawnSun = true;
+    bool moveSun = true;
     RenderWindow window(VideoMode(1920, 1080), "Gravity");
     Clock clock;
     Clock clock2;
@@ -54,20 +56,19 @@ int main() {
     double low = 100;
     double rSun = 7;
     double F = 0;
-    double a = 0;
-    double LpsFps = 60.0f;
+    double a = 0;;
     sf::Vertex track;
     track.color = Color::Red;
     CircleShape sun(rSun);
-    double sunSpeed = 2.0f;
+    double sunSpeed = 1.0f;
     Vector2f offset(rSun, rSun);
     double mSun = 2e30;
     sun.setFillColor(Color::Yellow);
     sun.setPosition(window.getSize().x / 2, window.getSize().y / 2);
 
 
-    Time timePerFrame = seconds(1.0f / LpsFps); // lps
-    Time timePerFrame2 = seconds(1.0f / LpsFps); // fps
+    Time timePerFrame = seconds(1.0f / 60); // lps
+    Time timePerFrame2 = seconds(1.0f / 60); // fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
 
@@ -103,13 +104,13 @@ int main() {
                     std::ref(positions), std::ref(masses), std::ref(radiuses), std::ref(circleTrack), Color::Color(150,229,233));
                    
                  
-            } else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num2)
+            } else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
                 trackDraw = !trackDraw;
                 for (int i = 0; i < circleVec.size(); i++) {
                     circleTrack[i].clear();
                 }
-            } else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num3)
+            } else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Delete)
             {
                 for (int i = 0; i < circleVec.size(); i++) {
                     circleVec.clear();
@@ -123,33 +124,41 @@ int main() {
                 
                 pause = !pause;
             }
+            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::S) {
+                spawnSun = !spawnSun;
+            }
+            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::M) {
+                moveSun = !moveSun;
+            }
         }
+        
         
         accumulatedTime += clock.restart();
         while (accumulatedTime >= timePerFrame) {
             accumulatedTime -= timePerFrame;
             
             if (!pause) {
-                sun.setPosition(sun.getPosition().x + sunSpeed, sun.getPosition().y);
-                if (frameCollisionX(sun.getPosition().x + rSun, rSun)) {
-                    sunSpeed = -sunSpeed;
+                if (moveSun) {
+                    sun.setPosition(sun.getPosition().x + sunSpeed, sun.getPosition().y);
+                    if (frameCollisionX(sun.getPosition().x + rSun, rSun)) {
+                        //sun.setPosition(0, sun.getPosition().y);
+                        sunSpeed = -sunSpeed;
+                    }
                 }
                 for (int i = 0; i < circleVec.size(); i++) {
                     if (trackDraw) {
                         Vector2f pos(positions[i].x + radiuses[i], positions[i].y + radiuses[i]);
                         circleTrack[i].push_back(pos);
                     }
-                    if (circleTrack[i].size() > 1) {
-                        //circleTrack[i].erase(circleTrack[i].begin());
-                    }
+                    
                     double distan = distance(sun.getPosition() + offset, positions[i] + Vector2f(radiuses[i], radiuses[i])) * scale;
                     Vector2f normalizeDirection;
-                    F = G * (mSun * masses[i]) / pow(distan, 2);
+                    F = G * (mSun * masses[i]) / pow(distan, 2) * (int)spawnSun;
                     a = F / masses[i];
                     normalizeDirection = ((positions[i] + Vector2f(radiuses[i], radiuses[i])) - (sun.getPosition() + offset)) / (float)distan;
                     velocities[i] -= normalizeDirection * static_cast<float>(a);
                     positions[i] += velocities[i];
-
+                    //|| frameCollisionX(positions[i].x + radiuses[i], radiuses[i]) || frameCollisionY(positions[i].y + radiuses[i], radiuses[i])
                     if (distan <= radiuses[i] + rSun) {
                         circleVec.erase(circleVec.begin() + i);
                         positions.erase(positions.begin() + i);
@@ -158,9 +167,28 @@ int main() {
                         velocities.erase(velocities.begin() + i);
                         circleTrack.erase(circleTrack.begin() + i);
                     }
+                    /*
+                    for (int i = 0; i < circleVec.size() - 1; i++) {
+                        if (distance(positions[i] + Vector2f(radiuses[i], radiuses[i]), positions[i + 1] + Vector2f(radiuses[i + 1], radiuses[i + 1])) <= (radiuses[i] + radiuses[i + 1])) {
+                            circleVec.erase(circleVec.begin() + i + 1);
+                            positions.erase(positions.begin() + i + 1);
+                            radiuses.erase(radiuses.begin() + i + 1);
+                            masses.erase(masses.begin() + i + 1);
+                            velocities.erase(velocities.begin() + i + 1);
+                            circleTrack.erase(circleTrack.begin() + i + 1);
+                            circleVec.erase(circleVec.begin() + i);
+                            positions.erase(positions.begin() + i);
+                            radiuses.erase(radiuses.begin() + i);
+                            masses.erase(masses.begin() + i);
+                            velocities.erase(velocities.begin() + i);
+                            circleTrack.erase(circleTrack.begin() + i);
+                        }
+                    }
+                    */
                 }
             }
-        }
+        } 
+        
         std::cout << "///" << circleVec.size() << "\n";
         // Отрисовка с учетом интерполяции
         accumulatedTime2 += clock2.restart();
@@ -175,8 +203,9 @@ int main() {
                 circleVec[i].setPosition(positions[i]);
                 window.draw(circleVec[i]);
             }
-            window.draw(sun);
-
+            if (spawnSun) {
+                window.draw(sun);
+            }
             window.display();
             accumulatedTime2 -= timePerFrame2;
         }
