@@ -59,7 +59,7 @@ int main() {
     sf::Vertex track;
     track.color = Color::Red;
     CircleShape sun(rSun);
-    double sunSpeed = 0.2f;
+    double sunSpeed = 2.0f;
     Vector2f offset(rSun, rSun);
     double mSun = 2e30;
     sun.setFillColor(Color::Yellow);
