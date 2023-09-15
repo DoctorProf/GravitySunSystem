@@ -38,6 +38,7 @@ void spawnPlanet(double radius, double mass, Vector2f velocity, Vector2f positio
 int main() {
     std::setlocale(LC_ALL, "rus");
     bool pause = false;
+    bool trackDraw = true;
     RenderWindow window(VideoMode(1920, 1080), "Gravity");
     Clock clock;
     Clock clock2;
@@ -58,6 +59,7 @@ int main() {
     sf::Vertex track;
     track.color = Color::Red;
     CircleShape sun(rSun);
+    double sunSpeed = 0.2f;
     Vector2f offset(rSun, rSun);
     double mSun = 2e30;
     sun.setFillColor(Color::Yellow);
@@ -96,13 +98,14 @@ int main() {
                 
                 spawnPlanet(5, 5.68e26, Vector2f(0, 1.4), Vector2f(sun.getPosition().x + 700, sun.getPosition().y), std::ref(circleVec), std::ref(velocities),
                     std::ref(positions), std::ref(masses), std::ref(radiuses), std::ref(circleTrack), Color::Color(255, 219, 139));
-                /*
+                
                 spawnPlanet(5, 8.68e25, Vector2f(0, 1), Vector2f(sun.getPosition().x + 1400, sun.getPosition().y), std::ref(circleVec), std::ref(velocities),
                     std::ref(positions), std::ref(masses), std::ref(radiuses), std::ref(circleTrack), Color::Color(150,229,233));
-                   */ 
+                   
                  
             } else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num2)
             {
+                trackDraw = !trackDraw;
                 for (int i = 0; i < circleVec.size(); i++) {
                     circleTrack[i].clear();
                 }
@@ -127,9 +130,15 @@ int main() {
             accumulatedTime -= timePerFrame;
             
             if (!pause) {
+                sun.setPosition(sun.getPosition().x + sunSpeed, sun.getPosition().y);
+                if (frameCollisionX(sun.getPosition().x + rSun, rSun)) {
+                    sunSpeed = -sunSpeed;
+                }
                 for (int i = 0; i < circleVec.size(); i++) {
-                    //Vector2f pos(positions[i].x + radiuses[i], positions[i].y + radiuses[i]);
-                    //circleTrack[i].push_back(pos);
+                    if (trackDraw) {
+                        Vector2f pos(positions[i].x + radiuses[i], positions[i].y + radiuses[i]);
+                        circleTrack[i].push_back(pos);
+                    }
                     if (circleTrack[i].size() > 1) {
                         //circleTrack[i].erase(circleTrack[i].begin());
                     }
