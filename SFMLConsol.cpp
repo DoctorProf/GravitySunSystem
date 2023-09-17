@@ -12,7 +12,6 @@ class Planet
         Vector2f velocity;
         VertexArray track;
         Color color;
-        CircleShape test;
 
     public:
         Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color) :
@@ -22,9 +21,6 @@ class Planet
             velocity(velocity),
             color(color)             
         {
-            test.setRadius(1);
-            test.setFillColor(Color::Black);
-            test.setPosition(position);
             planet.setRadius(radius);
             planet.setPosition(position - Vector2f(radius, radius));
             planet.setFillColor(color);
@@ -71,7 +67,6 @@ class Planet
             
             planet.setPosition(position);
             window.draw(planet);
-            window.draw(test);
         }
 };
 bool frameCollisionX(float x, float radius) 
@@ -88,6 +83,27 @@ float distance(Vector2f vec1, Vector2f vec2)
     float dy = vec1.y - vec2.y;
     return std::sqrt(dx * dx + dy * dy);
 }
+void PhyPlanet(std::vector<Planet> &planets, Planet sun , bool trackDraw, double G, double scalePhy) 
+{
+    for (int i = 0; i < planets.size(); i++)
+    {
+        {
+            if (trackDraw)
+            {
+                Vertex pos(Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius()));
+                pos.color = planets[i].getColor();
+                planets[i].addTrack(pos);
+            }
+            double F = 0;
+            double a = 0;
+            double distan = distance(sun.getPosition() + Vector2f(sun.getRadius(), sun.getRadius()), planets[i].getPosition() + Vector2f(planets[i].getRadius(), planets[i].getRadius())) * scalePhy;
+            F = (double)G * (sun.getMass() * planets[i].getMass()) / pow(distan, 2);
+            a = (double)F / planets[i].getMass();
+            Vector2f normDir = ((planets[i].getPosition() + Vector2f(planets[i].getRadius(), planets[i].getRadius()) - (sun.getPosition() + Vector2f(sun.getRadius(), sun.getRadius())))) / (float)distan;
+            planets[i].update(normDir, a);
+        }
+    }
+}
 int main() 
 {
     RenderWindow window(VideoMode(1920, 1080), "Gravity");
@@ -101,15 +117,18 @@ int main()
     Clock clock2;
 
     std::vector<Planet> planets;
-    CircleShape test;
-    test.setFillColor(Color::Black);
-    test.setRadius(1);
-    float G = 6.67;
+    std::vector<Planet> moonEarth;
+    std::vector<Planet> moonJupiter;
+    std::vector<Planet> moonSaturn;
+    float G = 6.67e-2;
     double scalePhy = (double)2e9;
+    double scalePhyMoon = (double)2e8;
+    double scaleMoon = 2e7;
+    double scaleSaturn = 2e8;
     double scaleGrap = 1;
     double F = 0;
     double a = 0;
-    float rSun = 1;
+    float rSun = 2;
     CircleShape sun(rSun);
     float sunSpeed = 1.0f;
     Vector2f offset(rSun, rSun);
@@ -118,7 +137,7 @@ int main()
     sun.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
 
-    Time timePerFrame = seconds(1.0f / 600); // tps
+    Time timePerFrame = seconds(1.0f / 60); // tps
     Time timePerFrame2 = seconds(1.0f / 60); // fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
@@ -133,16 +152,24 @@ int main()
             }
             if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num1)
             {
-                planets.push_back(Planet(2, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29/ scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 7.4 / scaleGrap), Color::Color(128, 128, 128)));
-                planets.push_back(Planet(5, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 5.5 / scaleGrap), Color::Color(234, 205, 177)));
-                planets.push_back(Planet(5, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 4.7 / scaleGrap), Color::Color(154, 205, 50)));
-                planets.push_back(Planet(3, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 3.8 / scaleGrap), Color::Color(228, 64, 3)));
-                planets.push_back(Planet(57 / scaleGrap, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 2 / scaleGrap), Color::Color(255, 226, 183)));
-                planets.push_back(Planet(47 / scaleGrap, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 1.5 / scaleGrap), Color::Color(255, 219, 139)));
-                planets.push_back(Planet(21 / scaleGrap, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 1.1 / scaleGrap), Color::Color(150, 229, 233)));
-                planets.push_back(Planet(20 / scaleGrap, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.85 / scaleGrap), Color::Color(0, 0, 255)));
-                planets.push_back(Planet(2, 1.3e22, Vector2f(sun.getPosition().x + rSun + 2950 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.75 / scaleGrap), Color::Color(117, 90, 87)));
-                planets.push_back(Planet(2, 4.006e21, Vector2f(sun.getPosition().x + rSun + 3225 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.73 / scaleGrap), Color::Color(128, 128, 128)));
+                planets.push_back(Planet(2 / scaleGrap, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29/ scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.8 / scaleGrap), Color::Color(128, 128, 128)));
+                planets.push_back(Planet(5 / scaleGrap, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.58 / scaleGrap), Color::Color(234, 205, 177)));
+                planets.push_back(Planet(5 / scaleGrap, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.48 / scaleGrap), Color::Color(154, 205, 50)));
+                planets.push_back(Planet(4 / scaleGrap, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.38 / scaleGrap), Color::Color(228, 64, 3)));
+                planets.push_back(Planet(14 / scaleGrap, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.20 / scaleGrap), Color::Color(255, 226, 183)));
+                planets.push_back(Planet(12 / scaleGrap, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.15 / scaleGrap), Color::Color(255, 219, 139)));
+                planets.push_back(Planet(5 / scaleGrap, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.10 / scaleGrap), Color::Color(150, 229, 233)));
+                planets.push_back(Planet(5 / scaleGrap, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.08 / scaleGrap), Color::Color(0, 0, 255)));
+                planets.push_back(Planet(2, 1.3e22, Vector2f(sun.getPosition().x + rSun + 2950 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.07 / scaleGrap), Color::Color(117, 90, 87)));
+                planets.push_back(Planet(2, 4.006e21, Vector2f(sun.getPosition().x + rSun + 3225 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.067 / scaleGrap), Color::Color(128, 128, 128)));
+                moonEarth.push_back(Planet(2 / scaleGrap, 7.35e22, Vector2f(planets[2].getPosition().x + planets[2].getRadius() + 19 / scaleGrap, planets[2].getPosition().y + planets[2].getRadius()), Vector2f(0, 1.8 / scaleGrap), Color::Color(210, 210, 210)));
+                moonJupiter.push_back(Planet(2 / scaleGrap, 8.93e22, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 21 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 1.1 / scaleGrap), Color::Color(255, 223, 186)));
+                moonJupiter.push_back(Planet(2 / scaleGrap, 4.80e22, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 33 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.9 / scaleGrap), Color::Color(232, 223, 214)));
+                moonJupiter.push_back(Planet(2 / scaleGrap, 1.48e23, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 53 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.75 / scaleGrap), Color::Color(215, 213, 206)));
+                moonJupiter.push_back(Planet(2 / scaleGrap, 1.08e23, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 94 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.6 / scaleGrap), Color::Color(199, 195, 187)));
+                moonSaturn.push_back(Planet(2 / scaleGrap, 3.75e19, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 18 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.7 / scaleGrap), Color::Color(229, 229, 229)));
+                moonSaturn.push_back(Planet(2 / scaleGrap, 1.08e20, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 24 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.6 / scaleGrap), Color::Color(255, 255, 255)));
+                moonSaturn.push_back(Planet(2 / scaleGrap, 1.35e23, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 122 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.3 / scaleGrap), Color::Color(221, 188, 149)));
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
@@ -150,14 +177,28 @@ int main()
                 for (int i = 0; i < planets.size(); i++)
                 {
                     planets[i].clearTrack();
+                    for (int j = 0; j < moonJupiter.size(); j++) 
+                    {
+                        moonJupiter[j].clearTrack();
+                    }
+                    for (int k = 0; k < moonEarth.size(); k++)
+                    {
+                        moonEarth[k].clearTrack();
+                    }
+                    for (int m = 0; m < moonSaturn.size(); m++)
+                    {
+                        moonSaturn[m].clearTrack();
+                    }
                 }
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Delete)
             {
                 mSun = 2e30;
-                scalePhy = 2e9;
-                scaleGrap = 1;
+                rSun = 4;
                 planets.clear();
+                moonJupiter.clear();
+                moonEarth.clear();
+                moonSaturn.clear();
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
             {
@@ -171,28 +212,30 @@ int main()
             {
                 moveSun = !moveSun;
             }
-            /*
-            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad6)
-            {
-                sunSpeed += 1.0f;
-            }
-            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad4)
-            {
-                sunSpeed -= 1.0f;
-            }
-            */
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad8)
             {
                 planets.clear();
+                moonJupiter.clear();
+                moonEarth.clear();
+                moonSaturn.clear();
                 scalePhy *= 2;
+                scalePhyMoon *= 2;
+                scaleMoon *= 2;
                 scaleGrap *= 2;
+                scaleSaturn *= 2;
             }
             
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad2)
             {
                 planets.clear();
+                moonJupiter.clear();
+                moonEarth.clear();
+                moonSaturn.clear();
                 scalePhy /= 2;
+                scalePhyMoon /= 2;
+                scaleMoon /= 2;
                 scaleGrap /= 2;
+                scaleSaturn /= 2;
             }
             
         }
@@ -204,11 +247,11 @@ int main()
             {
                 if (moveSun) 
                 {
-                    sun.setPosition(sun.getPosition().x + sunSpeed, sun.getPosition().y);
+                    sun.setPosition(sun.getPosition().x + sunSpeed / scaleGrap, sun.getPosition().y);
                     if (frameCollisionX(sun.getPosition().x + rSun, rSun)) 
                     {
                         //sun.setPosition(0, sun.getPosition().y);
-                        //sunSpeed = -sunSpeed;
+                        sunSpeed = -sunSpeed;
                     }
                 }
                 for (int i = 0; i < planets.size(); i++)
@@ -224,16 +267,15 @@ int main()
                         F = (double)G * (mSun * planets[i].getMass()) / pow(distan, 2) * (int)spawnSun;
                         a = (double)F / planets[i].getMass();
                         Vector2f normDir = ((planets[i].getPosition() + Vector2f(planets[i].getRadius(), planets[i].getRadius()) - (sun.getPosition() + offset))) / (float)distan;
-                        planets[i].update(normDir, a);
-                        //|| frameCollisionX(positions[i].x + radiuses[i], radiuses[i]) || frameCollisionY(positions[i].y + radiuses[i], radiuses[i])
-                        
-                        if (distan <= planets[i].getRadius() + rSun)
-                        {
-                            planets.erase(planets.begin() + i);
-                        }
-                        
+                        planets[i].update(normDir, a);                        
                     }
                 }
+                if(planets.size() > 0 && moonJupiter.size() > 0)
+                    PhyPlanet(std::ref(moonJupiter), planets[4], trackDraw, G, scalePhyMoon);
+                if(planets.size() > 0 && moonEarth.size() > 0)
+                    PhyPlanet(std::ref(moonEarth), planets[2], trackDraw, G, scaleMoon);
+                if (planets.size() > 0 && moonSaturn.size() > 0)
+                    PhyPlanet(std::ref(moonSaturn), planets[5], trackDraw, G, scaleSaturn);
             }
         }
         accumulatedTime2 += clock2.restart();
@@ -250,12 +292,35 @@ int main()
                     planets[i].drawPlanet(window);
                 }
             }
+            for(int i = 0; i < moonJupiter.size(); i++)
+            {
+                if (moonJupiter[i].getTrack().getVertexCount() > 1)
+                {
+                    moonJupiter[i].drawTrack(window);
+                }
+                moonJupiter[i].drawPlanet(window);
+            }
+            for (int i = 0; i < moonEarth.size(); i++)
+            {
+                if (moonEarth[i].getTrack().getVertexCount() > 1)
+                {
+                    moonEarth[i].drawTrack(window);
+                }
+                moonEarth[i].drawPlanet(window);
+            }
+            for (int i = 0; i < moonSaturn.size(); i++)
+            {
+                if (moonSaturn[i].getTrack().getVertexCount() > 1)
+                {
+                    moonSaturn[i].drawTrack(window);
+                }
+                moonSaturn[i].drawPlanet(window);
+            }
             if (spawnSun) 
             {
-                test.setPosition(sun.getPosition() + Vector2f(rSun,rSun));
                 
                 window.draw(sun);
-                window.draw(test);
+                
             }
             window.display();
             accumulatedTime2 -= timePerFrame2;
