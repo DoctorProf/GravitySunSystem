@@ -122,9 +122,8 @@ int main()
     std::vector<Planet> moonSaturn;
     float G = 6.67e-2;
     double scalePhy = (double)2e9;
-    double scalePhyMoon = (double)2e8;
+    double scaleJupiterSaturn = (double)2e8;
     double scaleMoon = 2e7;
-    double scaleSaturn = 2e8;
     double scaleGrap = 1;
     double F = 0;
     double a = 0;
@@ -152,24 +151,22 @@ int main()
             }
             if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num1)
             {
-                planets.push_back(Planet(2 / scaleGrap, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29/ scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.8 / scaleGrap), Color::Color(128, 128, 128)));
+                planets.push_back(Planet(3 / scaleGrap, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29/ scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.8 / scaleGrap), Color::Color(128, 128, 128)));
                 planets.push_back(Planet(5 / scaleGrap, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.58 / scaleGrap), Color::Color(234, 205, 177)));
                 planets.push_back(Planet(5 / scaleGrap, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.48 / scaleGrap), Color::Color(154, 205, 50)));
                 planets.push_back(Planet(4 / scaleGrap, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.38 / scaleGrap), Color::Color(228, 64, 3)));
                 planets.push_back(Planet(14 / scaleGrap, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.20 / scaleGrap), Color::Color(255, 226, 183)));
                 planets.push_back(Planet(12 / scaleGrap, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.15 / scaleGrap), Color::Color(255, 219, 139)));
-                planets.push_back(Planet(5 / scaleGrap, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.10 / scaleGrap), Color::Color(150, 229, 233)));
-                planets.push_back(Planet(5 / scaleGrap, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.08 / scaleGrap), Color::Color(0, 0, 255)));
-                planets.push_back(Planet(2, 1.3e22, Vector2f(sun.getPosition().x + rSun + 2950 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.07 / scaleGrap), Color::Color(117, 90, 87)));
-                planets.push_back(Planet(2, 4.006e21, Vector2f(sun.getPosition().x + rSun + 3225 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.067 / scaleGrap), Color::Color(128, 128, 128)));
-                moonEarth.push_back(Planet(2 / scaleGrap, 7.35e22, Vector2f(planets[2].getPosition().x + planets[2].getRadius() + 19 / scaleGrap, planets[2].getPosition().y + planets[2].getRadius()), Vector2f(0, 1.8 / scaleGrap), Color::Color(210, 210, 210)));
-                moonJupiter.push_back(Planet(2 / scaleGrap, 8.93e22, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 21 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 1.1 / scaleGrap), Color::Color(255, 223, 186)));
-                moonJupiter.push_back(Planet(2 / scaleGrap, 4.80e22, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 33 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.9 / scaleGrap), Color::Color(232, 223, 214)));
-                moonJupiter.push_back(Planet(2 / scaleGrap, 1.48e23, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 53 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.75 / scaleGrap), Color::Color(215, 213, 206)));
-                moonJupiter.push_back(Planet(2 / scaleGrap, 1.08e23, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 94 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.6 / scaleGrap), Color::Color(199, 195, 187)));
-                moonSaturn.push_back(Planet(2 / scaleGrap, 3.75e19, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 18 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.7 / scaleGrap), Color::Color(229, 229, 229)));
-                moonSaturn.push_back(Planet(2 / scaleGrap, 1.08e20, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 24 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.6 / scaleGrap), Color::Color(255, 255, 255)));
-                moonSaturn.push_back(Planet(2 / scaleGrap, 1.35e23, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 122 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.3 / scaleGrap), Color::Color(221, 188, 149)));
+                planets.push_back(Planet(10 / scaleGrap, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.10 / scaleGrap), Color::Color(150, 229, 233)));
+                planets.push_back(Planet(10 / scaleGrap, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.08 / scaleGrap), Color::Color(0, 0, 255)));
+                //planets.push_back(Planet(2, 1.3e22, Vector2f(sun.getPosition().x + rSun + 2950 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.07 / scaleGrap), Color::Color(117, 90, 87)));
+                //planets.push_back(Planet(2, 4.006e21, Vector2f(sun.getPosition().x + rSun + 3225 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.067 / scaleGrap), Color::Color(128, 128, 128)));
+                moonEarth.push_back(Planet(4 / scaleGrap, 7.35e22, Vector2f(planets[2].getPosition().x + planets[2].getRadius() + 19 / scaleGrap, planets[2].getPosition().y + planets[2].getRadius()), Vector2f(0, 1.8 / scaleGrap), Color::Color(210, 210, 210)));
+                //Луна
+                moonJupiter.push_back(Planet(4 / scaleGrap, 4.80e22, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 33 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.9 / scaleGrap), Color::Color(232, 223, 214)));
+                //Европа
+                moonSaturn.push_back(Planet(4 / scaleGrap, 1.08e20, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 24 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.6 / scaleGrap), Color::Color(255, 255, 255)));
+                //Энцелад
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
@@ -219,10 +216,9 @@ int main()
                 moonEarth.clear();
                 moonSaturn.clear();
                 scalePhy *= 2;
-                scalePhyMoon *= 2;
+                scaleJupiterSaturn *= 2;
                 scaleMoon *= 2;
                 scaleGrap *= 2;
-                scaleSaturn *= 2;
             }
             
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad2)
@@ -232,10 +228,9 @@ int main()
                 moonEarth.clear();
                 moonSaturn.clear();
                 scalePhy /= 2;
-                scalePhyMoon /= 2;
                 scaleMoon /= 2;
                 scaleGrap /= 2;
-                scaleSaturn /= 2;
+                scaleJupiterSaturn /= 2;
             }
             
         }
@@ -271,27 +266,18 @@ int main()
                     }
                 }
                 if(planets.size() > 0 && moonJupiter.size() > 0)
-                    PhyPlanet(std::ref(moonJupiter), planets[4], trackDraw, G, scalePhyMoon);
+                    PhyPlanet(std::ref(moonJupiter), planets[4], trackDraw, G, scaleJupiterSaturn);
                 if(planets.size() > 0 && moonEarth.size() > 0)
                     PhyPlanet(std::ref(moonEarth), planets[2], trackDraw, G, scaleMoon);
                 if (planets.size() > 0 && moonSaturn.size() > 0)
-                    PhyPlanet(std::ref(moonSaturn), planets[5], trackDraw, G, scaleSaturn);
+                    PhyPlanet(std::ref(moonSaturn), planets[5], trackDraw, G, scaleJupiterSaturn);
             }
         }
         accumulatedTime2 += clock2.restart();
         if (accumulatedTime2 >= timePerFrame2)
         {
             window.clear(Color::Black);
-            for (int i = 0; i < planets.size(); i++)
-            {
-                {
-                    if (planets[i].getTrack().getVertexCount() > 1)
-                    {
-                        planets[i].drawTrack(window);
-                    }
-                    planets[i].drawPlanet(window);
-                }
-            }
+            
             for(int i = 0; i < moonJupiter.size(); i++)
             {
                 if (moonJupiter[i].getTrack().getVertexCount() > 1)
@@ -315,6 +301,15 @@ int main()
                     moonSaturn[i].drawTrack(window);
                 }
                 moonSaturn[i].drawPlanet(window);
+            }
+            for (int i = 0; i < planets.size(); i++)
+            {
+                if (planets[i].getTrack().getVertexCount() > 1)
+                {
+                    planets[i].drawTrack(window);
+                }
+                planets[i].drawPlanet(window);
+
             }
             if (spawnSun) 
             {
