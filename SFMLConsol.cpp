@@ -105,19 +105,20 @@ int main()
     test.setFillColor(Color::Black);
     test.setRadius(1);
     float G = 6.67;
-    double scale = (double)2e9;
+    double scalePhy = (double)2e9;
+    double scaleGrap = 1;
     double F = 0;
     double a = 0;
-    float rSun = 10;
+    float rSun = 1;
     CircleShape sun(rSun);
     float sunSpeed = 1.0f;
     Vector2f offset(rSun, rSun);
-    double mSun = (float)2e30;
+    double mSun = (double)2e30;
     sun.setFillColor(Color::Yellow);
     sun.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
 
-    Time timePerFrame = seconds(1.0f / 6000); // tps
+    Time timePerFrame = seconds(1.0f / 600); // tps
     Time timePerFrame2 = seconds(1.0f / 60); // fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
@@ -132,14 +133,16 @@ int main()
             }
             if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num1)
             {
-                planets.push_back(Planet(3, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29, sun.getPosition().y + rSun), Vector2f(0, 7.4), Color::Color(128, 128, 128)));
-                planets.push_back(Planet(7, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54, sun.getPosition().y + rSun), Vector2f(0, 5.5), Color::Color(234, 205, 177)));
-                planets.push_back(Planet(8, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75, sun.getPosition().y + rSun), Vector2f(0, 4.7), Color::Color(154, 205, 50)));
-                planets.push_back(Planet(4, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114, sun.getPosition().y + rSun), Vector2f(0, 3.8), Color::Color(228, 64, 3)));
-                planets.push_back(Planet(85, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389, sun.getPosition().y + rSun), Vector2f(0, 2), Color::Color(255, 226, 183)));
-                planets.push_back(Planet(70, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700, sun.getPosition().y + rSun), Vector2f(0, 1.5), Color::Color(255, 219, 139)));
-                planets.push_back(Planet(26, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400, sun.getPosition().y + rSun), Vector2f(0, 1.1), Color::Color(150, 229, 233)));
-                planets.push_back(Planet(25, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275, sun.getPosition().y + rSun), Vector2f(0, 0.9), Color::Color(0, 0, 255)));
+                planets.push_back(Planet(2, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29/ scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 7.4 / scaleGrap), Color::Color(128, 128, 128)));
+                planets.push_back(Planet(5, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 5.5 / scaleGrap), Color::Color(234, 205, 177)));
+                planets.push_back(Planet(5, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 4.7 / scaleGrap), Color::Color(154, 205, 50)));
+                planets.push_back(Planet(3, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 3.8 / scaleGrap), Color::Color(228, 64, 3)));
+                planets.push_back(Planet(57 / scaleGrap, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 2 / scaleGrap), Color::Color(255, 226, 183)));
+                planets.push_back(Planet(47 / scaleGrap, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 1.5 / scaleGrap), Color::Color(255, 219, 139)));
+                planets.push_back(Planet(21 / scaleGrap, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 1.1 / scaleGrap), Color::Color(150, 229, 233)));
+                planets.push_back(Planet(20 / scaleGrap, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.85 / scaleGrap), Color::Color(0, 0, 255)));
+                planets.push_back(Planet(2, 1.3e22, Vector2f(sun.getPosition().x + rSun + 2950 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.75 / scaleGrap), Color::Color(117, 90, 87)));
+                planets.push_back(Planet(2, 4.006e21, Vector2f(sun.getPosition().x + rSun + 3225 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.73 / scaleGrap), Color::Color(128, 128, 128)));
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
@@ -152,6 +155,8 @@ int main()
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Delete)
             {
                 mSun = 2e30;
+                scalePhy = 2e9;
+                scaleGrap = 1;
                 planets.clear();
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
@@ -175,15 +180,21 @@ int main()
             {
                 sunSpeed -= 1.0f;
             }
+            */
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad8)
             {
-                mSun += 1e30;
+                planets.clear();
+                scalePhy *= 2;
+                scaleGrap *= 2;
             }
+            
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad2)
             {
-                mSun -= 1e30;
+                planets.clear();
+                scalePhy /= 2;
+                scaleGrap /= 2;
             }
-            */
+            
         }
         accumulatedTime += clock.restart();
         while (accumulatedTime >= timePerFrame) 
@@ -209,7 +220,7 @@ int main()
                             pos.color = planets[i].getColor();
                             planets[i].addTrack(pos);
                         }
-                        double distan = distance(sun.getPosition() + offset, planets[i].getPosition() + Vector2f(planets[i].getRadius(), planets[i].getRadius())) * scale;
+                        double distan = distance(sun.getPosition() + offset, planets[i].getPosition() + Vector2f(planets[i].getRadius(), planets[i].getRadius())) * scalePhy;
                         F = (double)G * (mSun * planets[i].getMass()) / pow(distan, 2) * (int)spawnSun;
                         a = (double)F / planets[i].getMass();
                         Vector2f normDir = ((planets[i].getPosition() + Vector2f(planets[i].getRadius(), planets[i].getRadius()) - (sun.getPosition() + offset))) / (float)distan;
