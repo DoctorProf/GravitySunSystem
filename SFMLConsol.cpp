@@ -112,7 +112,6 @@ int main()
     bool trackDraw = true;
     bool spawnSun = true;
     bool moveSun = false;
-    
     Clock clock;
     Clock clock2;
 
@@ -120,6 +119,7 @@ int main()
     std::vector<Planet> moonEarth;
     std::vector<Planet> moonJupiter;
     std::vector<Planet> moonSaturn;
+    std::vector<Planet> moonUran;
     float G = 6.67e-2;
     double scalePhy = (double)2e9;
     double scaleJupiterSaturn = (double)2e8;
@@ -129,14 +129,14 @@ int main()
     double a = 0;
     float rSun = 2;
     CircleShape sun(rSun);
-    float sunSpeed = 1.0f;
+    float sunSpeed = 0.2f;
     Vector2f offset(rSun, rSun);
     double mSun = (double)2e30;
     sun.setFillColor(Color::Yellow);
     sun.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
 
-    Time timePerFrame = seconds(1.0f / 60); // tps
+    Time timePerFrame = seconds(1.0f / 120); // tps
     Time timePerFrame2 = seconds(1.0f / 60); // fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
@@ -161,12 +161,15 @@ int main()
                 planets.push_back(Planet(10 / scaleGrap, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.08 / scaleGrap), Color::Color(0, 0, 255)));
                 //planets.push_back(Planet(2, 1.3e22, Vector2f(sun.getPosition().x + rSun + 2950 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.07 / scaleGrap), Color::Color(117, 90, 87)));
                 //planets.push_back(Planet(2, 4.006e21, Vector2f(sun.getPosition().x + rSun + 3225 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.067 / scaleGrap), Color::Color(128, 128, 128)));
-                moonEarth.push_back(Planet(4 / scaleGrap, 7.35e22, Vector2f(planets[2].getPosition().x + planets[2].getRadius() + 19 / scaleGrap, planets[2].getPosition().y + planets[2].getRadius()), Vector2f(0, 1.8 / scaleGrap), Color::Color(210, 210, 210)));
+                moonEarth.push_back(Planet(2 / scaleGrap, 7.35e22, Vector2f(planets[2].getPosition().x + planets[2].getRadius() + 19 / scaleGrap, planets[2].getPosition().y + planets[2].getRadius()), Vector2f(0, 1.8 / scaleGrap), Color::Color(210, 210, 210)));
                 //Луна
                 moonJupiter.push_back(Planet(4 / scaleGrap, 4.80e22, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 33 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.9 / scaleGrap), Color::Color(232, 223, 214)));
                 //Европа
                 moonSaturn.push_back(Planet(4 / scaleGrap, 1.08e20, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 24 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.6 / scaleGrap), Color::Color(255, 255, 255)));
                 //Энцелад
+                moonUran.push_back(Planet(4 / scaleGrap, 6.59e19, Vector2f(planets[6].getPosition().x + planets[5].getRadius() + 13 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.35 / scaleGrap), Color::Color(194, 178, 128)));
+                //Миранда
+
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
@@ -178,13 +181,17 @@ int main()
                     {
                         moonJupiter[j].clearTrack();
                     }
-                    for (int k = 0; k < moonEarth.size(); k++)
+                    for (int j = 0; j < moonEarth.size(); j++)
                     {
-                        moonEarth[k].clearTrack();
+                        moonEarth[j].clearTrack();
                     }
-                    for (int m = 0; m < moonSaturn.size(); m++)
+                    for (int j = 0; j < moonSaturn.size(); j++)
                     {
-                        moonSaturn[m].clearTrack();
+                        moonSaturn[j].clearTrack();
+                    }
+                    for (int j = 0; j < moonUran.size(); j++)
+                    {
+                        moonUran[j].clearTrack();
                     }
                 }
             }
@@ -192,10 +199,12 @@ int main()
             {
                 mSun = 2e30;
                 rSun = 4;
+                sun.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
                 planets.clear();
                 moonJupiter.clear();
                 moonEarth.clear();
                 moonSaturn.clear();
+                moonUran.clear();
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
             {
@@ -215,6 +224,7 @@ int main()
                 moonJupiter.clear();
                 moonEarth.clear();
                 moonSaturn.clear();
+                moonUran.clear();
                 scalePhy *= 2;
                 scaleJupiterSaturn *= 2;
                 scaleMoon *= 2;
@@ -227,6 +237,7 @@ int main()
                 moonJupiter.clear();
                 moonEarth.clear();
                 moonSaturn.clear();
+                moonUran.clear();
                 scalePhy /= 2;
                 scaleMoon /= 2;
                 scaleGrap /= 2;
@@ -271,6 +282,8 @@ int main()
                     PhyPlanet(std::ref(moonEarth), planets[2], trackDraw, G, scaleMoon);
                 if (planets.size() > 0 && moonSaturn.size() > 0)
                     PhyPlanet(std::ref(moonSaturn), planets[5], trackDraw, G, scaleJupiterSaturn);
+                if (planets.size() > 0 && moonUran.size() > 0)
+                    PhyPlanet(std::ref(moonUran), planets[6], trackDraw, G, scaleJupiterSaturn);
             }
         }
         accumulatedTime2 += clock2.restart();
@@ -301,6 +314,14 @@ int main()
                     moonSaturn[i].drawTrack(window);
                 }
                 moonSaturn[i].drawPlanet(window);
+            }
+            for (int i = 0; i < moonUran.size(); i++)
+            {
+                if (moonUran[i].getTrack().getVertexCount() > 1)
+                {
+                    moonUran[i].drawTrack(window);
+                }
+                moonUran[i].drawPlanet(window);
             }
             for (int i = 0; i < planets.size(); i++)
             {
