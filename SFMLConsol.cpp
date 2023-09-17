@@ -1,8 +1,4 @@
-﻿#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <cmath>
-#include <string>
+﻿#include "Planet.h"
 
 using namespace sf;
 
@@ -112,7 +108,7 @@ int main()
     sun.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
 
-    Time timePerFrame = seconds(1.0f / 60); // tps
+    Time timePerFrame = seconds(1.0f / 10000); // tps
     Time timePerFrame2 = seconds(1.0f / 60); // fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
@@ -134,6 +130,7 @@ int main()
                 planets.push_back(Planet(5, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389, sun.getPosition().y + rSun), Vector2f(0, 2), Color::Color(255, 226, 183)));
                 planets.push_back(Planet(5, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700, sun.getPosition().y + rSun), Vector2f(0, 1.5), Color::Color(255, 219, 139)));
                 planets.push_back(Planet(5, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400, sun.getPosition().y + rSun), Vector2f(0, 1.1), Color::Color(150, 229, 233)));
+                planets.push_back(Planet(5, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275, sun.getPosition().y + rSun), Vector2f(0, 0.9), Color::Color(0, 0, 255)));
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
@@ -191,7 +188,7 @@ int main()
                     if (frameCollisionX(sun.getPosition().x + rSun, rSun)) 
                     {
                         //sun.setPosition(0, sun.getPosition().y);
-                        sunSpeed = -sunSpeed;
+                        //sunSpeed = -sunSpeed;
                     }
                 }
                 for (int i = 0; i < planets.size(); i++)

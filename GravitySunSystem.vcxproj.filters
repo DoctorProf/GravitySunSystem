@@ -32,4 +32,9 @@
     <None Include="openal32.dll" />
     <None Include="sfml-audio-2.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Planet.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
