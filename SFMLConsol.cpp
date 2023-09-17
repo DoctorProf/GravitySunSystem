@@ -12,16 +12,21 @@ class Planet
         Vector2f velocity;
         VertexArray track;
         Color color;
+        CircleShape test;
+
     public:
         Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color) :
             radius(radius),
             mass(mass),
             position(position - Vector2f(radius, radius)),
             velocity(velocity),
-            color(color)
+            color(color)             
         {
+            test.setRadius(1);
+            test.setFillColor(Color::Black);
+            test.setPosition(position);
             planet.setRadius(radius);
-            planet.setPosition(position);
+            planet.setPosition(position - Vector2f(radius, radius));
             planet.setFillColor(color);
         }
         void addTrack(Vertex pos) 
@@ -63,8 +68,10 @@ class Planet
         }
         void drawPlanet(RenderWindow &window) 
         {
+            
             planet.setPosition(position);
             window.draw(planet);
+            window.draw(test);
         }
 };
 bool frameCollisionX(float x, float radius) 
@@ -94,12 +101,14 @@ int main()
     Clock clock2;
 
     std::vector<Planet> planets;
-    
+    CircleShape test;
+    test.setFillColor(Color::Black);
+    test.setRadius(1);
     float G = 6.67;
-    double scale = (float)2e9;
+    double scale = (double)2e9;
     double F = 0;
     double a = 0;
-    float rSun = 7;
+    float rSun = 10;
     CircleShape sun(rSun);
     float sunSpeed = 1.0f;
     Vector2f offset(rSun, rSun);
@@ -108,7 +117,7 @@ int main()
     sun.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
 
-    Time timePerFrame = seconds(1.0f / 10000); // tps
+    Time timePerFrame = seconds(1.0f / 6000); // tps
     Time timePerFrame2 = seconds(1.0f / 60); // fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
@@ -123,14 +132,14 @@ int main()
             }
             if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num1)
             {
-                planets.push_back(Planet(5, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29, sun.getPosition().y + rSun), Vector2f(0, 7.4), Color::Color(128, 128, 128)));
-                planets.push_back(Planet(5, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54, sun.getPosition().y + rSun), Vector2f(0, 5.5), Color::Color(234, 205, 177)));
-                planets.push_back(Planet(5, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75, sun.getPosition().y + rSun), Vector2f(0, 4.7), Color::Color(154, 205, 50)));
-                planets.push_back(Planet(5, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114, sun.getPosition().y + rSun), Vector2f(0, 3.8), Color::Color(228, 64, 3)));
-                planets.push_back(Planet(5, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389, sun.getPosition().y + rSun), Vector2f(0, 2), Color::Color(255, 226, 183)));
-                planets.push_back(Planet(5, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700, sun.getPosition().y + rSun), Vector2f(0, 1.5), Color::Color(255, 219, 139)));
-                planets.push_back(Planet(5, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400, sun.getPosition().y + rSun), Vector2f(0, 1.1), Color::Color(150, 229, 233)));
-                planets.push_back(Planet(5, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275, sun.getPosition().y + rSun), Vector2f(0, 0.9), Color::Color(0, 0, 255)));
+                planets.push_back(Planet(3, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29, sun.getPosition().y + rSun), Vector2f(0, 7.4), Color::Color(128, 128, 128)));
+                planets.push_back(Planet(7, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54, sun.getPosition().y + rSun), Vector2f(0, 5.5), Color::Color(234, 205, 177)));
+                planets.push_back(Planet(8, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75, sun.getPosition().y + rSun), Vector2f(0, 4.7), Color::Color(154, 205, 50)));
+                planets.push_back(Planet(4, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114, sun.getPosition().y + rSun), Vector2f(0, 3.8), Color::Color(228, 64, 3)));
+                planets.push_back(Planet(85, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389, sun.getPosition().y + rSun), Vector2f(0, 2), Color::Color(255, 226, 183)));
+                planets.push_back(Planet(70, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700, sun.getPosition().y + rSun), Vector2f(0, 1.5), Color::Color(255, 219, 139)));
+                planets.push_back(Planet(26, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400, sun.getPosition().y + rSun), Vector2f(0, 1.1), Color::Color(150, 229, 233)));
+                planets.push_back(Planet(25, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275, sun.getPosition().y + rSun), Vector2f(0, 0.9), Color::Color(0, 0, 255)));
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
@@ -232,7 +241,10 @@ int main()
             }
             if (spawnSun) 
             {
+                test.setPosition(sun.getPosition() + Vector2f(rSun,rSun));
+                
                 window.draw(sun);
+                window.draw(test);
             }
             window.display();
             accumulatedTime2 -= timePerFrame2;
