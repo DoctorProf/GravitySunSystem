@@ -21,6 +21,7 @@ class Planet
             velocity(velocity),
             color(color)             
         {
+            track.setPrimitiveType(LinesStrip);
             planet.setRadius(radius);
             planet.setPosition(position - Vector2f(radius, radius));
             planet.setFillColor(color);

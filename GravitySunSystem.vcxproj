@@ -131,7 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SFMLConsol.cpp" />
+    <ClCompile Include="GravityMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="openal32.dll" />
