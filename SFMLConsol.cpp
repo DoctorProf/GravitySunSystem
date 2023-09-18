@@ -245,6 +245,10 @@ int main()
                 scaleGrap /= 2;
                 scaleJupiterSaturn /= 2;
             }
+            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::O)
+            {
+                mSun = -mSun;
+            }
             
         }
         accumulatedTime += clock.restart();
