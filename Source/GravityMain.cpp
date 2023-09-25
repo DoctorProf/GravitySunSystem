@@ -1,6 +1,6 @@
-﻿#include "Planet.hpp"
-#include "Global.hpp"
-#include "Button.hpp"
+﻿#include "../Headers/Planet.hpp"
+#include "../Headers/Global.hpp"
+#include "../Headers/Button.hpp"
 #include <iostream>
 #include <sstream>
 #include <string>

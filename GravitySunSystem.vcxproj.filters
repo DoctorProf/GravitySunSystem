@@ -15,38 +15,49 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GravityMain.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Planet.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
+    <ClInclude Include="Headers\Button.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Global.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Planet.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="sfml-network-2.dll" />
-    <None Include="sfml-window-d-2.dll" />
-    <None Include="sfml-window-2.dll" />
-    <None Include="sfml-system-d-2.dll" />
-    <None Include="sfml-system-2.dll" />
-    <None Include="sfml-network-d-2.dll" />
-    <None Include="sfml-graphics-d-2.dll" />
-    <None Include="sfml-graphics-2.dll" />
-    <None Include="sfml-audio-d-2.dll" />
+    <None Include="lib\openal32.dll" />
+    <None Include="lib\sfml-audio-2.dll" />
+    <None Include="lib\sfml-audio-d-2.dll" />
+    <None Include="lib\sfml-graphics-2.dll" />
+    <None Include="lib\sfml-graphics-d-2.dll" />
+    <None Include="lib\sfml-network-2.dll" />
+    <None Include="lib\sfml-network-d-2.dll" />
+    <None Include="lib\sfml-system-2.dll" />
+    <None Include="lib\sfml-system-d-2.dll" />
+    <None Include="lib\sfml-window-2.dll" />
+    <None Include="lib\sfml-window-d-2.dll" />
     <None Include="openal32.dll" />
     <None Include="sfml-audio-2.dll" />
+    <None Include="sfml-audio-d-2.dll" />
+    <None Include="sfml-graphics-2.dll" />
+    <None Include="sfml-graphics-d-2.dll" />
+    <None Include="sfml-network-2.dll" />
+    <None Include="sfml-network-d-2.dll" />
+    <None Include="sfml-system-2.dll" />
+    <None Include="sfml-system-d-2.dll" />
+    <None Include="sfml-window-2.dll" />
+    <None Include="sfml-window-d-2.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Planet.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Global.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
+    <ClCompile Include="Source\Button.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GravityMain.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Planet.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

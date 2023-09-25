@@ -18,6 +18,40 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Headers\Button.hpp" />
+    <ClInclude Include="Headers\Global.hpp" />
+    <ClInclude Include="Headers\Planet.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\openal32.dll" />
+    <None Include="lib\sfml-audio-2.dll" />
+    <None Include="lib\sfml-audio-d-2.dll" />
+    <None Include="lib\sfml-graphics-2.dll" />
+    <None Include="lib\sfml-graphics-d-2.dll" />
+    <None Include="lib\sfml-network-2.dll" />
+    <None Include="lib\sfml-network-d-2.dll" />
+    <None Include="lib\sfml-system-2.dll" />
+    <None Include="lib\sfml-system-d-2.dll" />
+    <None Include="lib\sfml-window-2.dll" />
+    <None Include="lib\sfml-window-d-2.dll" />
+    <None Include="openal32.dll" />
+    <None Include="sfml-audio-2.dll" />
+    <None Include="sfml-audio-d-2.dll" />
+    <None Include="sfml-graphics-2.dll" />
+    <None Include="sfml-graphics-d-2.dll" />
+    <None Include="sfml-network-2.dll" />
+    <None Include="sfml-network-d-2.dll" />
+    <None Include="sfml-system-2.dll" />
+    <None Include="sfml-system-d-2.dll" />
+    <None Include="sfml-window-2.dll" />
+    <None Include="sfml-window-d-2.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Button.cpp" />
+    <ClCompile Include="Source\GravityMain.cpp" />
+    <ClCompile Include="Source\Planet.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -130,29 +164,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="GravityMain.cpp" />
-    <ClCompile Include="Planet.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="openal32.dll" />
-    <None Include="sfml-audio-2.dll" />
-    <None Include="sfml-audio-d-2.dll" />
-    <None Include="sfml-graphics-2.dll" />
-    <None Include="sfml-graphics-d-2.dll" />
-    <None Include="sfml-network-2.dll" />
-    <None Include="sfml-network-d-2.dll" />
-    <None Include="sfml-system-2.dll" />
-    <None Include="sfml-system-d-2.dll" />
-    <None Include="sfml-window-2.dll" />
-    <None Include="sfml-window-d-2.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Button.hpp" />
-    <ClInclude Include="Global.hpp" />
-    <ClInclude Include="Planet.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

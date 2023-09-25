@@ -1,4 +1,4 @@
-#include "Planet.hpp"
+#include "../Headers/Planet.hpp"
 
 
 Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::string name) :
