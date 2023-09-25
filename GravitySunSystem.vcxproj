@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GravityMain.cpp" />
+    <ClCompile Include="Planet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="openal32.dll" />
@@ -147,7 +148,9 @@
     <None Include="sfml-window-d-2.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Planet.h" />
+    <ClInclude Include="Button.hpp" />
+    <ClInclude Include="Global.hpp" />
+    <ClInclude Include="Planet.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

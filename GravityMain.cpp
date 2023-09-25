@@ -1,89 +1,13 @@
-﻿#include "Planet.h"
+﻿#include "Planet.hpp"
+#include "Global.hpp"
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <iomanip>
 
 using namespace sf;
 
-class Planet
-{
-    private:
-        CircleShape planet;
-        double radius;
-        double mass;
-        Vector2f position;
-        Vector2f velocity;
-        VertexArray track;
-        Color color;
 
-    public:
-        Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color) :
-            radius(radius),
-            mass(mass),
-            position(position - Vector2f(radius, radius)),
-            velocity(velocity),
-            color(color)             
-        {
-            track.setPrimitiveType(LinesStrip);
-            planet.setRadius(radius);
-            planet.setPosition(position - Vector2f(radius, radius));
-            planet.setFillColor(color);
-        }
-        void addTrack(Vertex pos) 
-        {
-            track.append(pos);
-        }
-        void clearTrack() 
-        {
-            track.clear();
-        }
-        VertexArray getTrack()
-        {
-            return track;
-        }
-        double getRadius() 
-        {
-            return radius;
-        }
-        double getMass() 
-        {
-            return mass;
-        }
-        Vector2f getPosition()
-        {
-            return position;
-        }
-        Color getColor() 
-        {
-            return color;
-        }
-        void update(Vector2f normDir, float a) 
-        {
-            velocity -= normDir * a;
-            position += velocity;
-        }
-        void drawTrack(RenderWindow &window) 
-        {
-            window.draw(track);
-        }
-        void drawPlanet(RenderWindow &window) 
-        {
-            
-            planet.setPosition(position);
-            window.draw(planet);
-        }
-};
-bool frameCollisionX(float x, float radius) 
-{
-    return (x + radius > 1920 || x - radius < 0);
-}
-bool frameCollisionY(float y, float radius)
-{
-    return (y + radius > 1080 || y - radius < 0);
-}
-float distance(Vector2f vec1, Vector2f vec2) 
-{
-    float dx = vec1.x - vec2.x;
-    float dy = vec1.y - vec2.y;
-    return std::sqrt(dx * dx + dy * dy);
-}
 void PhyPlanet(std::vector<Planet> &planets, Planet sun , bool trackDraw, double G, double scalePhy) 
 {
     for (int i = 0; i < planets.size(); i++)
@@ -152,25 +76,25 @@ int main()
             }
             if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num1)
             {
-                planets.push_back(Planet(3 / scaleGrap, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29/ scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.76 / scaleGrap), Color::Color(128, 128, 128)));
-                planets.push_back(Planet(5 / scaleGrap, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.555 / scaleGrap), Color::Color(234, 205, 177)));
-                planets.push_back(Planet(5 / scaleGrap, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.47 / scaleGrap), Color::Color(154, 205, 50)));
-                planets.push_back(Planet(4 / scaleGrap, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.38 / scaleGrap), Color::Color(228, 64, 3)));
-                planets.push_back(Planet(14 / scaleGrap, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.205 / scaleGrap), Color::Color(255, 226, 183)));
-                planets.push_back(Planet(12 / scaleGrap, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.155 / scaleGrap), Color::Color(255, 219, 139)));
-                planets.push_back(Planet(10 / scaleGrap, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.108 / scaleGrap), Color::Color(150, 229, 233)));
-                planets.push_back(Planet(10 / scaleGrap, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.085 / scaleGrap), Color::Color(0, 0, 255)));
+                planets.push_back(Planet(3 / scaleGrap, 3.33e23, Vector2f(sun.getPosition().x + rSun + 29/ scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.76 / scaleGrap), Color::Color(128, 128, 128), "Mercury"));
+                planets.push_back(Planet(5 / scaleGrap, 4.87e24, Vector2f(sun.getPosition().x + rSun + 54 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.555 / scaleGrap), Color::Color(234, 205, 177), "Venus"));
+                planets.push_back(Planet(5 / scaleGrap, 5.97e24, Vector2f(sun.getPosition().x + rSun + 75 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.47 / scaleGrap), Color::Color(154, 205, 50), "Earth"));
+                planets.push_back(Planet(4 / scaleGrap, 6.42e23, Vector2f(sun.getPosition().x + rSun + 114 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.38 / scaleGrap), Color::Color(228, 64, 3), "Mars"));
+                planets.push_back(Planet(22 / scaleGrap, 1.89e27, Vector2f(sun.getPosition().x + rSun + 389 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.205 / scaleGrap), Color::Color(255, 226, 183), "Jupiter"));
+                planets.push_back(Planet(18 / scaleGrap, 5.68e26, Vector2f(sun.getPosition().x + rSun + 700 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.155 / scaleGrap), Color::Color(255, 219, 139), "Saturn"));
+                planets.push_back(Planet(20 / scaleGrap, 8.68e25, Vector2f(sun.getPosition().x + rSun + 1400 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.108 / scaleGrap), Color::Color(150, 229, 233), "Uranus"));
+                planets.push_back(Planet(20 / scaleGrap, 1.024e26, Vector2f(sun.getPosition().x + rSun + 2275 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.085 / scaleGrap), Color::Color(0, 0, 255), "Neptune"));
                 //planets.push_back(Planet(2, 1.3e22, Vector2f(sun.getPosition().x + rSun + 2950 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.07 / scaleGrap), Color::Color(117, 90, 87)));
                 //planets.push_back(Planet(2, 4.006e21, Vector2f(sun.getPosition().x + rSun + 3225 / scaleGrap, sun.getPosition().y + rSun), Vector2f(0, 0.067 / scaleGrap), Color::Color(128, 128, 128)));
-                moonEarth.push_back(Planet(2 / scaleGrap, 7.35e22, Vector2f(planets[2].getPosition().x + planets[2].getRadius() + 19 / scaleGrap, planets[2].getPosition().y + planets[2].getRadius()), Vector2f(0, 1.8 / scaleGrap), Color::Color(210, 210, 210)));
+                moonEarth.push_back(Planet(2 / scaleGrap, 7.35e22, Vector2f(planets[2].getPosition().x + planets[2].getRadius() + 19 / scaleGrap, planets[2].getPosition().y + planets[2].getRadius()), Vector2f(0, 1.8 / scaleGrap), Color::Color(210, 210, 210), "Moon"));
                 //Луна
-                moonJupiter.push_back(Planet(4 / scaleGrap, 4.80e22, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 33 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.9 / scaleGrap), Color::Color(232, 223, 214)));
+                moonJupiter.push_back(Planet(4 / scaleGrap, 4.80e22, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 33 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.9 / scaleGrap), Color::Color(232, 223, 214), "Europe"));
                 //Европа
-                moonJupiter.push_back(Planet(4 / scaleGrap, 1.48e23, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 53 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.7 / scaleGrap), Color::Color(255, 0, 0)));
+                moonJupiter.push_back(Planet(4 / scaleGrap, 1.48e23, Vector2f(planets[4].getPosition().x + planets[4].getRadius() + 53 / scaleGrap, planets[4].getPosition().y + planets[4].getRadius()), Vector2f(0, 0.7 / scaleGrap), Color::Color(255, 0, 0), "Ganymede"));
                 //Ганимед
-                moonSaturn.push_back(Planet(4 / scaleGrap, 1.08e20, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 24 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.6 / scaleGrap), Color::Color(255, 255, 255)));
+                moonSaturn.push_back(Planet(4 / scaleGrap, 1.08e20, Vector2f(planets[5].getPosition().x + planets[5].getRadius() + 24 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.6 / scaleGrap), Color::Color(255, 255, 255), "Enceladus"));
                 //Энцелад
-                moonUran.push_back(Planet(4 / scaleGrap, 6.59e19, Vector2f(planets[6].getPosition().x + planets[5].getRadius() + 13 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.35 / scaleGrap), Color::Color(194, 178, 128)));
+                moonUran.push_back(Planet(4 / scaleGrap, 6.59e19, Vector2f(planets[6].getPosition().x + planets[5].getRadius() + 13 / scaleGrap, planets[5].getPosition().y + planets[5].getRadius()), Vector2f(0, 0.35 / scaleGrap), Color::Color(194, 178, 128), "Miranda"));
                 //Миранда
 
             }
@@ -250,8 +174,51 @@ int main()
             {
                 mSun = -mSun;
             }
-            
+            else if (event.type == Event::MouseButtonPressed) 
+            {
+                if (event.mouseButton.button == Mouse::Left) 
+                {
+                    for (int i = 0; i < planets.size(); i++) 
+                    {
+                        if (pow(event.mouseButton.x - (planets[i].getPosition().x + planets[i].getRadius()), 2) + pow(event.mouseButton.y - (planets[i].getPosition().y + planets[i].getRadius()), 2) <= pow(planets[i].getRadius(), 2))
+                        {
+                            pause = true;
+                            RenderWindow windowSettings(VideoMode(500, 600), planets[i].getName());
+                            Font font;
+                            Text text;
+                            std::ostringstream massE;
+                            
+                            if (!font.loadFromFile("C:\\windows\\fonts\\arial.ttf"))
+                                return 5;
+                            text.setFont(font);
+                            text.setFillColor(Color::White);
+                            text.setCharacterSize(18);
+                            text.setPosition(50, 30);
+                            
+                            while (windowSettings.isOpen()) {
+                                Event event;
+                                while (windowSettings.pollEvent(event))
+                                {
+                                    if (event.type == Event::Closed)
+                                    {
+                                        windowSettings.close();
+                                        pause = false;
+                                        clock.restart();
+                                    }
+                                }
+                                massE << std::scientific << std::setprecision(2) << planets[i].getMass();
+                                text.setString(L"Масса  " + massE.str());
+                                windowSettings.clear(Color::Black);
+                                windowSettings.draw(text);
+                                windowSettings.display();
+                                massE.str("");
+                            }
+                        }
+                    }
+                }
+            }
         }
+           
         accumulatedTime += clock.restart();
         while (accumulatedTime >= timePerFrame) 
         {

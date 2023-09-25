@@ -18,6 +18,9 @@
     <ClCompile Include="GravityMain.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-network-2.dll" />
@@ -33,7 +36,13 @@
     <None Include="sfml-audio-2.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Planet.h">
+    <ClInclude Include="Planet.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
