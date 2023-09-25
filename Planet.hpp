@@ -22,6 +22,7 @@ public:
     VertexArray getTrack();
     double getRadius();
     double getMass();
+    void setMass(double mass);
     std::string getName();
     Vector2f getPosition();
     Color getColor();

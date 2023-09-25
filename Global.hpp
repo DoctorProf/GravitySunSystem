@@ -1,6 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
-using namespace sf;
+
 
 bool frameCollisionX(float x, float radius)
 {

@@ -11,4 +11,12 @@ private:
 	float y;
 	float sizeX;
 	float sizeY;
+	double coeff;
+	Text text;
+	Font font;
+public:
+	Button(float x, float y, float sizeX, float sizeY, double coeff);
+	void draw(RenderWindow& window, Font font);
+	bool collisionButton(float x, float y);
+	double getcoeff();
 };

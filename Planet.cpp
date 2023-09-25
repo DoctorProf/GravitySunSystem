@@ -35,6 +35,10 @@ double Planet::getMass()
 {
     return mass;
 }
+void Planet::setMass(double mass)
+{
+    this->mass = mass;
+}
 std::string Planet::getName() 
 {
     return name;

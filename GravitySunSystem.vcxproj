@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="GravityMain.cpp" />
     <ClCompile Include="Planet.cpp" />
   </ItemGroup>

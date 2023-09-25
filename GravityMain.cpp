@@ -1,5 +1,6 @@
 ﻿#include "Planet.hpp"
 #include "Global.hpp"
+#include "Button.hpp"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -33,6 +34,8 @@ int main()
 {
     RenderWindow window(VideoMode(1920, 1080), "Gravity");
     std::setlocale(LC_ALL, "rus");
+    Font font;
+    font.loadFromFile("C:\\windows\\fonts\\arial.ttf");
     bool pause = false;
     bool trackDraw = true;
     bool spawnSun = true;
@@ -184,32 +187,48 @@ int main()
                         {
                             pause = true;
                             RenderWindow windowSettings(VideoMode(500, 600), planets[i].getName());
-                            Font font;
+                            
                             Text text;
                             std::ostringstream massE;
-                            
-                            if (!font.loadFromFile("C:\\windows\\fonts\\arial.ttf"))
-                                return 5;
+                            std::vector<Button> buttons;
                             text.setFont(font);
                             text.setFillColor(Color::White);
                             text.setCharacterSize(18);
                             text.setPosition(50, 30);
+                            buttons.push_back(Button(50, 60, 50, 30, 0.1));
                             
                             while (windowSettings.isOpen()) {
-                                Event event;
-                                while (windowSettings.pollEvent(event))
+                                Event event1;
+                                while (windowSettings.pollEvent(event1))
                                 {
-                                    if (event.type == Event::Closed)
+                                    if (event1.type == Event::KeyReleased && event1.key.code == Keyboard::Escape)
                                     {
                                         windowSettings.close();
                                         pause = false;
                                         clock.restart();
                                     }
-                                }
+                                    else if (event1.type == Event::MouseButtonPressed) 
+                                    {
+                                        if (event1.mouseButton.button == Mouse::Left) 
+                                        {
+                                            for (int j = 0; j < buttons.size(); j++) 
+                                            {
+                                                if (buttons[j].collisionButton(event1.mouseButton.x, event1.mouseButton.y)) 
+                                                {
+                                                    planets[i].setMass(planets[i].getMass() * (double)buttons[j].getcoeff());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }   
                                 massE << std::scientific << std::setprecision(2) << planets[i].getMass();
                                 text.setString(L"Масса  " + massE.str());
                                 windowSettings.clear(Color::Black);
                                 windowSettings.draw(text);
+                                for (int j = 0; j < buttons.size(); j++) 
+                                {
+                                    buttons[j].draw(windowSettings, font);
+                                }
                                 windowSettings.display();
                                 massE.str("");
                             }
@@ -246,8 +265,13 @@ int main()
                         double distan = distance(sun.getPosition() + offset, planets[i].getPosition() + Vector2f(planets[i].getRadius(), planets[i].getRadius())) * scalePhy;
                         F = (double)G * (mSun * planets[i].getMass()) / pow(distan, 2) * (int)spawnSun;
                         a = (double)F / planets[i].getMass();
+                        /*
+                        if (i == 2) {
+                            std::cout << a << "\n";
+                        }
+                        */
                         Vector2f normDir = ((planets[i].getPosition() + Vector2f(planets[i].getRadius(), planets[i].getRadius()) - (sun.getPosition() + offset))) / (float)distan;
-                        planets[i].update(normDir, a);                        
+                        planets[i].update(normDir, a);  
                     }
                 }
                 if(planets.size() > 0 && moonJupiter.size() > 0)
