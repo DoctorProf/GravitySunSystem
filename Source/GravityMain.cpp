@@ -23,7 +23,7 @@ int main()
     float G = 6.67e-11;
 
     double a = 0;
-
+    int count = 120;
     Event event;
     Vector2f normDir;
     Vertex pos;
@@ -32,17 +32,14 @@ int main()
 
     double scalePhy = (double)1e9;
     float scaleGrap = 1;
-    Time timePerFrame = seconds(1.0f / 120); // tps
-    Time timePerFrame2 = seconds(1.0f / 120); // fps
+    Time timePerFrame = seconds(1.0f / count); // tps
+    Time timePerFrame2 = seconds(1.0f / count); // fps
     spawnPlanet(std::ref(planets), scaleGrap, window);
 
     while (window.isOpen()) {
         while (window.pollEvent(event)) 
         {
-            if (event.type == Event::Closed)
-            {
-                window.close();
-            }
+            if (event.type == Event::Closed) window.close();
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
                 trackDraw = !trackDraw;
@@ -56,18 +53,14 @@ int main()
                 planets.clear();
                 spawnPlanet(planets, scaleGrap, window);
             }
-            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
-            {
-                pause = !pause;
-            }
+            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space) pause = !pause;
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad8)
             {
                 planets.clear();
                 scalePhy *= 2;
                 scaleGrap *= 1.6;
                 spawnPlanet(planets, scaleGrap, window);
-            }
-            
+            } 
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad2)
             {
                 planets.clear();
@@ -85,7 +78,6 @@ int main()
                         {
                             pause = true;
                             RenderWindow windowSettings(VideoMode(500, 600), planets[i].getName());
-                            
                             Text text;
                             std::ostringstream massE;
                             std::vector<Button> buttons;
@@ -93,8 +85,9 @@ int main()
                             text.setFillColor(Color::White);
                             text.setCharacterSize(18);
                             text.setPosition(50, 30);
-                            buttons.push_back(Button(50, 60, 50, 30, 0.1));
+                            buttons.push_back(Button(50, 60, 50, 30, 0.5));
                             buttons.push_back(Button(150, 60, 50, 30, 10));
+                            buttons.push_back(Button(240, 60, 50, 30, 2));
                             
                             while (windowSettings.isOpen()) {
                                 Event event1;
@@ -153,7 +146,8 @@ int main()
                 if (trackDraw)
                 {
                     if (!(frameCollisionX(planets[j].getPosition().x, planets[j].getRadius()) || frameCollisionY(planets[j].getPosition().y, planets[j].getRadius()))) {
-                        pos.position = Vector2f(std::floor(planets[j].getPosition().x + planets[j].getRadius()), std::floor(planets[j].getPosition().y + planets[j].getRadius()));
+                        pos.position = Vector2f(planets[j].getPosition().x + planets[j].getRadius(), planets[j].getPosition().y + planets[j].getRadius());
+                        //pos.position = Vector2f(std::floor(planets[j].getPosition().x + planets[j].getRadius()), std::floor(planets[j].getPosition().y + planets[j].getRadius()));
                         pos.color = planets[j].getColor();
                         planets[j].addTrack(pos);
                     }
@@ -177,11 +171,11 @@ int main()
             window.clear(Color::Black);
             for (int i = 0; i < planets.size(); i++)
             {
-                 planets[i].drawTrack(window);
+                if(planets[i].getTrack().getVertexCount() > 0) planets[i].drawTrack(window);
+                continue;
             }
             for (int i = 0; i < planets.size(); i++)
             {
-                if (frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius())) continue;
                 planets[i].drawPlanet(window);
             }
             window.display();
