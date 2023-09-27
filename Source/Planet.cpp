@@ -1,6 +1,5 @@
 #include "../Headers/Planet.hpp"
 
-
 Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::string name) :
     radius(radius),
     mass(mass),
@@ -39,7 +38,7 @@ void Planet::setMass(double mass)
 {
     this->mass = mass;
 }
-std::string Planet::getName() 
+std::string Planet::getName()
 {
     return name;
 }
@@ -53,7 +52,10 @@ Color Planet::getColor()
 }
 void Planet::update(Vector2f normDir, float a)
 {
-    velocity -= normDir * a;
+    velocity += Vector2f(normDir.x * a, normDir.y * a);
+}
+
+void Planet::move() {
     position += velocity;
 }
 void Planet::drawTrack(RenderWindow& window)

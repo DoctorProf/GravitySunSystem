@@ -20,7 +20,7 @@ Button::Button(float x, float y, float sizeX, float sizeY, double coeff)
 void Button::draw(RenderWindow& window, Font font)
 {
 	std::ostringstream textCoeff;
-	textCoeff << std::setprecision(1) << coeff;
+	textCoeff << std::setprecision(2) << coeff;
 	window.draw(button);
 	this->text.setFont(font);
 	this->text.setString(textCoeff.str());

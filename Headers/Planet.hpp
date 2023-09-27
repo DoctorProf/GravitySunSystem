@@ -29,4 +29,5 @@ public:
     void update(Vector2f normDir, float a);
     void drawTrack(RenderWindow& window);
     void drawPlanet(RenderWindow& window);
+    void move();
 };
