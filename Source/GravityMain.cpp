@@ -1,5 +1,4 @@
-﻿#include "../Headers/Planet.hpp"
-#include "../Headers/Global.hpp"
+﻿#include "../Headers/Global.hpp"
 #include "../Headers/Button.hpp"
 #include <iostream>
 #include <sstream>
@@ -7,6 +6,7 @@
 #include <iomanip>
 
 using namespace sf;
+using namespace global;
 
 int main() 
 {
@@ -22,34 +22,26 @@ int main()
     std::vector<Planet> planets;
     float G = 6.67e-11;
 
-    double F = 0;
     double a = 0;
-    int count = 0;
 
-
+    Event event;
+    Vector2f normDir;
+    Vertex pos;
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
 
+    double scalePhy = (double)1e9;
+    float scaleGrap = 1;
+    Time timePerFrame = seconds(1.0f / 120); // tps
+    Time timePerFrame2 = seconds(1.0f / 120); // fps
+    spawnPlanet(std::ref(planets), scaleGrap, window);
+
     while (window.isOpen()) {
-        Event event;
         while (window.pollEvent(event)) 
         {
             if (event.type == Event::Closed)
             {
                 window.close();
-            }
-            if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num1 && count == 0)
-            {
-                planets.push_back(Planet(30 / SCALEGRAP, 2e30, Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f), Vector2f(0, 0.0), Color::Color(255, 255, 0), "Sun"));
-                //planets.push_back(Planet(6 / SCALEGRAP, 3.33e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 58 / SCALEGRAP, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.5 / SCALEGRAP), Color::Color(128, 128, 128), "Mercury"));
-                //planets.push_back(Planet(12 / SCALEGRAP, 4.87e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 108 / SCALEGRAP, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.1 / SCALEGRAP), Color::Color(234, 205, 177), "Venus"));
-                //planets.push_back(Planet(12 / SCALEGRAP, 5.97e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 150 / SCALEGRAP, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.95 / SCALEGRAP), Color::Color(154, 205, 50), "Earth"));
-                planets.push_back(Planet(8 / SCALEGRAP, 6.42e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 228 / SCALEGRAP, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.75 / SCALEGRAP), Color::Color(228, 64, 3), "Mars"));
-                //planets.push_back(Planet(54 / SCALEGRAP, 1.89e27, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 778 / SCALEGRAP, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.2 / SCALEGRAP), Color::Color(255, 226, 183), "Jupiter"));
-                //planets.push_back(Planet(36 / SCALEGRAP, 5.68e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 1400 / SCALEGRAP, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1 / SCALEGRAP), Color::Color(255, 219, 139), "Saturn"));
-                //planets.push_back(Planet(36 / SCALEGRAP, 8.68e25, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 2800 / SCALEGRAP, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.8 / SCALEGRAP), Color::Color(150, 229, 233), "Uranus"));
-                //planets.push_back(Planet(36 / SCALEGRAP, 1.024e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 4550 / SCALEGRAP, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.8 / SCALEGRAP), Color::Color(0, 0, 255), "Neptune"));
-                count++;
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
@@ -62,7 +54,7 @@ int main()
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Delete)
             {
                 planets.clear();
-                count = 0;
+                spawnPlanet(planets, scaleGrap, window);
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
             {
@@ -71,17 +63,17 @@ int main()
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad8)
             {
                 planets.clear();
-                count = 0;
-                SCALEPHY *= 2;
-                SCALEGRAP *= 1.6;
+                scalePhy *= 2;
+                scaleGrap *= 1.6;
+                spawnPlanet(planets, scaleGrap, window);
             }
             
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad2)
             {
                 planets.clear();
-                count = 0;
-                SCALEPHY /= 2;
-                SCALEGRAP /= 1.6;
+                scalePhy /= 2;
+                scaleGrap /= 1.6;
+                spawnPlanet(planets, scaleGrap, window);
             }
             else if (event.type == Event::MouseButtonPressed) 
             {
@@ -152,50 +144,48 @@ int main()
         }
            
         accumulatedTime += clock.restart();
-        while (accumulatedTime >= TIMEPERFRAME)
+        while (accumulatedTime >= timePerFrame)
         {
-            accumulatedTime -= TIMEPERFRAME;
+            accumulatedTime -= timePerFrame;
             if (pause) continue;
             for (int j = 0; j < planets.size(); j++)
             {
+                if (trackDraw)
+                {
+                    if (!(frameCollisionX(planets[j].getPosition().x, planets[j].getRadius()) || frameCollisionY(planets[j].getPosition().y, planets[j].getRadius()))) {
+                        pos.position = Vector2f(std::floor(planets[j].getPosition().x + planets[j].getRadius()), std::floor(planets[j].getPosition().y + planets[j].getRadius()));
+                        pos.color = planets[j].getColor();
+                        planets[j].addTrack(pos);
+                    }
+                }
+
                 for (int i = 0; i < planets.size(); i++)
                 {
                     if (i == j) continue;
 
-                    if (trackDraw)
-                    {
-                        Vertex pos(Vector2f(planets[j].getPosition().x + planets[j].getRadius(), planets[j].getPosition().y + planets[j].getRadius()));
-                        pos.color = planets[j].getColor();
-                        planets[j].addTrack(pos);
-                    }
-
-                    double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * SCALEPHY;
-                    F = (double)G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2);
-                    a = (double)F / planets[j].getMass();
-                    Vector2f normDir = normalizeVector(planets[i], planets[j]);
+                    double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * scalePhy;
+                    a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
+                    normDir = normalizeVector(planets[i], planets[j]);
                     planets[j].update(normDir, a);
                 }
                 planets[j].move();
             }
         }
         accumulatedTime2 += clock2.restart();
-        if (accumulatedTime2 >= TIMEPERFRAME2)
+        if (accumulatedTime2 >= timePerFrame2)
         {
             window.clear(Color::Black);
-
             for (int i = 0; i < planets.size(); i++)
             {
-                if (planets[i].getTrack().getVertexCount() > 1)
-                {
-                    planets[i].drawTrack(window);
-                }
+                 planets[i].drawTrack(window);
             }
             for (int i = 0; i < planets.size(); i++)
             {
+                if (frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius())) continue;
                 planets[i].drawPlanet(window);
             }
             window.display();
-            accumulatedTime2 -= TIMEPERFRAME2;
+            accumulatedTime2 -= timePerFrame2;
         }
     }
     return 0;

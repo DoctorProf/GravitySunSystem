@@ -8,7 +8,7 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     color(color),
     name(name)
 {
-    track.setPrimitiveType(LinesStrip);
+    track.setPrimitiveType(Points);
     //LinesStrip
     planet.setRadius(radius);
     planet.setPosition(position - Vector2f(radius, radius));
@@ -16,6 +16,11 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
 }
 void Planet::addTrack(Vertex pos)
 {
+    for (int i = 0; i < track.getVertexCount(); i++) {
+        if (track[i].position == pos.position) {
+            return;
+        }
+    }
     track.append(pos);
 }
 void Planet::clearTrack()
@@ -54,7 +59,6 @@ void Planet::update(Vector2f normDir, float a)
 {
     velocity += Vector2f(normDir.x * a, normDir.y * a);
 }
-
 void Planet::move() {
     position += velocity;
 }
@@ -64,7 +68,6 @@ void Planet::drawTrack(RenderWindow& window)
 }
 void Planet::drawPlanet(RenderWindow& window)
 {
-
     planet.setPosition(position);
     window.draw(planet);
 }
