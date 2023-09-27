@@ -23,7 +23,7 @@ int main()
     float G = 6.67e-11;
 
     double a = 0;
-    int count = 120;
+    int count = 60;
     Event event;
     Vector2f normDir;
     Vertex pos;
