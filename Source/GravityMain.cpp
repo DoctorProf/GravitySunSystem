@@ -23,7 +23,7 @@ int main()
     float G = 6.67e-11;
 
     double a = 0;
-    int count = 60;
+    int count = 120;
     Event event;
     Vector2f normDir;
     Vertex pos;
@@ -143,16 +143,6 @@ int main()
             if (pause) continue;
             for (int j = 0; j < planets.size(); j++)
             {
-                if (trackDraw)
-                {
-                    if (!(frameCollisionX(planets[j].getPosition().x, planets[j].getRadius()) || frameCollisionY(planets[j].getPosition().y, planets[j].getRadius()))) {
-                        pos.position = Vector2f(planets[j].getPosition().x + planets[j].getRadius(), planets[j].getPosition().y + planets[j].getRadius());
-                        //pos.position = Vector2f(std::floor(planets[j].getPosition().x + planets[j].getRadius()), std::floor(planets[j].getPosition().y + planets[j].getRadius()));
-                        pos.color = planets[j].getColor();
-                        planets[j].addTrack(pos);
-                    }
-                }
-
                 for (int i = 0; i < planets.size(); i++)
                 {
                     if (i == j) continue;
@@ -169,10 +159,19 @@ int main()
         if (accumulatedTime2 >= timePerFrame2)
         {
             window.clear(Color::Black);
-            for (int i = 0; i < planets.size(); i++)
+            if (trackDraw)
             {
-                if(planets[i].getTrack().getVertexCount() > 0) planets[i].drawTrack(window);
+                for (int i = 0; i < planets.size(); i++)
+                {
+                    if (!(frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius()))) {
+                        pos.position = Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius());
+                        //pos.position = Vector2f(std::floor(planets[j].getPosition().x + planets[j].getRadius()), std::floor(planets[j].getPosition().y + planets[j].getRadius()));
+                        pos.color = planets[i].getColor();
+                        planets[i].addTrack(pos);
+                    }
+                if(planets[i].getTrack().getVertexCount() > 1) planets[i].drawTrack(window);
                 continue;
+                }
             }
             for (int i = 0; i < planets.size(); i++)
             {
