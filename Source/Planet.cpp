@@ -8,7 +8,7 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     color(color),
     name(name)
 {
-    track.setPrimitiveType(LinesStrip);
+    track.setPrimitiveType(Points);
     //LinesStrip
     planet.setRadius(radius);
     planet.setPosition(position - Vector2f(radius, radius));

@@ -133,6 +133,10 @@ int main()
                         }
                     }
                 }
+                else if (event.mouseButton.button == Mouse::Right) 
+                {
+                    planets.push_back(Planet(2 / scaleGrap, 940e18, Vector2f(event.mouseButton.x, event.mouseButton.y), Vector2f(0.6, 0), Color::Color(128, 0, 128), "BlackHole"));
+                }
             }
         }
            
@@ -141,6 +145,27 @@ int main()
         {
             accumulatedTime -= timePerFrame;
             if (pause) continue;
+            for (int j = 0; j < planets.size(); j++)
+            {
+                for (int i = 0; i < planets.size(); i++)
+                {
+                    if (i == j) continue;
+
+                    if(distance(planets[i].getPosition() + offset(planets[i].getRadius()), planets[j].getPosition() + offset(planets[j].getRadius())) <= planets[i].getRadius() + planets[j].getRadius())
+                    {
+                        if (planets[i].getMass() > planets[j].getMass()) 
+                        {
+                            planets[i].setMass(planets[i].getMass() + planets[j].getMass());
+                            planets.erase(planets.begin() + j);
+                        }
+                        else if (planets[j].getMass() > planets[i].getMass())
+                        {
+                            planets[j].setMass(planets[j].getMass() + planets[i].getMass());
+                            planets.erase(planets.begin() + i);
+                        }
+                    }
+                }
+            }
             for (int j = 0; j < planets.size(); j++)
             {
                 for (int i = 0; i < planets.size(); i++)
@@ -159,18 +184,19 @@ int main()
         if (accumulatedTime2 >= timePerFrame2)
         {
             window.clear(Color::Black);
+
             if (trackDraw)
             {
                 for (int i = 0; i < planets.size(); i++)
                 {
-                    if (!(frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius()))) {
+                    if (!(frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius())))
+                    {
                         pos.position = Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius());
-                        //pos.position = Vector2f(std::floor(planets[j].getPosition().x + planets[j].getRadius()), std::floor(planets[j].getPosition().y + planets[j].getRadius()));
                         pos.color = planets[i].getColor();
                         planets[i].addTrack(pos);
                     }
-                if(planets[i].getTrack().getVertexCount() > 1) planets[i].drawTrack(window);
-                continue;
+                    if (planets[i].getTrack().getVertexCount() > 1) planets[i].drawTrack(window);
+                    continue;
                 }
             }
             for (int i = 0; i < planets.size(); i++)
