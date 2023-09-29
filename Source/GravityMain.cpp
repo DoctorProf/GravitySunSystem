@@ -20,10 +20,10 @@ int main()
     Clock clock2;
 
     std::vector<Planet> planets;
-    float G = 6.67e-11;
+    const float G = 6.67e-11;
 
     double a = 0;
-    int count = 120;
+    const int count = 60;
     Event event;
     Vector2f normDir;
     Vertex pos;
@@ -35,6 +35,7 @@ int main()
     Time timePerFrame = seconds(1.0f / count); // tps
     Time timePerFrame2 = seconds(1.0f / count); // fps
     spawnPlanet(std::ref(planets), scaleGrap, window);
+    int sum = 0;
 
     while (window.isOpen()) {
         while (window.pollEvent(event)) 
@@ -47,6 +48,14 @@ int main()
                 {
                     planets[i].clearTrack();
                 }
+            }
+            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num1)
+            {
+                for (int i = 0; i < planets.size(); i++)
+                {
+                    sum += planets[i].getTrack().getVertexCount();
+                }
+                std::cout << sum << "\n";
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Delete)
             {
@@ -135,7 +144,7 @@ int main()
                 }
                 else if (event.mouseButton.button == Mouse::Right) 
                 {
-                    planets.push_back(Planet(2 / scaleGrap, 940e18, Vector2f(event.mouseButton.x, event.mouseButton.y), Vector2f(0.6, 0), Color::Color(128, 0, 128), "BlackHole"));
+                    planets.push_back(Planet(4 / scaleGrap, 940e18, Vector2f(event.mouseButton.x, event.mouseButton.y), Vector2f(0.6, 0), Color::Color(128, 128, 128), "BlackHole"));
                 }
             }
         }
@@ -189,14 +198,13 @@ int main()
             {
                 for (int i = 0; i < planets.size(); i++)
                 {
-                    if (!(frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius())))
+                    if (!(frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius())) && !pause)
                     {
                         pos.position = Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius());
                         pos.color = planets[i].getColor();
                         planets[i].addTrack(pos);
                     }
-                    if (planets[i].getTrack().getVertexCount() > 1) planets[i].drawTrack(window);
-                    continue;
+                    planets[i].drawTrack(window);
                 }
             }
             for (int i = 0; i < planets.size(); i++)
