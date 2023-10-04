@@ -16,7 +16,7 @@ private:
 	Font font;
 public:
 	Button(float x, float y, float sizeX, float sizeY, double coeff);
-	void draw(RenderWindow& window, Font font);
-	bool collisionButton(float x, float y);
+	void draw(RenderWindow& window, Font &font);
+	bool collisionButton(int x, int y);
 	double getcoeff();
 };

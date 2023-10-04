@@ -25,6 +25,8 @@ public:
     void setMass(double mass);
     std::string getName();
     Vector2f getPosition();
+    void setPosition(Vector2f position);
+    void setVelocity(Vector2f velocity);
     Color getColor();
     void update(Vector2f normDir, float a);
     void drawTrack(RenderWindow& window);

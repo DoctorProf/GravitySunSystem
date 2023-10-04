@@ -17,7 +17,7 @@ Button::Button(float x, float y, float sizeX, float sizeY, double coeff)
 	this->text.setFillColor(Color::White);
 	this->text.setCharacterSize(16);
 }
-void Button::draw(RenderWindow& window, Font font)
+void Button::draw(RenderWindow& window, Font &font)
 {
 	std::ostringstream textCoeff;
 	textCoeff << std::setprecision(2) << coeff;
@@ -27,7 +27,7 @@ void Button::draw(RenderWindow& window, Font font)
 	window.draw(this->text);
 	textCoeff.str("");
 }
-bool Button::collisionButton(float x, float y)
+bool Button::collisionButton(int x, int y)
 {
 	return (x >= this->x && x <= this->sizeX + this->x) && (y >= this->y && y <= this->sizeY + this->y);
 }

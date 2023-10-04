@@ -10,37 +10,39 @@ using namespace global;
 
 int main() 
 {
+    View world;
+    world.setCenter(Vector2f(960, 540));
+    world.setSize(Vector2f(1920, 1080));
     RenderWindow window(VideoMode(1920, 1080), "Gravity");
     std::setlocale(LC_ALL, "rus");
+
     Font font;
     font.loadFromFile("C:\\windows\\fonts\\arial.ttf");
     bool pause = false;
-    bool trackDraw = true;
+    bool trackDraw = false;
     Clock clock;
     Clock clock2;
 
     std::vector<Planet> planets;
     const float G = 6.67e-11;
-
-    double a = 0;
-    const int count = 60;
-    Event event;
-    Vector2f normDir;
-    Vertex pos;
+    bool run = true;
+    const int frameRate = 120;
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
 
-    double scalePhy = (double)1e9;
-    float scaleGrap = 1;
-    Time timePerFrame = seconds(1.0f / count); // tps
-    Time timePerFrame2 = seconds(1.0f / count); // fps
-    spawnPlanet(std::ref(planets), scaleGrap, window);
-    int sum = 0;
+    Time timePerFrame = seconds(1.0f / frameRate); // tps
+    Time timePerFrame2 = seconds(1.0f / frameRate); // fps
+    spawnPlanet(std::ref(planets), window);
 
-    while (window.isOpen()) {
+    while (run) {
+        Event event;
         while (window.pollEvent(event)) 
         {
-            if (event.type == Event::Closed) window.close();
+            if (event.type == Event::Closed)
+            {
+                run = false;
+                window.close();
+            }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
             {
                 trackDraw = !trackDraw;
@@ -49,33 +51,38 @@ int main()
                     planets[i].clearTrack();
                 }
             }
-            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Num1)
-            {
-                for (int i = 0; i < planets.size(); i++)
-                {
-                    sum += planets[i].getTrack().getVertexCount();
-                }
-                std::cout << sum << "\n";
-            }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Delete)
             {
                 planets.clear();
-                spawnPlanet(planets, scaleGrap, window);
+                spawnPlanet(planets, window);
             }
-            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space) pause = !pause;
-            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad8)
+            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
             {
-                planets.clear();
-                scalePhy *= 2;
-                scaleGrap *= 1.6;
-                spawnPlanet(planets, scaleGrap, window);
+                pause = !pause;
+            }
+            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::W)
+            {
+                world.move(0, 100);
             } 
-            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Numpad2)
+            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::S)
             {
-                planets.clear();
-                scalePhy /= 2;
-                scaleGrap /= 1.6;
-                spawnPlanet(planets, scaleGrap, window);
+                world.move(0, -100);
+            }
+            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::A)
+            {
+                world.move(100, 0);
+            }
+            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::D)
+            {
+                world.move(-100, 0);
+            }
+            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Numpad8)
+            {
+                world.setSize(world.getSize().x * 2, world.getSize().y * 2);
+            }
+            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Numpad2)
+            {
+                world.setSize(world.getSize().x / 2, world.getSize().y / 2);
             }
             else if (event.type == Event::MouseButtonPressed) 
             {
@@ -83,7 +90,9 @@ int main()
                 {
                     for (int i = 0; i < planets.size(); i++) 
                     {
-                        if (pow(event.mouseButton.x - (planets[i].getPosition().x + planets[i].getRadius()), 2) + pow(event.mouseButton.y - (planets[i].getPosition().y + planets[i].getRadius()), 2) <= pow(planets[i].getRadius(), 2))
+                        Vector2i worldCoords = Vector2i(event.mouseButton.x, event.mouseButton.y);
+                        Vector2i viewPlanetPosition = window.mapCoordsToPixel(Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius()));
+                        if (pow(worldCoords.x - viewPlanetPosition.x, 2) + pow(worldCoords.y - viewPlanetPosition.y, 2) <= pow(planets[i].getRadius(), 2))
                         {
                             pause = true;
                             RenderWindow windowSettings(VideoMode(500, 600), planets[i].getName());
@@ -144,7 +153,7 @@ int main()
                 }
                 else if (event.mouseButton.button == Mouse::Right) 
                 {
-                    planets.push_back(Planet(4 / scaleGrap, 940e18, Vector2f(event.mouseButton.x, event.mouseButton.y), Vector2f(0.6, 0), Color::Color(128, 128, 128), "BlackHole"));
+                    planets.push_back(Planet(30, 940e18, Vector2f(event.mouseButton.x, event.mouseButton.y), Vector2f(0.6, 0), Color::Color(128, 128, 128), "BlackHole"));
                 }
             }
         }
@@ -181,9 +190,9 @@ int main()
                 {
                     if (i == j) continue;
 
-                    double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * scalePhy;
-                    a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
-                    normDir = normalizeVector(planets[i], planets[j]);
+                    double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * 1e9;
+                    double a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
+                    Vector2f normDir = normalizeVector(planets[i], planets[j]);
                     planets[j].update(normDir, a);
                 }
                 planets[j].move();
@@ -192,18 +201,20 @@ int main()
         accumulatedTime2 += clock2.restart();
         if (accumulatedTime2 >= timePerFrame2)
         {
+            window.setView(world);
             window.clear(Color::Black);
 
             if (trackDraw)
             {
                 for (int i = 0; i < planets.size(); i++)
                 {
-                    if (!(frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius())) && !pause)
-                    {
+                    //if (!(frameCollisionX(planets[i].getPosition().x, planets[i].getRadius()) || frameCollisionY(planets[i].getPosition().y, planets[i].getRadius())) && !pause)
+                    //{
+                        Vertex pos;
                         pos.position = Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius());
                         pos.color = planets[i].getColor();
                         planets[i].addTrack(pos);
-                    }
+                    //}
                     planets[i].drawTrack(window);
                 }
             }

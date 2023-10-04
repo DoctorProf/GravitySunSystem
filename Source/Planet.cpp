@@ -8,7 +8,7 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     color(color),
     name(name)
 {
-    track.setPrimitiveType(Points);
+    track.setPrimitiveType(LinesStrip);
     //LinesStrip
     planet.setRadius(radius);
     planet.setPosition(position - Vector2f(radius, radius));
@@ -52,6 +52,14 @@ std::string Planet::getName()
 Vector2f Planet::getPosition()
 {
     return position;
+}
+void Planet::setPosition(Vector2f position)
+{
+    this->position = position;
+}
+void Planet::setVelocity(Vector2f velocity)
+{
+    this->velocity = velocity;
 }
 Color Planet::getColor()
 {
