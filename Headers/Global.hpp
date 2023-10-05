@@ -9,4 +9,5 @@ namespace global
     Vector2f offset(double radius);
     Vector2f normalizeVector(Planet planet1, Planet planet2);
     void spawnPlanet(std::vector<Planet> &planets, RenderWindow &window);
+    void setStyleText(Text &text, Font &font, Vector2f position);
 }

@@ -25,6 +25,7 @@ public:
     void setMass(double mass);
     std::string getName();
     Vector2f getPosition();
+    Vector2f getVelocity();
     void setPosition(Vector2f position);
     void setVelocity(Vector2f velocity);
     Color getColor();

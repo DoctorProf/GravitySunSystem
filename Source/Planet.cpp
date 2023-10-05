@@ -53,6 +53,10 @@ Vector2f Planet::getPosition()
 {
     return position;
 }
+Vector2f Planet::getVelocity() 
+{
+    return velocity;
+}
 void Planet::setPosition(Vector2f position)
 {
     this->position = position;

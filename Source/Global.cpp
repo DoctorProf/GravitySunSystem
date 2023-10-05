@@ -38,5 +38,12 @@ void global::spawnPlanet(std::vector<Planet> &planets, RenderWindow &window)
     planets.push_back(Planet(24, 1.89e27, Vector2f(planets[0].getPosition().x + planets[0].getRadius() - 778, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.42), Color::Color(255, 226, 183), "Jupiter"));
     planets.push_back(Planet(20, 5.68e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius(), planets[0].getPosition().y + planets[0].getRadius() - 1400), Vector2f(0.32, 0), Color::Color(255, 219, 139), "Saturn"));
     planets.push_back(Planet(20, 8.68e25, Vector2f(planets[0].getPosition().x + planets[0].getRadius() + 2800, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.23), Color::Color(150, 229, 233), "Uranus"));
-    planets.push_back(Planet(20, 1.024e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() , planets[0].getPosition().y + planets[0].getRadius() + 4550), Vector2f(-0.18, 0.0f), Color::Color(0, 0, 255), "Neptune"));
+    planets.push_back(Planet(20, 1.024e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() , planets[0].getPosition().y + planets[0].getRadius() + 4550), Vector2f(-0.18, 0), Color::Color(0, 0, 255), "Neptune"));
+}
+void global::setStyleText(Text &text, Font &font, Vector2f position) 
+{
+    text.setFont(font);
+    text.setFillColor(Color::White);
+    text.setCharacterSize(18);
+    text.setPosition(position.x, position.y);
 }
