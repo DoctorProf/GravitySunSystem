@@ -5,9 +5,11 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
+#include <ppl.h>
 
 using namespace sf;
 using namespace global;
+using namespace Concurrency;
 
 int main() 
 {
@@ -32,9 +34,12 @@ int main()
     std::vector<Planet> planets;
     const float G = 6.67e-11;
     bool run = true;
+    double scalePhy = 1e9;
     const int frameRate = 120;
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
+
+    bool unlimited_fps = false;
 
     Time timePerFrame = seconds(1.0f / frameRate); // tps
     Time timePerFrame2 = seconds(1.0f / frameRate); // fps
@@ -210,6 +215,7 @@ int main()
                     }
                 }
             }
+            /*
             for (int j = 0; j < planets.size(); j++)
             {
                 for (int i = 0; i < planets.size(); i++)
@@ -218,14 +224,26 @@ int main()
 
                     double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * 1e9;
                     double a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
-                    Vector2f normDir = normalizeVector(planets[i], planets[j]);
-                    planets[j].update(normDir, a);
+                    planets[j].update(normalizeVector(planets[i], planets[j]), a);
                 }
                 planets[j].move();
             }
+            */
+            parallel_for(0, (int)planets.size(), [&](int j)
+                {
+                    for (int i = 0; i < planets.size(); i++)
+                    {
+                        if (i == j) continue;
+
+                        double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * scalePhy;
+                        double a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
+                        planets[j].update(normalizeVector(planets[i], planets[j]), a);
+                    }
+                    planets[j].move();
+                });
         }
         accumulatedTime2 += clock2.restart();
-        if (accumulatedTime2 >= timePerFrame2)
+        if (unlimited_fps || accumulatedTime2 >= timePerFrame2)
         {
             window.setView(world);
             window.clear(Color::Black);
@@ -239,7 +257,7 @@ int main()
                     {
                         Vertex pos;
                         pos.position = Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius());
-                        pos.color = planets[i].getColor();
+                        pos.color = Color::Color(planets[i].getColor().r, planets[i].getColor().g, planets[i].getColor().b, planets[i].getColor().a / 2);
                         planets[i].addTrack(pos);
                     }
                     clock3.restart();
