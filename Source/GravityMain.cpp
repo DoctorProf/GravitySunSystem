@@ -19,7 +19,7 @@ int main()
     sound.setBuffer(buffer);
     View world;
     world.setCenter(Vector2f(960, 540));
-    world.setSize(Vector2f(1920, 1080));
+    world.setSize(Vector2f(5760, 3240));
     RenderWindow window(VideoMode(1920, 1080), "Gravity");
     std::setlocale(LC_ALL, "rus");
 
