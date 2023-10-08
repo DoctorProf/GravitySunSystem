@@ -16,13 +16,6 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
 }
 void Planet::addTrack(Vertex pos)
 {
-    /*
-    for (int i = 0; i < track.getVertexCount(); i++) {
-        if (track[i].position == pos.position) {
-            return;
-        }
-    }
-    */
     track.append(pos);
 }
 void Planet::clearTrack()

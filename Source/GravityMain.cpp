@@ -15,23 +15,22 @@ int main()
 {
     View world;
     world.setCenter(Vector2f(960, 540));
-    world.setSize(Vector2f(5760, 3240));
+    world.setSize(Vector2f(1920, 1080));
     RenderWindow window(VideoMode(1920, 1080), "Gravity");
     std::setlocale(LC_ALL, "rus");
-
     Font font;
     font.loadFromFile("C:\\windows\\fonts\\arial.ttf");
     bool pause = false;
-    bool trackDraw = false;
+    bool trackDraw = true;
     Clock clock;
     Clock clock2;
     Clock clock3;
-    Time interval = seconds(0.1);
+    Time interval = seconds(0.05);
     std::vector<Planet> planets;
     const float G = 6.67e-11;
     bool run = true;
     double scalePhy = 1e9;
-    const int frameRate = 120;
+    const int frameRate = 60;
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
 
@@ -209,20 +208,6 @@ int main()
                     }
                 }
             }
-            /*
-            for (int j = 0; j < planets.size(); j++)
-            {
-                for (int i = 0; i < planets.size(); i++)
-                {
-                    if (i == j) continue;
-
-                    double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * 1e9;
-                    double a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
-                    planets[j].update(normalizeVector(planets[i], planets[j]), a);
-                }
-                planets[j].move();
-            }
-            */
             parallel_for(0, (int)planets.size(), [&](int j)
                 {
                     for (int i = 0; i < planets.size(); i++)
