@@ -13,10 +13,6 @@ using namespace Concurrency;
 
 int main() 
 {
-    SoundBuffer buffer;
-    buffer.loadFromFile("sound.wav");
-    Sound sound;
-    sound.setBuffer(buffer);
     View world;
     world.setCenter(Vector2f(960, 540));
     world.setSize(Vector2f(5760, 3240));
@@ -204,13 +200,11 @@ int main()
                         {
                             planets[i].setMass(planets[i].getMass() + planets[j].getMass());
                             planets.erase(planets.begin() + j);
-                            sound.play();
                         }
                         else if (planets[j].getMass() > planets[i].getMass())
                         {
                             planets[j].setMass(planets[j].getMass() + planets[i].getMass());
                             planets.erase(planets.begin() + i);
-                            sound.play();
                         }
                     }
                 }
