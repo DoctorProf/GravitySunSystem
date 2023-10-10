@@ -11,12 +11,14 @@ private:
 	float y;
 	float sizeX;
 	float sizeY;
-	double coeff;
+	std::string name;
 	Text text;
 	Font font;
 public:
-	Button(float x, float y, float sizeX, float sizeY, double coeff);
+	Button(float x, float y, float sizeX, float sizeY, std::string name);
 	void draw(RenderWindow& window, Font &font);
 	bool collisionButton(int x, int y);
-	double getcoeff();
+	std::string getName();
+	void setPosition(Vector2f positition);
+	void setSize(Vector2f size);
 };
