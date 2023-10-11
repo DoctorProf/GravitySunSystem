@@ -8,13 +8,17 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     color(color),
     name(name)
 {
+    this->focus = false;
     track.setPrimitiveType(LinesStrip);
     planet.setRadius(radius);
     planet.setPosition(position - Vector2f(radius, radius));
     planet.setFillColor(color);
 }
-void Planet::addTrack(Vertex pos)
+void Planet::addTrack()
 {
+    Vertex pos;
+    pos.position = Vector2f(position.x + radius, position.y + radius);
+    pos.color = Color::Color(color.r, color.g, color.b, color.a / 2);
     track.append(pos);
 }
 void Planet::clearTrack()
@@ -76,4 +80,12 @@ void Planet::drawPlanet(RenderWindow& window)
 {
     planet.setPosition(position);
     window.draw(planet);
+}
+void Planet::setFocus(bool focus) 
+{
+    this->focus = focus;
+}
+bool Planet::getFocus()
+{
+    return this->focus;
 }

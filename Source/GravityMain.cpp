@@ -25,6 +25,27 @@ void spawnPlanet(std::vector<Planet>& planets, RenderWindow& window)
     planets.push_back(Planet(2.5, 8.68e25, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 2800, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.22), Color::Color(150, 229, 233), "Uranus"));
     planets.push_back(Planet(2.4, 1.024e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 4550, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.17), Color::Color(0, 0, 255), "Neptune"));
 }
+void calculatePanel(RectangleShape &panel, std::vector<Button> &buttonsPlanet, RenderWindow &window, View &world, float &scaleWorldinWindow)
+{
+    window.setView(world);
+    Vector2f panelCoords = window.mapPixelToCoords(Vector2i(0, 0));
+    Vector2f buttonCoords = window.mapPixelToCoords(Vector2i(25, 20));
+    panel.setSize(Vector2f(150 * scaleWorldinWindow, world.getSize().y));
+    panel.setPosition(Vector2f(panelCoords.x, panelCoords.y));
+    for (int i = 0; i < buttonsPlanet.size(); i++)
+    {
+        buttonsPlanet[i].setSize(Vector2f(100 * scaleWorldinWindow, 30 * scaleWorldinWindow));
+        buttonsPlanet[i].setPosition(Vector2f(buttonCoords.x, buttonCoords.y + 50 * scaleWorldinWindow * i));
+    }
+}
+void generateButtonPlanet(std::vector<Planet> &planets,std::vector<Button> &buttonsPlanet, RenderWindow &window) 
+{
+    for (int i = 0; i < planets.size(); i++)
+    {
+        Vector2f buttonCoords = window.mapPixelToCoords(Vector2i(25, 20));
+        buttonsPlanet.push_back(Button(25, 20 + 50 * i, 100, 30, textureButton[i], 1));
+    }
+}
 int main() 
 {
     View world;
@@ -60,12 +81,8 @@ int main()
     Time timePerFrame2 = seconds(1.0f / frameRate); // fps
 
     spawnPlanet(std::ref(planets), window);
-
-    for (int i = 0; i < planets.size(); i++)
-    {
-        Vector2f buttonCoords = window.mapPixelToCoords(Vector2i(25, 20));
-        buttonsPlanet.push_back(Button(25, 20 + 50 * i, 100, 30, planets[i].getName(), textureButton[i]));
-    }
+    generateButtonPlanet(planets, buttonsPlanet, window);
+    
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) 
@@ -87,7 +104,9 @@ int main()
                 world.setSize(1920, 1080);
                 world.setCenter(Vector2f(960, 540));
                 planets.clear();
+                buttonsPlanet.clear();
                 spawnPlanet(planets, window);
+                generateButtonPlanet(planets, buttonsPlanet, window);
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
             {
@@ -95,27 +114,33 @@ int main()
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::W)
             {
-                world.move(0, -50);
+                world.move(0, -25);
+                calculatePanel(panel, buttonsPlanet, window, world, scaleWorldinWindow);
             } 
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::S)
             {
-                world.move(0, 50);
+                world.move(0, 25);
+                calculatePanel(panel, buttonsPlanet, window, world, scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::A)
             {
-                world.move(-50, 0);
+                world.move(-25, 0);
+                calculatePanel(panel, buttonsPlanet, window, world, scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::D)
             {
-                world.move(50, 0);
+                world.move(25, 0);
+                calculatePanel(panel, buttonsPlanet, window, world, scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Numpad8)
             {
                 world.setSize(world.getSize().x * 2, world.getSize().y * 2);
+                break;
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Numpad2)
             {
                 world.setSize(world.getSize().x / 2, world.getSize().y / 2);
+                break;
             }
             else if (event.type == Event::MouseButtonPressed) 
             {
@@ -130,14 +155,26 @@ int main()
                         if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y/ scaleWorldinWindow, event.mouseButton.x, event.mouseButton.y))
                         {
                             pause = true;
-                            RenderWindow windowSettings(VideoMode(500, 600), buttonsPlanet[i].getName());
+                            RenderWindow windowSettings(VideoMode(500, 600), planets[i].getName());
                             Text textMass;
                             Text textSpeed;
+                            Text textCamera;
                             std::ostringstream massE;
                             std::vector<Button> buttonsMass;
                             std::vector<Button> buttonsSpeed;
+                            Button buttonCamera(220, 190, 50, 50, textureButtonWindow[7], 1);
                             setStyleText(textMass, font, Vector2f(50, 30));
                             setStyleText(textSpeed, font, Vector2f(50, 90));
+                            setStyleText(textCamera, font, Vector2f(150, 160));
+                            buttonsMass.push_back(Button(50, 60, 50, 25, textureButtonWindow[0], 0.1f));
+                            buttonsMass.push_back(Button(110, 60, 50, 25, textureButtonWindow[1], 0.5f));
+                            buttonsMass.push_back(Button(170, 60, 50, 25, textureButtonWindow[2], 2.0f));
+                            buttonsMass.push_back(Button(230, 60, 50, 25, textureButtonWindow[3], 5.0f));
+                            buttonsMass.push_back(Button(290, 60, 50, 25, textureButtonWindow[4], 10.0f));
+                            buttonsSpeed.push_back(Button(50, 120, 50, 25, textureButtonWindow[0], 0.1f));
+                            buttonsSpeed.push_back(Button(110, 120, 50, 25, textureButtonWindow[1], 0.5f));
+                            buttonsSpeed.push_back(Button(170, 120, 50, 25, textureButtonWindow[5], 1.2f));
+                            buttonsSpeed.push_back(Button(230, 120, 50, 25, textureButtonWindow[6], 1.5f));
                             
                             while (windowSettings.isOpen()) {
                                 Event event1;
@@ -155,33 +192,51 @@ int main()
                                         pause = false;
                                         clock.restart();
                                     }
-                                    /*else if (event1.type == Event::MouseButtonPressed) 
+                                    else if (event1.type == Event::MouseButtonPressed) 
                                     {
                                         if (event1.mouseButton.button == Mouse::Left) 
                                         {
                                             for (int j = 0; j < buttonsMass.size(); j++)
                                             {
-                                                if (buttonsMass[j].collisionButton(event1.mouseButton.x, event1.mouseButton.y))
+                                                if (collisionButton(buttonsMass[j].getPosition().x, buttonsMass[j].getPosition().y, buttonsMass[j].getSize().x,
+                                                    buttonsMass[j].getSize().y, event1.mouseButton.x, event1.mouseButton.y))
                                                 {
-                                                    planets[i].setMass(planets[i].getMass() * boost::lexical_cast<double>(buttonsMass[j].getName()));
+                                                    planets[i].setMass(planets[i].getMass() * buttonsMass[j].getCoeff());
                                                 }
                                             }
                                             for (int j = 0; j < buttonsSpeed.size(); j++)
                                             {
-                                                if (buttonsSpeed[j].collisionButton(event1.mouseButton.x, event1.mouseButton.y))
+                                                if (collisionButton(buttonsSpeed[j].getPosition().x, buttonsSpeed[j].getPosition().y, buttonsSpeed[j].getSize().x,
+                                                    buttonsSpeed[j].getSize().y, event1.mouseButton.x, event1.mouseButton.y))
                                                 {
-                                                    planets[i].setVelocity(Vector2f(planets[i].getVelocity().x * boost::lexical_cast<double>(buttonsSpeed[j].getName()), planets[i].getVelocity().y * boost::lexical_cast<double>(buttonsSpeed[j].getName())));
+                                                    planets[i].setVelocity(Vector2f(planets[i].getVelocity().x * buttonsSpeed[j].getCoeff(), planets[i].getVelocity().y * buttonsSpeed[j].getCoeff()));
                                                 }
                                             }
+                                            if (collisionButton(buttonCamera.getPosition().x, buttonCamera.getPosition().y, buttonCamera.getSize().x, buttonCamera.getSize().y,
+                                                event1.mouseButton.x, event1.mouseButton.y)) 
+                                            {
+                                                planets[i].setFocus(true);
+                                            }
                                         }
-                                    }*/
+                                    }
                                 }   
                                 massE << std::scientific << std::setprecision(2) << planets[i].getMass();
                                 textMass.setString(L"Масса  " + massE.str());
-                                textSpeed.setString(L"Скорость - ( " + std::to_string(planets[i].getVelocity().x) + ", " + std::to_string(planets[i].getVelocity().y) + " )");
+                                textSpeed.setString(L"Скорость < " + std::to_string(planets[i].getVelocity().x) + ", " + std::to_string(planets[i].getVelocity().y) + " >");
+                                textCamera.setString(L"Зафиксировать камеру");
                                 windowSettings.clear(Color::Black);
                                 windowSettings.draw(textMass);
                                 windowSettings.draw(textSpeed);
+                                windowSettings.draw(textCamera);
+                                for (int j = 0; j < buttonsMass.size(); j++) 
+                                {
+                                    buttonsMass[j].draw(windowSettings);
+                                }
+                                for (int j = 0; j < buttonsSpeed.size(); j++)
+                                {
+                                    buttonsSpeed[j].draw(windowSettings);
+                                }
+                                buttonCamera.draw(windowSettings);
                                 windowSettings.display();
                                 massE.str("");
                             }
@@ -208,11 +263,15 @@ int main()
                         {
                             planets[i].setMass(planets[i].getMass() + planets[j].getMass());
                             planets.erase(planets.begin() + j);
+                            buttonsPlanet.erase(buttonsPlanet.begin() + j);
+                            calculatePanel(panel, buttonsPlanet, window, world, scaleWorldinWindow);
                         }
                         else if (planets[j].getMass() > planets[i].getMass())
                         {
                             planets[j].setMass(planets[j].getMass() + planets[i].getMass());
                             planets.erase(planets.begin() + i);
+                            buttonsPlanet.erase(buttonsPlanet.begin() + i);
+                            calculatePanel(panel, buttonsPlanet, window, world, scaleWorldinWindow);
                         }
                     }
                 }
@@ -243,10 +302,7 @@ int main()
                 {
                     for (int i = 0; i < planets.size(); i++)
                     {
-                        Vertex pos;
-                        pos.position = Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius());
-                        pos.color = Color::Color(planets[i].getColor().r, planets[i].getColor().g, planets[i].getColor().b, planets[i].getColor().a / 2);
-                        planets[i].addTrack(pos);
+                        planets[i].addTrack();
                     }
                     clock3.restart();
                 }
@@ -257,22 +313,14 @@ int main()
             }
             for (int i = 0; i < planets.size(); i++)
             {
-                planets[i].drawPlanet(window);
+                if (planets[i].getFocus())
+                {
+                    world.setCenter(Vector2f(planets[i].getPosition().x + planets[i].getRadius(), planets[i].getPosition().y + planets[i].getRadius()));
+                }
+                planets[i].drawPlanet(window); 
             }
             
-            if (previousWorldSize != world.getSize())
-            {
-                Vector2f panelCoords = window.mapPixelToCoords(Vector2i(0, 0));
-                Vector2f buttonCoords = window.mapPixelToCoords(Vector2i(25, 20));
-                panel.setSize(Vector2f(150 * scaleWorldinWindow, world.getSize().y));
-                panel.setPosition(Vector2f(panelCoords.x, panelCoords.y));
-                for (int i = 0; i < buttonsPlanet.size(); i++)
-                {
-                    buttonsPlanet[i].setSize(Vector2f(100 * scaleWorldinWindow, 30 * scaleWorldinWindow));
-                    buttonsPlanet[i].setPosition(Vector2f(buttonCoords.x, buttonCoords.y + 50 * scaleWorldinWindow * i));
-                }
-                previousWorldSize = world.getSize();
-            }
+            calculatePanel(panel, buttonsPlanet, window, world, scaleWorldinWindow);
             window.draw(panel);
             for (int i = 0; i < buttonsPlanet.size(); i++)
             {

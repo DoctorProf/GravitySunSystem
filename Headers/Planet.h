@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
 using namespace sf;
 
 class Planet
@@ -14,10 +13,11 @@ private:
     VertexArray track;
     Color color;
     std::string name;
+    bool focus;
 
 public:
     Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::string name);
-    void addTrack(Vertex pos);
+    void addTrack();
     void clearTrack();
     VertexArray getTrack();
     double getRadius();
@@ -33,4 +33,6 @@ public:
     void drawTrack(RenderWindow& window);
     void drawPlanet(RenderWindow& window);
     void move();
+    void setFocus(bool focus);
+    bool getFocus();
 };

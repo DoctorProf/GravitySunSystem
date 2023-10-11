@@ -3,13 +3,13 @@
 #include <string>
 #include <iomanip>
 
-Button::Button(float x, float y, float sizeX, float sizeY, std::string name, std::string &textur)
+Button::Button(float x, float y, float sizeX, float sizeY, std::string &textur, double coeff)
 {
 	this->x = x;
 	this->y = y;
 	this->sizeX = sizeX;
 	this->sizeY = sizeY;
-	this->name = name;
+	this->coeff = coeff;
 	this->texture.loadFromFile(textur);
 	button.setPosition(x, y);
 	button.setSize(Vector2f(sizeX, sizeY));
@@ -19,10 +19,6 @@ void Button::draw(RenderWindow& window)
 {
 	button.setTexture(&texture);
 	window.draw(button);
-}
-std::string Button::getName()
-{
-	return this->name;
 }
 void Button::setPosition(Vector2f position)
 {
@@ -43,4 +39,8 @@ void Button::setSize(Vector2f size)
 Vector2f Button::getSize() 
 {
 	return this->button.getSize();
+}
+double Button::getCoeff() 
+{
+	return this->coeff;
 }
