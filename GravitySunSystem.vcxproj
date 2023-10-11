@@ -19,9 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\Button.hpp" />
-    <ClInclude Include="Headers\Global.hpp" />
-    <ClInclude Include="Headers\Planet.hpp" />
+    <ClInclude Include="Headers\Button.h" />
+    <ClInclude Include="Headers\Global.h" />
+    <ClInclude Include="Headers\Planet.h" />
+    <ClInclude Include="Headers\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\openal32.dll" />
@@ -53,6 +54,17 @@
     <ClCompile Include="Source\Global.cpp" />
     <ClCompile Include="Source\GravityMain.cpp" />
     <ClCompile Include="Source\Planet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Texture\TexturePlanet\earth.jpg" />
+    <Image Include="Texture\TexturePlanet\jupiter.jpg" />
+    <Image Include="Texture\TexturePlanet\mars.jpg" />
+    <Image Include="Texture\TexturePlanet\mercury.jpg" />
+    <Image Include="Texture\TexturePlanet\neptune.jpg" />
+    <Image Include="Texture\TexturePlanet\saturn.jpg" />
+    <Image Include="Texture\TexturePlanet\sun.jpg" />
+    <Image Include="Texture\TexturePlanet\uranus.jpg" />
+    <Image Include="Texture\TexturePlanet\venus.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

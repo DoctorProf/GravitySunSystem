@@ -1,32 +1,24 @@
-#include "../Headers/Button.hpp"
+#include "../Headers/Button.h"
 #include <sstream>
 #include <string>
 #include <iomanip>
 
-Button::Button(float x, float y, float sizeX, float sizeY, std::string name)
+Button::Button(float x, float y, float sizeX, float sizeY, std::string name, std::string &textur)
 {
 	this->x = x;
 	this->y = y;
 	this->sizeX = sizeX;
 	this->sizeY = sizeY;
 	this->name = name;
+	this->texture.loadFromFile(textur);
 	button.setPosition(x, y);
 	button.setSize(Vector2f(sizeX, sizeY));
 	button.setFillColor(Color::Color(122, 122, 122));
-	this->text.setFillColor(Color::White);
 }
-void Button::draw(RenderWindow& window, Font &font)
+void Button::draw(RenderWindow& window)
 {
+	button.setTexture(&texture);
 	window.draw(button);
-	this->text.setCharacterSize(16);
-	this->text.setPosition((x + sizeX / 2) - 20, (y + sizeY / 2) - 10);
-	this->text.setFont(font);
-	this->text.setString(name);
-	window.draw(this->text);
-}
-bool Button::collisionButton(int x, int y)
-{
-	return (x >= this->x && x <= this->sizeX + this->x) && (y >= this->y && y <= this->sizeY + this->y);
 }
 std::string Button::getName()
 {
@@ -38,9 +30,17 @@ void Button::setPosition(Vector2f position)
 	this->y = position.y;
 	this->button.setPosition(Vector2f(this->x, this->y));
 }
+Vector2f Button::getPosition() 
+{
+	return this->button.getPosition();
+}
 void Button::setSize(Vector2f size)
 {
 	this->sizeX = size.x;
 	this->sizeY = size.y;
 	this->button.setSize(Vector2f(this->sizeX, this->sizeY));
+}
+Vector2f Button::getSize() 
+{
+	return this->button.getSize();
 }

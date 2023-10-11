@@ -1,6 +1,6 @@
-﻿#include "../Headers/Global.hpp"
-#include "../Headers/Button.hpp"
-#include "SFML/Audio.hpp"
+﻿#include "../Headers/Global.h"
+#include "../Headers/Button.h"
+#include "../Headers/Texture.h"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -13,6 +13,18 @@ using namespace sf;
 using namespace global;
 using namespace Concurrency;
 
+void spawnPlanet(std::vector<Planet>& planets, RenderWindow& window)
+{
+    planets.push_back(Planet(70, 2e30, Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f), Vector2f(0, 0.0), Color::Color(255, 255, 0), "Sun"));
+    planets.push_back(Planet(0.3, 3.33e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 58, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.03), Color::Color(128, 128, 128), "Mercury"));
+    planets.push_back(Planet(0.6, 4.87e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 108, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.9), Color::Color(234, 205, 177), "Venus"));
+    planets.push_back(Planet(0.6, 5.97e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 150, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.8), Color::Color(154, 205, 50), "Earth"));
+    planets.push_back(Planet(0.4, 6.42e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 228, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.68), Color::Color(228, 64, 3), "Mars"));
+    planets.push_back(Planet(7, 1.89e27, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 778, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.4), Color::Color(255, 226, 183), "Jupiter"));
+    planets.push_back(Planet(6, 5.68e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 1400, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.30), Color::Color(255, 219, 139), "Saturn"));
+    planets.push_back(Planet(2.5, 8.68e25, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 2800, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.22), Color::Color(150, 229, 233), "Uranus"));
+    planets.push_back(Planet(2.4, 1.024e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 4550, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.17), Color::Color(0, 0, 255), "Neptune"));
+}
 int main() 
 {
     View world;
@@ -30,13 +42,14 @@ int main()
     Time interval = seconds(0.02);
     std::vector<Planet> planets;
     std::vector<Button> buttonsPlanet;
-    
+    Vector2f previousWorldSize = world.getSize();
     RectangleShape panel;
     panel.setFillColor(Color::Color(25,25,25));
+    panel.setSize(Vector2f(150, world.getSize().y));
+    panel.setPosition(Vector2f(0, 0));
+    float scaleWorldinWindow = world.getSize().x / window.getSize().x;
     const float G = 6.67e-11;
-    bool run = true;
     double scalePhy = 1e9;
-    float coeffPanel = 1;
     const int frameRate = 120;
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
@@ -45,18 +58,20 @@ int main()
 
     Time timePerFrame = seconds(1.0f / frameRate); // tps
     Time timePerFrame2 = seconds(1.0f / frameRate); // fps
+
     spawnPlanet(std::ref(planets), window);
+
     for (int i = 0; i < planets.size(); i++)
     {
-        buttonsPlanet.push_back(Button(world.getCenter().x - world.getSize().x / 2 + 25, world.getCenter().y - world.getSize().y / 2 + 20 + 50 * i, 100, 30, planets[i].getName()));
+        Vector2f buttonCoords = window.mapPixelToCoords(Vector2i(25, 20));
+        buttonsPlanet.push_back(Button(25, 20 + 50 * i, 100, 30, planets[i].getName(), textureButton[i]));
     }
-    while (run) {
+    while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) 
         {
             if (event.type == Event::Closed)
             {
-                run = false;
                 window.close();
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::T)
@@ -71,7 +86,6 @@ int main()
             {
                 world.setSize(1920, 1080);
                 world.setCenter(Vector2f(960, 540));
-                coeffPanel = 1;
                 planets.clear();
                 spawnPlanet(planets, window);
             }
@@ -98,24 +112,25 @@ int main()
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Numpad8)
             {
                 world.setSize(world.getSize().x * 2, world.getSize().y * 2);
-                world.setCenter(window.getSize().x / 2, window.getSize().y / 2);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Numpad2)
             {
                 world.setSize(world.getSize().x / 2, world.getSize().y / 2);
-                world.setCenter(window.getSize().x / 2, window.getSize().y / 2);
             }
             else if (event.type == Event::MouseButtonPressed) 
             {
                 if (event.mouseButton.button == Mouse::Left) 
                 {
+                    /*Vector2i x = window.mapCoordsToPixel(Vector2f(buttonsPlanet[0].getPosition().x, buttonsPlanet[0].getPosition().y));
+                    std::cout << "Корды мыши (" << event.mouseButton.x << "," << event.mouseButton.y << ")" << "\n" << "Корды кнопки (" << x.x << "," << x.y << ")" << "\n"
+                        << "Размеры кнопки (" << buttonsPlanet[0].getSize().x << "," << buttonsPlanet[0].getSize().y << ")" << "\n";*/
                     for (int i = 0; i < buttonsPlanet.size(); i++) 
                     {
-                        Vector2i worldCoords = Vector2i(event.mouseButton.x, event.mouseButton.y);
-                        if (buttonsPlanet[i].collisionButton(worldCoords.x, worldCoords.y))
+                        Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsPlanet[i].getPosition().x, buttonsPlanet[i].getPosition().y));
+                        if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y/ scaleWorldinWindow, event.mouseButton.x, event.mouseButton.y))
                         {
                             pause = true;
-                            RenderWindow windowSettings(VideoMode(500, 600), planets[i].getName());
+                            RenderWindow windowSettings(VideoMode(500, 600), buttonsPlanet[i].getName());
                             Text textMass;
                             Text textSpeed;
                             std::ostringstream massE;
@@ -123,12 +138,6 @@ int main()
                             std::vector<Button> buttonsSpeed;
                             setStyleText(textMass, font, Vector2f(50, 30));
                             setStyleText(textSpeed, font, Vector2f(50, 90));
-                            buttonsMass.push_back(Button(50, 60, 50, 30, "0.5"));
-                            buttonsMass.push_back(Button(150, 60, 50, 30, "2"));
-                            buttonsMass.push_back(Button(240, 60, 50, 30, "10"));
-                            buttonsSpeed.push_back(Button(50, 120, 50, 30, "0.75"));
-                            buttonsSpeed.push_back(Button(150, 120, 50, 30, "1.25"));
-                            buttonsSpeed.push_back(Button(240, 120, 50, 30, "1.5"));
                             
                             while (windowSettings.isOpen()) {
                                 Event event1;
@@ -146,7 +155,7 @@ int main()
                                         pause = false;
                                         clock.restart();
                                     }
-                                    else if (event1.type == Event::MouseButtonPressed) 
+                                    /*else if (event1.type == Event::MouseButtonPressed) 
                                     {
                                         if (event1.mouseButton.button == Mouse::Left) 
                                         {
@@ -165,7 +174,7 @@ int main()
                                                 }
                                             }
                                         }
-                                    }
+                                    }*/
                                 }   
                                 massE << std::scientific << std::setprecision(2) << planets[i].getMass();
                                 textMass.setString(L"Масса  " + massE.str());
@@ -173,28 +182,15 @@ int main()
                                 windowSettings.clear(Color::Black);
                                 windowSettings.draw(textMass);
                                 windowSettings.draw(textSpeed);
-                                for (int j = 0; j < buttonsMass.size(); j++)
-                                {
-                                    buttonsMass[j].draw(windowSettings, font);
-                                }
-                                for (int j = 0; j < buttonsSpeed.size(); j++)
-                                {
-                                    buttonsSpeed[j].draw(windowSettings, font);
-                                }
                                 windowSettings.display();
                                 massE.str("");
                             }
                         }
                     }
                 }
-                else if (event.mouseButton.button == Mouse::Right) 
-                {
-                    Vector2f mouseCoords = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
-                    planets.push_back(Planet(30, 940e18, mouseCoords, Vector2f(0.6, 0), Color::Color(128, 128, 128), "BlackHole"));
-                }
             }
         }
-           
+        scaleWorldinWindow = world.getSize().x / window.getSize().x;
         accumulatedTime += clock.restart();
         while (accumulatedTime >= timePerFrame)
         {
@@ -263,15 +259,24 @@ int main()
             {
                 planets[i].drawPlanet(window);
             }
-            panel.setSize(Vector2f(world.getSize().x * 1/13, world.getSize().y));
-            panel.setPosition(Vector2f(world.getCenter().x - world.getSize().x / 2, world.getCenter().y - world.getSize().y / 2));
-            window.draw(panel);
-            for (int i = 0; i < buttonsPlanet.size(); i++) 
+            
+            if (previousWorldSize != world.getSize())
             {
-                
-                buttonsPlanet[i].setPosition(Vector2f(panel.getPosition().x + panel.getSize().x * 1/96, panel.getPosition().y + 20 + 50 * i));
-                buttonsPlanet[i].setSize(Vector2f(panel.getSize().x * 2/3, panel.getSize().y * 1/36));
-                buttonsPlanet[i].draw(window,font);
+                Vector2f panelCoords = window.mapPixelToCoords(Vector2i(0, 0));
+                Vector2f buttonCoords = window.mapPixelToCoords(Vector2i(25, 20));
+                panel.setSize(Vector2f(150 * scaleWorldinWindow, world.getSize().y));
+                panel.setPosition(Vector2f(panelCoords.x, panelCoords.y));
+                for (int i = 0; i < buttonsPlanet.size(); i++)
+                {
+                    buttonsPlanet[i].setSize(Vector2f(100 * scaleWorldinWindow, 30 * scaleWorldinWindow));
+                    buttonsPlanet[i].setPosition(Vector2f(buttonCoords.x, buttonCoords.y + 50 * scaleWorldinWindow * i));
+                }
+                previousWorldSize = world.getSize();
+            }
+            window.draw(panel);
+            for (int i = 0; i < buttonsPlanet.size(); i++)
+            {
+                buttonsPlanet[i].draw(window);
             }
             window.display();
             accumulatedTime2 -= timePerFrame2;

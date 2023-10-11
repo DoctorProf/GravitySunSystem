@@ -12,13 +12,13 @@ private:
 	float sizeX;
 	float sizeY;
 	std::string name;
-	Text text;
-	Font font;
+	Texture texture;
 public:
-	Button(float x, float y, float sizeX, float sizeY, std::string name);
-	void draw(RenderWindow& window, Font &font);
-	bool collisionButton(int x, int y);
+	Button(float x, float y, float sizeX, float sizeY, std::string name, std::string &textur);
+	void draw(RenderWindow& window);
 	std::string getName();
 	void setPosition(Vector2f positition);
+	Vector2f getPosition();
 	void setSize(Vector2f size);
+	Vector2f getSize();
 };

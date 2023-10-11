@@ -1,6 +1,6 @@
-#include "../Headers/Planet.hpp"
+#include "../Headers/Planet.h"
 
-Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::string name) :
+Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::string name):
     radius(radius),
     mass(mass),
     position(position - Vector2f(radius, radius)),
@@ -9,7 +9,6 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     name(name)
 {
     track.setPrimitiveType(LinesStrip);
-    //LinesStrip
     planet.setRadius(radius);
     planet.setPosition(position - Vector2f(radius, radius));
     planet.setFillColor(color);
