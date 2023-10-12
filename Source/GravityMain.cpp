@@ -1,15 +1,14 @@
 ﻿#include "../Headers/Global.h"
 #include "../Headers/Texture.h"
+#include "../Headers/LogicFunc.h"
 #include <sstream>
 #include <string>
 #include <iomanip>
 #include <ppl.h>
-#include <cstdlib>
 
 using namespace sf;
 using namespace gl;
-using namespace Concurrency;
-
+using namespace lf;
 
 void generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, std::vector<Button>& buttonsLogic, RenderWindow& window)
 {
@@ -17,7 +16,7 @@ void generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPl
     {
         buttonsPlanet.push_back(Button(25, 20 + 50 * i, 100, 30, textureButton[i], 1));
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 6; i++)
     {
         buttonsLogic.push_back(Button(25, 470 + 60 * i, 50, 50, textureButton[i + 9], 1));
     }
@@ -29,41 +28,48 @@ int main()
     View world;
     world.setCenter(Vector2f(960, 540));
     world.setSize(Vector2f(1920, 1080));
+
     //Создание окна
     RenderWindow window(VideoMode(1920, 1080), "Gravity");
+
     //Загрузка стиля текста
     Font font;
     font.loadFromFile("C:\\windows\\fonts\\arial.ttf");
-    //Глобальные данные
+
+    //Глобальные переменные
     bool pause = false;
     bool trackDraw = false;
     Clock clock;
     Clock clock2;
     Clock clock3;
     Time interval = seconds(0.03);
-    const float G = 6.67e-11;
+    double G = 6.67e-11;
     double scalePhy = 1e9;
+
     //Векторы планет и кнопок на основном экране
     std::vector<Planet> planets;
     std::vector<Button> buttonsPlanet;
     std::vector<Button> buttonsLogic;
+
     //Панель для кнопок
     RectangleShape panel;
     panel.setFillColor(Color::Color(25,25,25));
     panel.setSize(Vector2f(150, world.getSize().y));
     panel.setPosition(Vector2f(0, 0));
+
     //Масштаб отношение Предсталения к окну
     float scaleWorldinWindow = world.getSize().x / window.getSize().x;
+
     // Инициализация tps и fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
 
     Time timePerFrame = seconds(1.0f / 120); // tps
     Time timePerFrame2 = seconds(1.0f / 120); // fps
+
     //Изначальный спавн планет и кнопок панели
     spawnPlanet(std::ref(planets), window);
     generateButton(planets, buttonsPlanet, buttonsLogic, window);
-    
     
     while (window.isOpen()) {
         Event event;
@@ -72,10 +78,6 @@ int main()
             if (event.type == Event::Closed)
             {
                 window.close();
-            }
-            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
-            {
-                pause = !pause;
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::W)
             {
@@ -142,13 +144,7 @@ int main()
                             Event event1;
                             while (windowSettings.pollEvent(event1))
                             {
-                                if (event1.type == Event::KeyReleased && event1.key.code == Keyboard::Escape)
-                                {
-                                    windowSettings.close();
-                                    pause = false;
-                                    clock.restart();
-                                }
-                                else if (event1.type == Event::Closed)
+                                if ((event1.type == Event::KeyReleased && event1.key.code == Keyboard::Escape)  || event1.type == Event::Closed)
                                 {
                                     windowSettings.close();
                                     pause = false;
@@ -191,7 +187,6 @@ int main()
                                                 resetFosucPlanet(planets);
                                                 planets[i].setFocus(false);
                                             }
-                                            
                                         }
                                     }
                                 }
@@ -200,22 +195,17 @@ int main()
                             textMass.setString(L"Масса  " + massE.str());
                             textSpeed.setString(L"Скорость < " + std::to_string(planets[i].getVelocity().x) + ", " + std::to_string(planets[i].getVelocity().y) + " >");
                             textCamera.setString(L"Зафиксировать камеру");
+
                             windowSettings.clear(Color::Black);
+
                             windowSettings.draw(textMass);
                             windowSettings.draw(textSpeed);
                             windowSettings.draw(textCamera);
-                            for (int j = 0; j < buttonsMass.size(); j++) 
-                            {
-                                buttonsMass[j].draw(windowSettings);
-                            }
-                            for (int j = 0; j < buttonsSpeed.size(); j++)
-                            {
-                                buttonsSpeed[j].draw(windowSettings);
-                            }
-                            for (int j = 0; j < buttonsCamera.size(); j++)
-                            {
-                                buttonsCamera[j].draw(windowSettings);
-                            }
+
+                            drawButtons(buttonsMass, windowSettings);
+                            drawButtons(buttonsSpeed, windowSettings);
+                            drawButtons(buttonsCamera, windowSettings);
+
                             windowSettings.display();
                             massE.str("");
                         }
@@ -232,7 +222,7 @@ int main()
                             world.setSize(world.getSize().x * 2, world.getSize().y * 2);
                             break;
                         }
-                        else if (i == 1)
+                        else if (i == 1 && scaleWorldinWindow >= 0.007)
                         {
                             world.setSize(world.getSize().x / 2, world.getSize().y / 2);
                             break;
@@ -240,7 +230,6 @@ int main()
                         else if (i == 2)
                         {
                             trackDraw = true;
-
                         }
                         else if (i == 3)
                         {
@@ -256,8 +245,13 @@ int main()
                             world.setCenter(Vector2f(960, 540));
                             planets.clear();
                             buttonsPlanet.clear();
+                            buttonsLogic.clear();
                             spawnPlanet(planets, window);
                             generateButton(planets, buttonsPlanet, buttonsLogic, window);
+                        }
+                        else if (i == 5) 
+                        {
+                            pause = !pause;
                         }
                     }
                 }
@@ -294,22 +288,7 @@ int main()
                     }
                 }
             }
-            parallel_for(0, (int)planets.size(), [&](int j)
-                {
-                    for (int i = 0; i < planets.size(); i++)
-                    {
-                        if (i == j) continue;
-
-                        double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * scalePhy;
-                        double a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
-                        planets[j].update(normalizeVector(planets[i], planets[j]), a);
-                    }
-                    planets[j].move();
-                    if (planets[j].getFocus())
-                    {
-                        world.setCenter(Vector2f(planets[j].getPosition().x + planets[j].getRadius(), planets[j].getPosition().y + planets[j].getRadius()));
-                    }
-                });
+            logicPlanet(planets, G, scalePhy, world);
         }
         accumulatedTime2 += clock2.restart();
         if (accumulatedTime2 >= timePerFrame2)
@@ -338,17 +317,12 @@ int main()
             {
                 planets[i].drawPlanet(window); 
             }
-            
             calculatePanel(panel, buttonsPlanet, buttonsLogic, window, world, scaleWorldinWindow);
+
             window.draw(panel);
-            for (int i = 0; i < buttonsPlanet.size(); i++)
-            {
-                buttonsPlanet[i].draw(window);
-            }
-            for (int i = 0; i < 5; i++)
-            {
-                buttonsLogic[i].draw(window);
-            }
+
+            drawButtons(buttonsPlanet, window);
+            drawButtons(buttonsLogic, window);
             window.display();
         }
     }

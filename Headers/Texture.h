@@ -12,11 +12,13 @@ std::string textureButton[] =
 	"Texture/TextureButton/saturn.png",
 	"Texture/TextureButton/uranus.png",
 	"Texture/TextureButton/neptune.png",
-	"Texture/TextureButton/plus.png",
 	"Texture/TextureButton/minus.png",
+	"Texture/TextureButton/plus.png",
 	"Texture/TextureButton/track_on.png",
 	"Texture/TextureButton/track_off.png",
-	"Texture/TextureButton/reload.png"
+	"Texture/TextureButton/reload.png",
+	"Texture/TextureButton/pause.png",
+
 };
 std::string textureButtonWindow[] =
 {

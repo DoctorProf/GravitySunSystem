@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Headers\Button.h" />
     <ClInclude Include="Headers\Global.h" />
+    <ClInclude Include="Headers\LogicFunc.h" />
     <ClInclude Include="Headers\Planet.h" />
     <ClInclude Include="Headers\Texture.h" />
   </ItemGroup>
@@ -53,6 +54,7 @@
     <ClCompile Include="Source\Button.cpp" />
     <ClCompile Include="Source\Global.cpp" />
     <ClCompile Include="Source\GravityMain.cpp" />
+    <ClCompile Include="Source\LogicFunc.cpp" />
     <ClCompile Include="Source\Planet.cpp" />
   </ItemGroup>
   <ItemGroup>

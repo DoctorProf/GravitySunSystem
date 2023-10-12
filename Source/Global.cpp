@@ -2,14 +2,6 @@
 
 using namespace sf;
 
-bool gl::frameCollisionX(float x, float radius)
-{
-    return (x + radius > 1920 || x + radius < 0);
-}
-bool gl::frameCollisionY(float y, float radius)
-{
-    return (y + radius > 1080 || y + radius < 0);
-}
 double gl::distance(Vector2f vec1, Vector2f vec2)
 {
     double dx = vec1.x - vec2.x;
@@ -76,3 +68,4 @@ void gl::resetFosucPlanet(std::vector<Planet>& planets)
         planets[i].setFocus(false);
     }
 }
+
