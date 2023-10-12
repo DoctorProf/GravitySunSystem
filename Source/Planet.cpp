@@ -11,7 +11,7 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     this->focus = false;
     track.setPrimitiveType(LinesStrip);
     planet.setRadius(radius);
-    planet.setPosition(position - Vector2f(radius, radius));
+    planet.setPosition(this->position);
     planet.setFillColor(color);
 }
 void Planet::addTrack()

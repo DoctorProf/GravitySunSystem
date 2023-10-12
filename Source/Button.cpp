@@ -11,6 +11,7 @@ Button::Button(float x, float y, float sizeX, float sizeY, std::string &textur, 
 	this->sizeY = sizeY;
 	this->coeff = coeff;
 	this->texture.loadFromFile(textur);
+	status = false;
 	button.setPosition(x, y);
 	button.setSize(Vector2f(sizeX, sizeY));
 	button.setFillColor(Color::Color(122, 122, 122));
@@ -43,4 +44,16 @@ Vector2f Button::getSize()
 double Button::getCoeff() 
 {
 	return this->coeff;
+}
+bool Button::getStatus()
+{
+	return this->status;
+}
+void Button::setStatus(bool status)
+{
+	this->status = status;
+}
+void Button::setTexture(std::string& texture) 
+{
+	this->texture.loadFromFile(texture);
 }

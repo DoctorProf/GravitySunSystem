@@ -56,6 +56,30 @@
     <ClCompile Include="Source\Planet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Texture\TextureButton\0.1.png" />
+    <Image Include="Texture\TextureButton\0.5.png" />
+    <Image Include="Texture\TextureButton\1.2.png" />
+    <Image Include="Texture\TextureButton\1.5.png" />
+    <Image Include="Texture\TextureButton\10.png" />
+    <Image Include="Texture\TextureButton\2.png" />
+    <Image Include="Texture\TextureButton\5.png" />
+    <Image Include="Texture\TextureButton\cam.png" />
+    <Image Include="Texture\TextureButton\cam_off.png" />
+    <Image Include="Texture\TextureButton\cam_on.png" />
+    <Image Include="Texture\TextureButton\earth.png" />
+    <Image Include="Texture\TextureButton\jupiter.png" />
+    <Image Include="Texture\TextureButton\mars.png" />
+    <Image Include="Texture\TextureButton\mercury.png" />
+    <Image Include="Texture\TextureButton\minus.png" />
+    <Image Include="Texture\TextureButton\neptune.png" />
+    <Image Include="Texture\TextureButton\plus.png" />
+    <Image Include="Texture\TextureButton\reload.png" />
+    <Image Include="Texture\TextureButton\saturn.png" />
+    <Image Include="Texture\TextureButton\sun.png" />
+    <Image Include="Texture\TextureButton\track_off.png" />
+    <Image Include="Texture\TextureButton\track_on.png" />
+    <Image Include="Texture\TextureButton\uranus.png" />
+    <Image Include="Texture\TextureButton\venus.png" />
     <Image Include="Texture\TexturePlanet\earth.jpg" />
     <Image Include="Texture\TexturePlanet\jupiter.jpg" />
     <Image Include="Texture\TexturePlanet\mars.jpg" />
@@ -155,7 +179,7 @@
       <AdditionalIncludeDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>

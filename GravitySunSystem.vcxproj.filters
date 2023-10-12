@@ -95,5 +95,77 @@
     <Image Include="Texture\TexturePlanet\venus.jpg">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="Texture\TextureButton\0.1.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\0.5.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\1.2.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\1.5.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\2.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\5.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\10.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\cam.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\earth.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\jupiter.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\mars.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\mercury.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\minus.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\neptune.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\plus.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\saturn.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\sun.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\uranus.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\venus.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\reload.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\track_off.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\track_on.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\cam_off.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\cam_on.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

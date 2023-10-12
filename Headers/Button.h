@@ -13,6 +13,7 @@ private:
 	float sizeY;
 	Texture texture;
 	double coeff;
+	bool status;
 public:
 	Button(float x, float y, float sizeX, float sizeY, std::string &textur, double coeff);
 	void draw(RenderWindow& window);
@@ -21,4 +22,7 @@ public:
 	void setSize(Vector2f size);
 	Vector2f getSize();
 	double getCoeff();
+	bool getStatus();
+	void setStatus(bool status);
+	void setTexture(std::string& texture);
 };
