@@ -1,6 +1,5 @@
 ﻿#include "../Headers/Global.h"
 #include "../Headers/Texture.h"
-#include "../Headers/LogicFunc.h"
 #include <sstream>
 #include <string>
 #include <iomanip>
@@ -8,19 +7,6 @@
 
 using namespace sf;
 using namespace gl;
-using namespace lf;
-
-void generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, std::vector<Button>& buttonsLogic, RenderWindow& window)
-{
-    for (int i = 0; i < planets.size(); i++)
-    {
-        buttonsPlanet.push_back(Button(25, 20 + 50 * i, 100, 30, textureButton[i], 1));
-    }
-    for (int i = 0; i < 6; i++)
-    {
-        buttonsLogic.push_back(Button(25, 470 + 60 * i, 50, 50, textureButton[i + 9], 1));
-    }
-}
 
 int main() 
 {
@@ -65,7 +51,7 @@ int main()
     Time accumulatedTime2 = Time::Zero;
 
     Time timePerFrame = seconds(1.0f / 120); // tps
-    Time timePerFrame2 = seconds(1.0f / 120); // fps
+    Time timePerFrame2 = seconds(1.0f / 240); // fps
 
     //Изначальный спавн планет и кнопок панели
     spawnPlanet(std::ref(planets), window);
@@ -83,32 +69,36 @@ int main()
             {
                 resetFosucPlanet(planets);
                 world.move(0, -25);
-                calculatePanel(panel, buttonsPlanet, buttonsLogic, window, world, scaleWorldinWindow);
-            } 
+                calculatePanel(panel, window, world, scaleWorldinWindow);
+                calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
+                calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
+            }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::S)
             {
                 resetFosucPlanet(planets);
                 world.move(0, 25);
-                calculatePanel(panel, buttonsPlanet, buttonsLogic, window, world, scaleWorldinWindow);
+                calculatePanel(panel, window, world, scaleWorldinWindow);
+                calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
+                calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::A)
             {
                 resetFosucPlanet(planets);
                 world.move(-25, 0);
-                calculatePanel(panel, buttonsPlanet, buttonsLogic, window, world, scaleWorldinWindow);
+                calculatePanel(panel, window, world, scaleWorldinWindow);
+                calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
+                calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::D)
             {
                 resetFosucPlanet(planets);
                 world.move(25, 0);
-                calculatePanel(panel, buttonsPlanet, buttonsLogic, window, world, scaleWorldinWindow);
+                calculatePanel(panel, window, world, scaleWorldinWindow);
+                calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
+                calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
             }
-            else if (event.type == Event::MouseButtonPressed) 
+            else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
             {
-                if (event.mouseButton.button != Mouse::Left)
-                {
-                    continue;
-                }
                 for (int i = 0; i < buttonsPlanet.size(); i++) 
                 {
                     Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsPlanet[i].getPosition().x, buttonsPlanet[i].getPosition().y));
@@ -124,10 +114,11 @@ int main()
                         setStyleText(textMass, font, Vector2f(50, 30));
                         setStyleText(textSpeed, font, Vector2f(50, 90));
                         setStyleText(textCamera, font, Vector2f(150, 160));
-                        //Создание кнопок для панели редактирования планеты
+                        //Вектора кнопок для панели редактирования планеты
                         std::vector<Button> buttonsMass;
                         std::vector<Button> buttonsSpeed;
                         std::vector<Button> buttonsCamera;
+                        //Добавление всех кнопок на экранчике) да шакал, а кто судит
                         buttonsCamera.push_back(Button (190, 190, 50, 50, textureButtonWindow[7], 1));
                         buttonsCamera.push_back(Button(250, 190, 50, 50, textureButtonWindow[8], 1));
                         buttonsMass.push_back(Button(50, 60, 50, 25, textureButtonWindow[0], 0.1f));
@@ -150,12 +141,8 @@ int main()
                                     pause = false;
                                     clock.restart();
                                 }
-                                else if (event1.type == Event::MouseButtonPressed) 
+                                else if (event1.type == Event::MouseButtonPressed && event1.mouseButton.button == Mouse::Left)
                                 {
-                                    if (event1.mouseButton.button != Mouse::Left)
-                                    {
-                                        continue;
-                                    }
                                     for (int j = 0; j < buttonsMass.size(); j++)
                                     {
                                         if (collisionButton(buttonsMass[j].getPosition().x, buttonsMass[j].getPosition().y, buttonsMass[j].getSize().x,
@@ -222,7 +209,7 @@ int main()
                             world.setSize(world.getSize().x * 2, world.getSize().y * 2);
                             break;
                         }
-                        else if (i == 1 && scaleWorldinWindow >= 0.007)
+                        else if (i == 1 && scaleWorldinWindow >= 0.03)
                         {
                             world.setSize(world.getSize().x / 2, world.getSize().y / 2);
                             break;
@@ -263,31 +250,7 @@ int main()
         {
             accumulatedTime -= timePerFrame;
             if (pause) continue;
-            for (int j = 0; j < planets.size(); j++)
-            {
-                for (int i = 0; i < planets.size(); i++)
-                {
-                    if (i == j) continue;
-
-                    if(distance(planets[i].getPosition() + offset(planets[i].getRadius()), planets[j].getPosition() + offset(planets[j].getRadius())) <= planets[i].getRadius() + planets[j].getRadius())
-                    {
-                        if (planets[i].getMass() > planets[j].getMass()) 
-                        {
-                            planets[i].setMass(planets[i].getMass() + planets[j].getMass());
-                            planets.erase(planets.begin() + j);
-                            buttonsPlanet.erase(buttonsPlanet.begin() + j);
-                            calculatePanel(panel, buttonsPlanet, buttonsLogic, window, world, scaleWorldinWindow);
-                        }
-                        else if (planets[j].getMass() > planets[i].getMass())
-                        {
-                            planets[j].setMass(planets[j].getMass() + planets[i].getMass());
-                            planets.erase(planets.begin() + i);
-                            buttonsPlanet.erase(buttonsPlanet.begin() + i);
-                            calculatePanel(panel, buttonsPlanet, buttonsLogic, window, world, scaleWorldinWindow);
-                        }
-                    }
-                }
-            }
+            collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
             logicPlanet(planets, G, scalePhy, world);
         }
         accumulatedTime2 += clock2.restart();
@@ -297,17 +260,14 @@ int main()
             window.setView(world);
             window.clear(Color::Black);
 
-            if (trackDraw)
+            Time time = clock3.getElapsedTime();
+            if (trackDraw && time >= interval)
             {
-                Time time = clock3.getElapsedTime();
-                if (time >= interval)
+                for (int i = 0; i < planets.size(); i++)
                 {
-                    for (int i = 0; i < planets.size(); i++)
-                    {
-                        planets[i].addTrack();
-                    }
-                    clock3.restart();
+                    planets[i].addTrack();
                 }
+                clock3.restart();
             }
             for (int i = 0; i < planets.size(); i++)
             {
@@ -317,7 +277,9 @@ int main()
             {
                 planets[i].drawPlanet(window); 
             }
-            calculatePanel(panel, buttonsPlanet, buttonsLogic, window, world, scaleWorldinWindow);
+            calculatePanel(panel, window, world, scaleWorldinWindow);
+            calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
+            calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
 
             window.draw(panel);
 
