@@ -138,7 +138,7 @@ void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& butto
     {
         buttonsPlanet.push_back(Button(25, 20 + 50 * i, 100, 30, textureButton[i], 1));
     }
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 8; i++)
     {
         buttonsLogic.push_back(Button(25, 470 + 60 * i, 50, 50, textureButton[i + 9], 1));
     }

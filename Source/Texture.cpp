@@ -17,7 +17,8 @@ std::string textureButton[] =
 	"Texture/TextureButton/track_off.png",
 	"Texture/TextureButton/reload.png",
 	"Texture/TextureButton/pause.png",
-
+	"Texture/TextureButton/speed.png",
+	"Texture/TextureButton/close.png",
 };
 std::string textureButtonWindow[] =
 {

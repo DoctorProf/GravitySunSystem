@@ -16,7 +16,7 @@ int main()
     world.setSize(Vector2f(1920, 1080));
 
     //Создание окна
-    RenderWindow window(VideoMode(1920, 1080), "Gravity");
+    RenderWindow window(VideoMode::getDesktopMode(), "SpaceSimulator", sf::Style::Fullscreen);
 
     //Загрузка стиля текста
     Font font;
@@ -25,6 +25,7 @@ int main()
     //Глобальные переменные
     bool pause = false;
     bool trackDraw = false;
+    bool speed = false;
     Clock clock;
     Clock clock2;
     Clock clock3;
@@ -45,8 +46,7 @@ int main()
 
     //Масштаб отношение Предсталения к окну
     float scaleWorldinWindow = world.getSize().x / window.getSize().x;
-
-    // Инициализация tps и fps
+    // инициализация tps и fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
 
@@ -61,11 +61,7 @@ int main()
         Event event;
         while (window.pollEvent(event)) 
         {
-            if (event.type == Event::Closed)
-            {
-                window.close();
-            }
-            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::W)
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::W)
             {
                 resetFosucPlanet(planets);
                 world.move(0, -25);
@@ -239,6 +235,22 @@ int main()
                         else if (i == 5) 
                         {
                             pause = !pause;
+                        }
+                        else if (i == 6) 
+                        {
+                            speed = !speed;
+                            if(speed)
+                            {
+                                timePerFrame = seconds(1.0f / 800);
+                            }
+                            else 
+                            {
+                                timePerFrame = seconds(1.0f / 120);
+                            }
+                        }
+                        if (i == 7)
+                        {
+                            window.close();
                         }
                     }
                 }
