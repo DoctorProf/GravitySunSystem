@@ -12,18 +12,18 @@ private:
     Vector2f velocity;
     VertexArray track;
     Color color;
-    std::string name;
+    std::wstring name;
     bool focus;
 
 public:
-    Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::string name);
+    Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name);
     void addTrack();
     void clearTrack();
     VertexArray getTrack();
     double getRadius();
     double getMass();
     void setMass(double mass);
-    std::string getName();
+    std::wstring getName();
     Vector2f getPosition();
     Vector2f getVelocity();
     void setPosition(Vector2f position);

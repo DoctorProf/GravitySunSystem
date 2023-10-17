@@ -10,13 +10,13 @@ using namespace gl;
 
 int main() 
 {
+   
+    //Создание окна
+    RenderWindow window(VideoMode::getDesktopMode(), "SpaceSimulator");
     //Создание представления мира, размеры и центр
     View world;
-    world.setCenter(Vector2f(960, 540));
-    world.setSize(Vector2f(1920, 1080));
-
-    //Создание окна
-    RenderWindow window(VideoMode::getDesktopMode(), "SpaceSimulator", sf::Style::Fullscreen);
+    world.setCenter(Vector2f(window.getSize().x / 2, window.getSize().y / 2));
+    world.setSize(Vector2f(window.getSize().x, window.getSize().y));
 
     //Загрузка стиля текста
     Font font;
@@ -101,37 +101,39 @@ int main()
                     if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y / scaleWorldinWindow, event.mouseButton.x, event.mouseButton.y))
                     {
                         pause = true;
-                        RenderWindow windowSettings(VideoMode(500, 600), planets[i].getName());
+                        RenderWindow windowSettings(VideoMode(500, 600), "", Style::None);
+                        Text namePlanet;
                         Text textMass;
                         Text textSpeed;
                         Text textCamera;
                         std::ostringstream massE;
                         //Установка одинакового стиля текста
-                        setStyleText(textMass, font, Vector2f(50, 30));
-                        setStyleText(textSpeed, font, Vector2f(50, 90));
-                        setStyleText(textCamera, font, Vector2f(150, 160));
+                        setStyleText(namePlanet, font, Vector2f(50, 20));
+                        setStyleText(textMass, font, Vector2f(50, 50));
+                        setStyleText(textSpeed, font, Vector2f(50, 120));
+                        setStyleText(textCamera, font, Vector2f(150, 180));
                         //Вектора кнопок для панели редактирования планеты
                         std::vector<Button> buttonsMass;
                         std::vector<Button> buttonsSpeed;
                         std::vector<Button> buttonsCamera;
                         //Добавление всех кнопок на экранчике) да шакал, а кто судит
-                        buttonsCamera.push_back(Button (190, 190, 50, 50, textureButtonWindow[7], 1));
-                        buttonsCamera.push_back(Button(250, 190, 50, 50, textureButtonWindow[8], 1));
-                        buttonsMass.push_back(Button(50, 60, 50, 25, textureButtonWindow[0], 0.1f));
-                        buttonsMass.push_back(Button(110, 60, 50, 25, textureButtonWindow[1], 0.5f));
-                        buttonsMass.push_back(Button(170, 60, 50, 25, textureButtonWindow[2], 2.0f));
-                        buttonsMass.push_back(Button(230, 60, 50, 25, textureButtonWindow[3], 5.0f));
-                        buttonsMass.push_back(Button(290, 60, 50, 25, textureButtonWindow[4], 10.0f));
-                        buttonsSpeed.push_back(Button(50, 120, 50, 25, textureButtonWindow[0], 0.1f));
-                        buttonsSpeed.push_back(Button(110, 120, 50, 25, textureButtonWindow[1], 0.5f));
-                        buttonsSpeed.push_back(Button(170, 120, 50, 25, textureButtonWindow[5], 1.2f));
-                        buttonsSpeed.push_back(Button(230, 120, 50, 25, textureButtonWindow[6], 1.5f));
+                        buttonsCamera.push_back(Button (190, 210, 50, 50, textureButtonWindow[7], 1));
+                        buttonsCamera.push_back(Button(250, 210, 50, 50, textureButtonWindow[8], 1));
+                        buttonsMass.push_back(Button(50, 80, 50, 25, textureButtonWindow[0], 0.1f));
+                        buttonsMass.push_back(Button(110, 80, 50, 25, textureButtonWindow[1], 0.5f));
+                        buttonsMass.push_back(Button(170, 80, 50, 25, textureButtonWindow[2], 2.0f));
+                        buttonsMass.push_back(Button(230, 80, 50, 25, textureButtonWindow[3], 5.0f));
+                        buttonsMass.push_back(Button(290, 80, 50, 25, textureButtonWindow[4], 10.0f));
+                        buttonsSpeed.push_back(Button(50, 150, 50, 25, textureButtonWindow[0], 0.1f));
+                        buttonsSpeed.push_back(Button(110, 150, 50, 25, textureButtonWindow[1], 0.5f));
+                        buttonsSpeed.push_back(Button(170, 150, 50, 25, textureButtonWindow[5], 1.2f));
+                        buttonsSpeed.push_back(Button(230, 150, 50, 25, textureButtonWindow[6], 1.5f));
 
                         while (windowSettings.isOpen()) {
                             Event event1;
                             while (windowSettings.pollEvent(event1))
                             {
-                                if ((event1.type == Event::KeyReleased && event1.key.code == Keyboard::Escape)  || event1.type == Event::Closed)
+                                if ((event1.type == Event::KeyReleased && event1.key.code == Keyboard::Escape))
                                 {
                                     windowSettings.close();
                                     pause = false;
@@ -175,12 +177,14 @@ int main()
                                 }
                             }   
                             massE << std::scientific << std::setprecision(2) << planets[i].getMass();
+                            namePlanet.setString(planets[i].getName());
                             textMass.setString(L"Масса  " + massE.str());
                             textSpeed.setString(L"Скорость < " + std::to_string(planets[i].getVelocity().x) + ", " + std::to_string(planets[i].getVelocity().y) + " >");
                             textCamera.setString(L"Зафиксировать камеру");
 
-                            windowSettings.clear(Color::Black);
+                            windowSettings.clear(Color::Color(50, 50, 50));
 
+                            windowSettings.draw(namePlanet);
                             windowSettings.draw(textMass);
                             windowSettings.draw(textSpeed);
                             windowSettings.draw(textCamera);

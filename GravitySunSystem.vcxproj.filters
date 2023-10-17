@@ -170,5 +170,14 @@
     <Image Include="Texture\TextureButton\cam_on.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="Texture\TextureButton\close.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\pause.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\TextureButton\speed.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 #include "../Headers/Planet.h"
 
-Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::string name):
+Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name):
     radius(radius),
     mass(mass),
     position(position - Vector2f(radius, radius)),
@@ -41,7 +41,7 @@ void Planet::setMass(double mass)
 {
     this->mass = mass;
 }
-std::string Planet::getName()
+std::wstring Planet::getName()
 {
     return name;
 }
