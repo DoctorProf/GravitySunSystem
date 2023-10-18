@@ -38,5 +38,9 @@ std::string textureInfo[] =
 	"Texture/zoomout.png",
 	"Texture/zoomin.png",
 	"Texture/orbiton.png",
-	"Texture/orbitoff.png"
+	"Texture/orbitoff.png",
+	"Texture/reset.png",
+	"Texture/pauseInfo.png",
+	"Texture/speedInfo.png",
+	"Texture/closeInfo.png"
 };

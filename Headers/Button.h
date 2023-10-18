@@ -11,15 +11,19 @@ private:
 	float y;
 	float sizeX;
 	float sizeY;
-	Texture texture;
+	Texture texturButton;
+	Texture texturMessage;
 	double coeff;
+	bool status;
 public:
-	Button(float x, float y, float sizeX, float sizeY, std::string &textur, double coeff);
+	Button(float x, float y, float sizeX, float sizeY, std::string &texturButton, std::string texturMessage, double coeff);
 	void draw(RenderWindow& window);
 	void setPosition(Vector2f positition);
 	Vector2f getPosition();
 	void setSize(Vector2f size);
 	Vector2f getSize();
 	double getCoeff();
-	void setTexture(std::string& texture);
+	Texture getTextureMessage();
+	bool getStatus();
+	void setStatus(bool status);
 };

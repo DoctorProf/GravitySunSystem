@@ -48,9 +48,6 @@ int main()
     RectangleShape panelInfo;
     panelInfo.setSize(Vector2f(world.getSize().x / 6.4, world.getSize().y / 10.8));
     panelInfo.setPosition(Vector2f(world.getSize().x / 1.19, 0));
-    Texture x;
-    x.loadFromFile(textureInfo[0]);
-    panelInfo.setTexture(&x);
     //Масштаб отношение Предсталения к окну
     float scaleWorldinWindow = world.getSize().x / window.getSize().x;
     // инициализация tps и fps
@@ -72,33 +69,53 @@ int main()
             {
                 resetFosucPlanet(planets);
                 world.move(0, -25);
-                calculatePanel(panel, window, world, scaleWorldinWindow);
+                calculatePanel(panel,panelInfo, window, world, scaleWorldinWindow);
                 calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-                calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
+                calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::S)
             {
                 resetFosucPlanet(planets);
                 world.move(0, 25);
-                calculatePanel(panel, window, world, scaleWorldinWindow);
+                calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
                 calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-                calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
+                calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::A)
             {
                 resetFosucPlanet(planets);
                 world.move(-25, 0);
-                calculatePanel(panel, window, world, scaleWorldinWindow);
+                calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
                 calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-                calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
+                calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::D)
             {
                 resetFosucPlanet(planets);
                 world.move(25, 0);
-                calculatePanel(panel, window, world, scaleWorldinWindow);
+                calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
                 calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-                calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
+                calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
+            }
+            else if (event.type == Event::MouseMoved)
+            {
+                Vector2i mouseCoor = Mouse::getPosition(window);
+                bool mouseOnAnyButton = false;
+                for (int i = 0; i < buttonsInfo.size(); i++)
+                {
+                    Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsInfo[i].getPosition().x, buttonsInfo[i].getPosition().y));
+                    if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsInfo[i].getSize().x / scaleWorldinWindow, buttonsInfo[i].getSize().y / scaleWorldinWindow,
+                        mouseCoor.x, mouseCoor.y))
+                    {
+                        buttonsInfo[i].setStatus(true);
+                        mouseOnAnyButton = true;
+                    }
+                    else 
+                    {
+                        buttonsInfo[i].setStatus(false);
+                    }
+                }
+                if (!mouseOnAnyButton) resetStatuButton(buttonsInfo);
             }
             else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
             {
@@ -109,6 +126,7 @@ int main()
                     {
                         pause = true;
                         RenderWindow windowSettings(VideoMode(500, 600), "", Style::None);
+                        
                         Text namePlanet;
                         Text textMass;
                         Text textSpeed;
@@ -123,30 +141,26 @@ int main()
                         std::vector<Button> buttonsMass;
                         std::vector<Button> buttonsSpeed;
                         std::vector<Button> buttonsCamera;
+                        Button buttonClose(400, 500, 50, 50, textureButton[16], "", 1);
                         //Добавление всех кнопок на экранчике) да шакал, а кто судит
-                        buttonsCamera.push_back(Button (190, 210, 50, 50, textureButtonWindow[7], 1));
-                        buttonsCamera.push_back(Button(250, 210, 50, 50, textureButtonWindow[8], 1));
-                        buttonsMass.push_back(Button(50, 80, 50, 25, textureButtonWindow[0], 0.1f));
-                        buttonsMass.push_back(Button(110, 80, 50, 25, textureButtonWindow[1], 0.5f));
-                        buttonsMass.push_back(Button(170, 80, 50, 25, textureButtonWindow[2], 2.0f));
-                        buttonsMass.push_back(Button(230, 80, 50, 25, textureButtonWindow[3], 5.0f));
-                        buttonsMass.push_back(Button(290, 80, 50, 25, textureButtonWindow[4], 10.0f));
-                        buttonsSpeed.push_back(Button(50, 150, 50, 25, textureButtonWindow[0], 0.1f));
-                        buttonsSpeed.push_back(Button(110, 150, 50, 25, textureButtonWindow[1], 0.5f));
-                        buttonsSpeed.push_back(Button(170, 150, 50, 25, textureButtonWindow[5], 1.2f));
-                        buttonsSpeed.push_back(Button(230, 150, 50, 25, textureButtonWindow[6], 1.5f));
+                        buttonsCamera.push_back(Button(190, 210, 50, 50, textureButtonWindow[7], "", 1));
+                        buttonsCamera.push_back(Button(250, 210, 50, 50, textureButtonWindow[8], "", 1));
+                        buttonsMass.push_back(Button(50, 80, 50, 25, textureButtonWindow[0], "", 0.1f));
+                        buttonsMass.push_back(Button(110, 80, 50, 25, textureButtonWindow[1], "", 0.5f));
+                        buttonsMass.push_back(Button(170, 80, 50, 25, textureButtonWindow[2], "", 2.0f));
+                        buttonsMass.push_back(Button(230, 80, 50, 25, textureButtonWindow[3], "", 5.0f));
+                        buttonsMass.push_back(Button(290, 80, 50, 25, textureButtonWindow[4], "", 10.0f));
+                        buttonsSpeed.push_back(Button(50, 150, 50, 25, textureButtonWindow[0], "", 0.1f));
+                        buttonsSpeed.push_back(Button(110, 150, 50, 25, textureButtonWindow[1], "", 0.5f));
+                        buttonsSpeed.push_back(Button(170, 150, 50, 25, textureButtonWindow[5], "", 1.2f));
+                        buttonsSpeed.push_back(Button(230, 150, 50, 25, textureButtonWindow[6], "", 1.5f));
+
 
                         while (windowSettings.isOpen()) {
                             Event event1;
                             while (windowSettings.pollEvent(event1))
                             {
-                                if ((event1.type == Event::KeyReleased && event1.key.code == Keyboard::Escape))
-                                {
-                                    windowSettings.close();
-                                    pause = false;
-                                    clock.restart();
-                                }
-                                else if (event1.type == Event::MouseButtonPressed && event1.mouseButton.button == Mouse::Left)
+                                if (event1.type == Event::MouseButtonPressed && event1.mouseButton.button == Mouse::Left)
                                 {
                                     for (int j = 0; j < buttonsMass.size(); j++)
                                     {
@@ -181,6 +195,13 @@ int main()
                                             }
                                         }
                                     }
+                                    if (collisionButton(buttonClose.getPosition().x, buttonClose.getPosition().y, buttonClose.getSize().x, buttonClose.getSize().y,
+                                        event1.mouseButton.x, event1.mouseButton.y))
+                                    {
+                                        windowSettings.close();
+                                        pause = false;
+                                        clock.restart();
+                                    }
                                 }
                             }   
                             massE << std::scientific << std::setprecision(2) << planets[i].getMass();
@@ -199,7 +220,7 @@ int main()
                             drawButtons(buttonsMass, windowSettings);
                             drawButtons(buttonsSpeed, windowSettings);
                             drawButtons(buttonsCamera, windowSettings);
-
+                            buttonClose.draw(windowSettings);
                             windowSettings.display();
                             massE.str("");
                         }
@@ -240,6 +261,7 @@ int main()
                             planets.clear();
                             buttonsPlanet.clear();
                             buttonsLogic.clear();
+                            buttonsInfo.clear();
                             spawnPlanet(planets, window);
                             generateButton(planets, buttonsPlanet, buttonsLogic, buttonsInfo, window);
                         }
@@ -300,13 +322,21 @@ int main()
             {
                 planets[i].drawPlanet(window); 
             }
-            calculatePanel(panel, window, world, scaleWorldinWindow);
+            calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
             calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-            calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
+            calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
 
             window.draw(panel);
-            window.draw(panelInfo);
-
+            for (int i = 0; i < buttonsInfo.size(); i++)
+            {
+                if (buttonsInfo[i].getStatus()) 
+                {
+                    Texture panelTextur = buttonsInfo[i].getTextureMessage();
+                    panelInfo.setTexture(&panelTextur);
+                    window.draw(panelInfo);
+                }
+            }
+            
             drawButtons(buttonsPlanet, window);
             drawButtons(buttonsLogic, window);
             drawButtons(buttonsInfo, window);

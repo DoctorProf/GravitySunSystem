@@ -3,21 +3,22 @@
 #include <string>
 #include <iomanip>
 
-Button::Button(float x, float y, float sizeX, float sizeY, std::string &textur, double coeff)
+Button::Button(float x, float y, float sizeX, float sizeY, std::string &texturButton, std::string texturMessage, double coeff)
 {
 	this->x = x;
 	this->y = y;
 	this->sizeX = sizeX;
 	this->sizeY = sizeY;
 	this->coeff = coeff;
-	this->texture.loadFromFile(textur);
-	button.setPosition(x, y);
-	button.setSize(Vector2f(sizeX, sizeY));
-	button.setFillColor(Color::Color(122, 122, 122));
+	this->texturButton.loadFromFile(texturButton);
+	this->texturMessage.loadFromFile(texturMessage);
+	this->status = false;
+	this->button.setPosition(x, y);
+	this->button.setSize(Vector2f(sizeX, sizeY));
 }
 void Button::draw(RenderWindow& window)
 {
-	button.setTexture(&texture);
+	button.setTexture(&texturButton);
 	window.draw(button);
 }
 void Button::setPosition(Vector2f position)
@@ -44,7 +45,15 @@ double Button::getCoeff()
 {
 	return this->coeff;
 }
-void Button::setTexture(std::string& texture) 
+Texture Button::getTextureMessage() 
 {
-	this->texture.loadFromFile(texture);
+	return this->texturMessage;
+}
+bool Button::getStatus() 
+{
+	return this->status;
+}
+void Button::setStatus(bool status)
+{
+	this->status = status;
 }
