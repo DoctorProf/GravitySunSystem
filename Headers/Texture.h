@@ -3,3 +3,4 @@
 
 extern std::string textureButton[];
 extern std::string textureButtonWindow[];
+extern std::string textureInfo[];

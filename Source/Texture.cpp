@@ -2,33 +2,41 @@
 
 std::string textureButton[] =
 {
-	"Texture/TextureButton/sun.png",
-	"Texture/TextureButton/mercury.png",
-	"Texture/TextureButton/venus.png",
-	"Texture/TextureButton/earth.png",
-	"Texture/TextureButton/mars.png",
-	"Texture/TextureButton/jupiter.png",
-	"Texture/TextureButton/saturn.png",
-	"Texture/TextureButton/uranus.png",
-	"Texture/TextureButton/neptune.png",
-	"Texture/TextureButton/minus.png",
-	"Texture/TextureButton/plus.png",
-	"Texture/TextureButton/track_on.png",
-	"Texture/TextureButton/track_off.png",
-	"Texture/TextureButton/reload.png",
-	"Texture/TextureButton/pause.png",
-	"Texture/TextureButton/speed.png",
-	"Texture/TextureButton/close.png",
+	"Texture/sun.png",
+	"Texture/mercury.png",
+	"Texture/venus.png",
+	"Texture/earth.png",
+	"Texture/mars.png",
+	"Texture/jupiter.png",
+	"Texture/saturn.png",
+	"Texture/uranus.png",
+	"Texture/neptune.png",
+	"Texture/minus.png",
+	"Texture/plus.png",
+	"Texture/track_on.png",
+	"Texture/track_off.png",
+	"Texture/reload.png",
+	"Texture/pause.png",
+	"Texture/speed.png",
+	"Texture/close.png",
+	"Texture/info.png",
 };
 std::string textureButtonWindow[] =
 {
-	"Texture/TextureButton/0.1.png",
-	"Texture/TextureButton/0.5.png",
-	"Texture/TextureButton/2.png",
-	"Texture/TextureButton/5.png",
-	"Texture/TextureButton/10.png",
-	"Texture/TextureButton/1.2.png",
-	"Texture/TextureButton/1.5.png",
-	"Texture/TextureButton/cam_on.png",
-	"Texture/TextureButton/cam_off.png"
+	"Texture/0.1.png",
+	"Texture/0.5.png",
+	"Texture/2.png",
+	"Texture/5.png",
+	"Texture/10.png",
+	"Texture/1.2.png",
+	"Texture/1.5.png",
+	"Texture/cam_on.png",
+	"Texture/cam_off.png"
+};
+std::string textureInfo[] =
+{
+	"Texture/zoomout.png",
+	"Texture/zoomin.png",
+	"Texture/orbiton.png",
+	"Texture/orbitoff.png"
 };

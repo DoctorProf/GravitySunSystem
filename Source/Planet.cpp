@@ -18,7 +18,7 @@ void Planet::addTrack()
 {
     Vertex pos;
     pos.position = Vector2f(position.x + radius, position.y + radius);
-    pos.color = Color::Color(color.r, color.g, color.b, color.a / 2);
+    pos.color = Color::Color(color.r, color.g, color.b, color.a / 5);
     track.append(pos);
 }
 void Planet::clearTrack()

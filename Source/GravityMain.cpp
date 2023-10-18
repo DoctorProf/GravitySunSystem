@@ -12,7 +12,7 @@ int main()
 {
    
     //Создание окна
-    RenderWindow window(VideoMode::getDesktopMode(), "SpaceSimulator");
+    RenderWindow window(VideoMode::getDesktopMode(), "SpaceSimulator", Style::Titlebar);
     //Создание представления мира, размеры и центр
     View world;
     world.setCenter(Vector2f(window.getSize().x / 2, window.getSize().y / 2));
@@ -37,13 +37,20 @@ int main()
     std::vector<Planet> planets;
     std::vector<Button> buttonsPlanet;
     std::vector<Button> buttonsLogic;
+    std::vector<Button> buttonsInfo;
 
     //Панель для кнопок
     RectangleShape panel;
     panel.setFillColor(Color::Color(25,25,25));
-    panel.setSize(Vector2f(150, world.getSize().y));
+    panel.setSize(Vector2f(world.getSize().x / 12.8, world.getSize().y));
     panel.setPosition(Vector2f(0, 0));
-
+    //Панель для информации
+    RectangleShape panelInfo;
+    panelInfo.setSize(Vector2f(world.getSize().x / 6.4, world.getSize().y / 10.8));
+    panelInfo.setPosition(Vector2f(world.getSize().x / 1.19, 0));
+    Texture x;
+    x.loadFromFile(textureInfo[0]);
+    panelInfo.setTexture(&x);
     //Масштаб отношение Предсталения к окну
     float scaleWorldinWindow = world.getSize().x / window.getSize().x;
     // инициализация tps и fps
@@ -55,7 +62,7 @@ int main()
 
     //Изначальный спавн планет и кнопок панели
     spawnPlanet(std::ref(planets), window);
-    generateButton(planets, buttonsPlanet, buttonsLogic, window);
+    generateButton(planets, buttonsPlanet, buttonsLogic, buttonsInfo, window);
     
     while (window.isOpen()) {
         Event event;
@@ -228,13 +235,13 @@ int main()
                         }
                         else if (i == 4)
                         {
-                            world.setSize(1920, 1080);
-                            world.setCenter(Vector2f(960, 540));
+                            world.setSize(window.getSize().x, window.getSize().y);
+                            world.setCenter(Vector2f(window.getSize().x / 2, window.getSize().y / 2));
                             planets.clear();
                             buttonsPlanet.clear();
                             buttonsLogic.clear();
                             spawnPlanet(planets, window);
-                            generateButton(planets, buttonsPlanet, buttonsLogic, window);
+                            generateButton(planets, buttonsPlanet, buttonsLogic, buttonsInfo, window);
                         }
                         else if (i == 5) 
                         {
@@ -298,9 +305,11 @@ int main()
             calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
 
             window.draw(panel);
+            window.draw(panelInfo);
 
             drawButtons(buttonsPlanet, window);
             drawButtons(buttonsLogic, window);
+            drawButtons(buttonsInfo, window);
             window.display();
         }
     }

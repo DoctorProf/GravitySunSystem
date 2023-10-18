@@ -17,6 +17,6 @@ namespace gl
     void logicPlanet(std::vector<Planet>& planets, double& G, double& scalePhy, View& world);
     void drawButtons(std::vector<Button>& buttons, RenderWindow& window);
     void collisionPlanet(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, RenderWindow& window, View& world, float scaleWorldinWindow);
-    void generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, std::vector<Button>& buttonsLogic, RenderWindow& window);
+    void generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, std::vector<Button>& buttonsLogic, std::vector<Button> &buttonsInfo, RenderWindow& window);
 }
 
