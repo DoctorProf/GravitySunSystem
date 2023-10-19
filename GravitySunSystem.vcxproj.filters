@@ -284,5 +284,35 @@
     <Image Include="Texture\zoomout.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="Texture\earthN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\jupiterN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\marsN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\mercuryN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\neptuneN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\saturnN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\space.jpg">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\sunN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\uranusN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\venusN.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

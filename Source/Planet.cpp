@@ -1,4 +1,5 @@
 #include "../Headers/Planet.h"
+#include "../Headers/Texture.h"
 
 Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name):
     radius(radius),
@@ -19,7 +20,7 @@ void Planet::addTrack()
 {
     Vertex pos;
     pos.position = Vector2f(position.x + radius, position.y + radius);
-    pos.color = Color::Color(color.r, color.g, color.b, color.a / 5);
+    pos.color = Color::Color(color.r, color.g, color.b, color.a / 2);
     track.append(pos);
 }
 void Planet::clearTrack()

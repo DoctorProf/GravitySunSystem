@@ -69,12 +69,17 @@
     <Image Include="Texture\close.png" />
     <Image Include="Texture\closeInfo.png" />
     <Image Include="Texture\earth.png" />
+    <Image Include="Texture\earthN.png" />
     <Image Include="Texture\info.png" />
     <Image Include="Texture\jupiter.png" />
+    <Image Include="Texture\jupiterN.png" />
     <Image Include="Texture\mars.png" />
+    <Image Include="Texture\marsN.png" />
     <Image Include="Texture\mercury.png" />
+    <Image Include="Texture\mercuryN.png" />
     <Image Include="Texture\minus.png" />
     <Image Include="Texture\neptune.png" />
+    <Image Include="Texture\neptuneN.png" />
     <Image Include="Texture\orbitoff.png" />
     <Image Include="Texture\orbiton.png" />
     <Image Include="Texture\pause.png" />
@@ -83,9 +88,12 @@
     <Image Include="Texture\reload.png" />
     <Image Include="Texture\reset.png" />
     <Image Include="Texture\saturn.png" />
+    <Image Include="Texture\saturnN.png" />
+    <Image Include="Texture\space.jpg" />
     <Image Include="Texture\speed.png" />
     <Image Include="Texture\speedInfo.png" />
     <Image Include="Texture\sun.png" />
+    <Image Include="Texture\sunN.png" />
     <Image Include="Texture\TextureButton\0.1.png" />
     <Image Include="Texture\TextureButton\0.5.png" />
     <Image Include="Texture\TextureButton\1.2.png" />
@@ -125,7 +133,9 @@
     <Image Include="Texture\track_off.png" />
     <Image Include="Texture\track_on.png" />
     <Image Include="Texture\uranus.png" />
+    <Image Include="Texture\uranusN.png" />
     <Image Include="Texture\venus.png" />
+    <Image Include="Texture\venusN.png" />
     <Image Include="Texture\zoomin.png" />
     <Image Include="Texture\zoomout.png" />
   </ItemGroup>

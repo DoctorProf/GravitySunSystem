@@ -20,6 +20,8 @@ std::string textureButton[] =
 	"Texture/speed.png",
 	"Texture/close.png",
 	"Texture/info.png",
+	"Texture/space.jpg",
+	"Texture/sunTexture.jpg",
 };
 std::string textureButtonWindow[] =
 {
@@ -43,4 +45,16 @@ std::string textureInfo[] =
 	"Texture/pauseInfo.png",
 	"Texture/speedInfo.png",
 	"Texture/closeInfo.png"
+};
+extern std::string textureNamesPlanet[] = 
+{
+	"Texture/sunN.png",
+	"Texture/mercuryN.png",
+	"Texture/venusN.png",
+	"Texture/earthN.png",
+	"Texture/marsN.png",
+	"Texture/jupiterN.png",
+	"Texture/saturnN.png",
+	"Texture/uranusN.png",
+	"Texture/neptuneN.png"
 };

@@ -38,7 +38,12 @@ int main()
     std::vector<Button> buttonsPlanet;
     std::vector<Button> buttonsLogic;
     std::vector<Button> buttonsInfo;
+    std::vector<RectangleShape> namesPlanet;
 
+    RectangleShape background;
+    background.setSize(Vector2f(world.getSize().x, world.getSize().y));
+    Texture back;
+    back.loadFromFile(textureButton[18]);
     //Панель для кнопок
     RectangleShape panel;
     panel.setFillColor(Color::Color(25,25,25));
@@ -59,7 +64,7 @@ int main()
 
     //Изначальный спавн планет и кнопок панели
     spawnPlanet(std::ref(planets), window);
-    generateButton(planets, buttonsPlanet, buttonsLogic, buttonsInfo, window);
+    generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, buttonsInfo, window);
     
     while (window.isOpen()) {
         Event event;
@@ -69,7 +74,9 @@ int main()
             {
                 resetFosucPlanet(planets);
                 world.move(0, -25);
+                calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                 calculatePanel(panel,panelInfo, window, world, scaleWorldinWindow);
+                calculateBackground(background, window, world);
                 calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
                 calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
             }
@@ -77,7 +84,9 @@ int main()
             {
                 resetFosucPlanet(planets);
                 world.move(0, 25);
+                calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                 calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
+                calculateBackground(background, window, world);
                 calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
                 calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
             }
@@ -85,7 +94,9 @@ int main()
             {
                 resetFosucPlanet(planets);
                 world.move(-25, 0);
+                calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                 calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
+                calculateBackground(background, window, world);
                 calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
                 calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
             }
@@ -93,7 +104,9 @@ int main()
             {
                 resetFosucPlanet(planets);
                 world.move(25, 0);
+                calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                 calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
+                calculateBackground(background, window, world);
                 calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
                 calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
             }
@@ -101,6 +114,7 @@ int main()
             {
                 Vector2i mouseCoor = Mouse::getPosition(window);
                 bool mouseOnAnyButton = false;
+                bool mouseOnAnyButtonPlanet = false;
                 for (int i = 0; i < buttonsInfo.size(); i++)
                 {
                     Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsInfo[i].getPosition().x, buttonsInfo[i].getPosition().y));
@@ -115,7 +129,22 @@ int main()
                         buttonsInfo[i].setStatus(false);
                     }
                 }
+                for (int i = 0; i < buttonsPlanet.size(); i++)
+                {
+                    Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsPlanet[i].getPosition().x, buttonsPlanet[i].getPosition().y));
+                    if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y / scaleWorldinWindow,
+                        mouseCoor.x, mouseCoor.y))
+                    {
+                        buttonsPlanet[i].setStatus(true);
+                        mouseOnAnyButtonPlanet = true;
+                    }
+                    else
+                    {
+                        buttonsPlanet[i].setStatus(false);
+                    }
+                }
                 if (!mouseOnAnyButton) resetStatuButton(buttonsInfo);
+                if (!mouseOnAnyButtonPlanet) resetStatuButton(buttonsPlanet);
             }
             else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
             {
@@ -263,7 +292,7 @@ int main()
                             buttonsLogic.clear();
                             buttonsInfo.clear();
                             spawnPlanet(planets, window);
-                            generateButton(planets, buttonsPlanet, buttonsLogic, buttonsInfo, window);
+                            generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, buttonsInfo, window);
                         }
                         else if (i == 5) 
                         {
@@ -297,14 +326,6 @@ int main()
             if (pause) continue;
             collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
             logicPlanet(planets, G, scalePhy, world);
-        }
-        accumulatedTime2 += clock2.restart();
-        if (accumulatedTime2 >= timePerFrame2)
-        {
-            accumulatedTime2 -= timePerFrame2;
-            window.setView(world);
-            window.clear(Color::Black);
-
             Time time = clock3.getElapsedTime();
             if (trackDraw && time >= interval)
             {
@@ -314,6 +335,21 @@ int main()
                 }
                 clock3.restart();
             }
+        }
+        accumulatedTime2 += clock2.restart();
+        
+        if (accumulatedTime2 >= timePerFrame2)
+        {
+            accumulatedTime2 -= timePerFrame2;
+            window.setView(world);
+            calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
+            calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
+            calculateBackground(background, window, world);
+            calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
+            calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
+            background.setTexture(&back);
+            window.draw(background);
+
             for (int i = 0; i < planets.size(); i++)
             {
                 planets[i].drawTrack(window);
@@ -322,10 +358,16 @@ int main()
             {
                 planets[i].drawPlanet(window); 
             }
-            calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
-            calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-            calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
-
+            for (int i = 0; i < buttonsPlanet.size(); i++)
+            {
+                if (buttonsPlanet[i].getStatus())
+                {
+                    namesPlanet[i].setPosition(Vector2f(planets[i].getPosition().x + 2 * planets[i].getRadius(), planets[i].getPosition().y));
+                    Texture panelTextur = buttonsPlanet[i].getTextureMessage();
+                    namesPlanet[i].setTexture(&panelTextur);
+                    window.draw(namesPlanet[i]);
+                }
+            }
             window.draw(panel);
             for (int i = 0; i < buttonsInfo.size(); i++)
             {
@@ -336,6 +378,7 @@ int main()
                     window.draw(panelInfo);
                 }
             }
+            
             
             drawButtons(buttonsPlanet, window);
             drawButtons(buttonsLogic, window);
