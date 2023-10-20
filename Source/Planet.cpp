@@ -10,11 +10,11 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     name(name)
 {
     this->focus = false;
-    this->track.setPrimitiveType(Points);
+    this->track.setPrimitiveType(LinesStrip);
     this->planet.setRadius(radius);
     this->planet.setPosition(this->position);
     this->planet.setFillColor(color);
-    this->planet.setPointCount(100);
+    this->planet.setPointCount(60);
 }
 void Planet::addTrack()
 {

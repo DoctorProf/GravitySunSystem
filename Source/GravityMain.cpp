@@ -4,7 +4,6 @@
 #include <string>
 #include <iomanip>
 #include <ppl.h>
-
 using namespace sf;
 using namespace gl;
 
@@ -12,7 +11,8 @@ int main()
 {
    
     //Создание окна
-    RenderWindow window(VideoMode::getDesktopMode(), "SpaceSimulator", Style::Titlebar);
+    RenderWindow window(VideoMode::getDesktopMode(), "SpaceSimulator", Style::Fullscreen);
+    //window.setVerticalSyncEnabled(true);
     //Создание представления мира, размеры и центр
     View world;
     world.setCenter(Vector2f(window.getSize().x / 2, window.getSize().y / 2));
@@ -29,7 +29,7 @@ int main()
     Clock clock;
     Clock clock2;
     Clock clock3;
-    Time interval = seconds(0.03);
+    Time interval = seconds(0.02);
     double G = 6.67e-11;
     double scalePhy = 1e9;
 
@@ -60,10 +60,10 @@ int main()
     Time accumulatedTime2 = Time::Zero;
 
     Time timePerFrame = seconds(1.0f / 120); // tps
-    Time timePerFrame2 = seconds(1.0f / 240); // fps
+    Time timePerFrame2 = seconds(1.0f / 120); // fps
 
     //Изначальный спавн планет и кнопок панели
-    spawnPlanet(std::ref(planets), window);
+    spawnPlanet(planets, window);
     generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, buttonsInfo, window);
     
     while (window.isOpen()) {
@@ -73,7 +73,7 @@ int main()
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::W)
             {
                 resetFosucPlanet(planets);
-                world.move(0, -25);
+                world.move(0, -25 * scaleWorldinWindow);
                 calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                 calculatePanel(panel,panelInfo, window, world, scaleWorldinWindow);
                 calculateBackground(background, window, world);
@@ -83,7 +83,7 @@ int main()
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::S)
             {
                 resetFosucPlanet(planets);
-                world.move(0, 25);
+                world.move(0, 25 * scaleWorldinWindow);
                 calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                 calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
                 calculateBackground(background, window, world);
@@ -93,7 +93,7 @@ int main()
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::A)
             {
                 resetFosucPlanet(planets);
-                world.move(-25, 0);
+                world.move(-25 * scaleWorldinWindow, 0);
                 calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                 calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
                 calculateBackground(background, window, world);
@@ -103,7 +103,7 @@ int main()
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::D)
             {
                 resetFosucPlanet(planets);
-                world.move(25, 0);
+                world.move(25 * scaleWorldinWindow, 0);
                 calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                 calculatePanel(panel, panelInfo, window, world, scaleWorldinWindow);
                 calculateBackground(background, window, world);
@@ -153,7 +153,15 @@ int main()
                     Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsPlanet[i].getPosition().x, buttonsPlanet[i].getPosition().y));
                     if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y / scaleWorldinWindow, event.mouseButton.x, event.mouseButton.y))
                     {
-                        pause = true;
+                        bool flag = false;
+                        if (pause) 
+                        {
+                            flag = true;
+                        } 
+                        else 
+                        {
+                            pause = true;
+                        }
                         RenderWindow windowSettings(VideoMode(500, 600), "", Style::None);
                         
                         Text namePlanet;
@@ -171,6 +179,7 @@ int main()
                         std::vector<Button> buttonsSpeed;
                         std::vector<Button> buttonsCamera;
                         Button buttonClose(400, 500, 50, 50, textureButton[16], "", 1);
+                        Button buttonDeletePlanet(50, 500, 50, 50, textureButtonWindow[9], "", 1);
                         //Добавление всех кнопок на экранчике) да шакал, а кто судит
                         buttonsCamera.push_back(Button(190, 210, 50, 50, textureButtonWindow[7], "", 1));
                         buttonsCamera.push_back(Button(250, 210, 50, 50, textureButtonWindow[8], "", 1));
@@ -228,6 +237,22 @@ int main()
                                         event1.mouseButton.x, event1.mouseButton.y))
                                     {
                                         windowSettings.close();
+                                        if (flag) 
+                                        {
+                                            pause = true;
+                                        } 
+                                        else 
+                                        {
+                                            pause = false;
+                                        }
+                                        clock.restart();
+                                    }
+                                    if (collisionButton(buttonDeletePlanet.getPosition().x, buttonDeletePlanet.getPosition().y, buttonDeletePlanet.getSize().x, buttonDeletePlanet.getSize().y,
+                                        event1.mouseButton.x, event1.mouseButton.y))
+                                    {
+                                        planets.erase(planets.begin() + i);
+                                        buttonsPlanet.erase(buttonsPlanet.begin() + i);
+                                        windowSettings.close();
                                         pause = false;
                                         clock.restart();
                                     }
@@ -250,6 +275,7 @@ int main()
                             drawButtons(buttonsSpeed, windowSettings);
                             drawButtons(buttonsCamera, windowSettings);
                             buttonClose.draw(windowSettings);
+                            buttonDeletePlanet.draw(windowSettings);
                             windowSettings.display();
                             massE.str("");
                         }
@@ -303,7 +329,7 @@ int main()
                             speed = !speed;
                             if(speed)
                             {
-                                timePerFrame = seconds(1.0f / 800);
+                                timePerFrame = seconds(1.0f / 600);
                             }
                             else 
                             {
@@ -378,8 +404,6 @@ int main()
                     window.draw(panelInfo);
                 }
             }
-            
-            
             drawButtons(buttonsPlanet, window);
             drawButtons(buttonsLogic, window);
             drawButtons(buttonsInfo, window);

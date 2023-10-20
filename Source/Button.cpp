@@ -11,7 +11,10 @@ Button::Button(float x, float y, float sizeX, float sizeY, std::string &texturBu
 	this->sizeY = sizeY;
 	this->coeff = coeff;
 	this->texturButton.loadFromFile(texturButton);
-	this->texturMessage.loadFromFile(texturMessage);
+	if (texturMessage != "")
+	{
+		this->texturMessage.loadFromFile(texturMessage);
+	}
 	this->status = false;
 	this->button.setPosition(x, y);
 	this->button.setSize(Vector2f(sizeX, sizeY));
