@@ -31,6 +31,7 @@ std::string textureButtonWindow[] =
 	"Texture/10.png",
 	"Texture/1.2.png",
 	"Texture/1.5.png",
+	"Texture/-1.png",
 	"Texture/cam_on.png",
 	"Texture/cam_off.png",
 	"Texture/deletePlanet.png"
@@ -58,4 +59,3 @@ extern std::string textureNamesPlanet[] =
 	"Texture/uranusN.png",
 	"Texture/neptuneN.png"
 };
-

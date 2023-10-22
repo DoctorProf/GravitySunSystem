@@ -15,6 +15,7 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     this->planet.setPosition(this->position);
     this->planet.setFillColor(color);
     this->planet.setPointCount(60);
+    this->menuPlanet = false;
 }
 void Planet::addTrack()
 {
@@ -90,4 +91,12 @@ void Planet::setFocus(bool focus)
 bool Planet::getFocus()
 {
     return this->focus;
+}
+void Planet::setMenuPlanet(bool menuPlanet) 
+{
+    this->menuPlanet = menuPlanet;
+}
+bool Planet::getMenuPlanet()
+{
+    return this->menuPlanet;
 }

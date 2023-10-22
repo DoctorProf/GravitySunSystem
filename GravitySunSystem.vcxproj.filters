@@ -314,5 +314,11 @@
     <Image Include="Texture\venusN.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="Texture\-1.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\deletePlanet.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

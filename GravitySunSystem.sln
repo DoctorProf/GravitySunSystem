@@ -11,6 +11,8 @@ Global
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		чистый деб|x64 = чистый деб|x64
+		чистый деб|x86 = чистый деб|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D90D30B6-7EE7-4085-A938-AAF9FDC6D78F}.Debug|x64.ActiveCfg = Debug|x64
@@ -21,6 +23,10 @@ Global
 		{D90D30B6-7EE7-4085-A938-AAF9FDC6D78F}.Release|x64.Build.0 = Release|x64
 		{D90D30B6-7EE7-4085-A938-AAF9FDC6D78F}.Release|x86.ActiveCfg = Release|Win32
 		{D90D30B6-7EE7-4085-A938-AAF9FDC6D78F}.Release|x86.Build.0 = Release|Win32
+		{D90D30B6-7EE7-4085-A938-AAF9FDC6D78F}.чистый деб|x64.ActiveCfg = чистый деб|x64
+		{D90D30B6-7EE7-4085-A938-AAF9FDC6D78F}.чистый деб|x64.Build.0 = чистый деб|x64
+		{D90D30B6-7EE7-4085-A938-AAF9FDC6D78F}.чистый деб|x86.ActiveCfg = чистый деб|Win32
+		{D90D30B6-7EE7-4085-A938-AAF9FDC6D78F}.чистый деб|x86.Build.0 = чистый деб|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

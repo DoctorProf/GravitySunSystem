@@ -14,6 +14,7 @@ private:
     Color color;
     std::wstring name;
     bool focus;
+    bool menuPlanet;
 
 public:
     Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name);
@@ -35,4 +36,6 @@ public:
     void move();
     void setFocus(bool focus);
     bool getFocus();
+    void setMenuPlanet(bool menuPlanet);
+    bool getMenuPlanet();
 };
