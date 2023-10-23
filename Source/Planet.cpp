@@ -62,6 +62,7 @@ void Planet::setPosition(Vector2f position)
 }
 void Planet::setVelocity(Vector2f velocity)
 {
+    if (velocity.x > 50 || velocity.x < -50 || velocity.y > 50 || velocity.y < -50) return;
     this->velocity = velocity;
 }
 Color Planet::getColor()

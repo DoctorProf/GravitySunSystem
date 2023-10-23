@@ -3,26 +3,31 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
-#include <ppl.h>
+#include "SFML/Audio.hpp"
+#include <TGUI/TGUI.hpp>
+#include <TGUI/Backend/SFML-Graphics.hpp>
 using namespace sf;
 using namespace gl;
 
 int main() 
 {
-   
+    //Все для звука фона
+    SoundBuffer spaceBuffer;
+    spaceBuffer.loadFromFile("spaceSound.mp3");
+    Sound spaceSound;
+    spaceSound.setBuffer(spaceBuffer);
+    Clock clockSound;
     //Создание окна
     RenderWindow window(VideoMode::getDesktopMode(), "SpaceSimulator", Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
     //Создание представления мира, размеры и центр
     View world;
-    world.setCenter(Vector2f(window.getSize().x / 2, window.getSize().y / 2));
+    world.setCenter(Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
     world.setSize(Vector2f(window.getSize().x, window.getSize().y));
 
     //Загрузка стиля текста
     Font font;
     font.loadFromFile("C:\\windows\\fonts\\arial.ttf");
-    Texture x;
-    x.loadFromFile(textureButton[0]);
     //Глобальные переменныe
     bool flag = false;
     bool pause = false;
@@ -62,13 +67,13 @@ int main()
     panelPlanet.setSize(Vector2f(world.getSize().x / 3.84, world.getSize().y / 1.8));
     panelPlanet.setPosition(Vector2f(world.getSize().x / 2.74, world.getSize().y / 4.5));
     //Масштаб отношение Предсталения к окну
-    float scaleWorldinWindow = world.getSize().x / window.getSize().x;
+    double scaleWorldinWindow = world.getSize().x / window.getSize().x;
     // инициализация tps и fps
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
 
-    Time timePerFrame = seconds(1.0f / 60); // tps
-    Time timePerFrame2 = seconds(1.0f / 60); // fps    
+    Time timePerFrame = seconds(1.0f / 60.0f); // tps
+    Time timePerFrame2 = seconds(1.0f / 60.0f); // fps    
     
     //Вектора кнопок для панели редактирования планеты
     std::vector<Button> buttonsMass;
@@ -79,7 +84,7 @@ int main()
     //Изначальный спавн планет и кнопок панели
     spawnPlanet(planets, window);
     generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, buttonsInfo, window);
-    
+    spaceSound.play();
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) 
@@ -87,42 +92,22 @@ int main()
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::W)
             {
                 resetFosucPlanet(planets);
-                world.move(0, -25 * scaleWorldinWindow);
-                calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
-                calculatePanel(panel,panelInfo,panelPlanet, window, world, scaleWorldinWindow);
-                calculateBackground(background, window, world);
-                calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-                calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
+                world.move(0, -25.0f * scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::S)
             {
                 resetFosucPlanet(planets);
-                world.move(0, 25 * scaleWorldinWindow);
-                calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
-                calculatePanel(panel, panelInfo, panelPlanet, window, world, scaleWorldinWindow);
-                calculateBackground(background, window, world);
-                calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-                calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
+                world.move(0, 25.0f * scaleWorldinWindow);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::A)
             {
                 resetFosucPlanet(planets);
-                world.move(-25 * scaleWorldinWindow, 0);
-                calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
-                calculatePanel(panel, panelInfo, panelPlanet, window, world, scaleWorldinWindow);
-                calculateBackground(background, window, world);
-                calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-                calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
+                world.move(-25.0f * scaleWorldinWindow, 0);
             }
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::D)
             {
                 resetFosucPlanet(planets);
-                world.move(25 * scaleWorldinWindow, 0);
-                calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
-                calculatePanel(panel, panelInfo, panelPlanet, window, world, scaleWorldinWindow);
-                calculateBackground(background, window, world);
-                calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-                calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
+                world.move(25.0f * scaleWorldinWindow, 0);
             }
             else if (event.type == Event::MouseMoved)
             {
@@ -193,12 +178,12 @@ int main()
                         {
                             if (i == 0 && scaleWorldinWindow < 1e15)
                             {
-                                world.setSize(world.getSize().x * 2, world.getSize().y * 2);
+                                world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
                                 break;
                             }
                             else if (i == 1 && scaleWorldinWindow >= 0.03)
                             {
-                                world.setSize(world.getSize().x / 2, world.getSize().y / 2);
+                                world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
                                 break;
                             }
                             else if (i == 2)
@@ -216,7 +201,7 @@ int main()
                             else if (i == 4)
                             {
                                 world.setSize(window.getSize().x, window.getSize().y);
-                                world.setCenter(Vector2f(window.getSize().x / 2, window.getSize().y / 2));
+                                world.setCenter(Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
                                 planets.clear();
                                 buttonsPlanet.clear();
                                 buttonsLogic.clear();
@@ -237,11 +222,11 @@ int main()
                                 speed = !speed;
                                 if (speed)
                                 {
-                                    timePerFrame = seconds(1.0f / 600);
+                                    timePerFrame = seconds(1.0f / 600.0f);
                                 }
                                 else
                                 {
-                                    timePerFrame = seconds(1.0f / 120);
+                                    timePerFrame = seconds(1.0f / 120.0f);
                                 }
                             }
                             if (i == 7)
@@ -272,7 +257,7 @@ int main()
                                 if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsSpeed[j].getSize().x / scaleWorldinWindow, buttonsSpeed[j].getSize().y / scaleWorldinWindow,
                                     event.mouseButton.x, event.mouseButton.y))
                                 {
-                                    planets[i].setVelocity(Vector2f(planets[i].getVelocity().x * buttonsSpeed[j].getCoeff(), planets[i].getVelocity().y* buttonsSpeed[j].getCoeff()));
+                                    planets[i].setVelocity(Vector2f(planets[i].getVelocity().x * buttonsSpeed[j].getCoeff(), planets[i].getVelocity().y * buttonsSpeed[j].getCoeff()));
                                 }
                             }
                             for (int j = 0; j < buttonsCamera.size(); j++)
@@ -355,6 +340,7 @@ int main()
             beyondSolarSystem(planets, buttonsPlanet);
             collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
             logicPlanet(planets, G, scalePhy, world);
+            std::cout << planets[0].getPosition().x << " " << planets[0].getPosition().y << "Size view " << world.getSize().x << " " << world.getSize().y << "\n";
             Time time = clock3.getElapsedTime();
             if (trackDraw && time >= interval)
             {
@@ -366,7 +352,11 @@ int main()
             }
         }
         accumulatedTime2 += clock2.restart();
-        
+        if (clockSound.getElapsedTime().asSeconds() > 268) 
+        {
+            spaceSound.play();
+            clockSound.restart();
+        }
         if (accumulatedTime2 >= timePerFrame2)
         {
             accumulatedTime2 -= timePerFrame2;
@@ -376,7 +366,6 @@ int main()
             calculateBackground(background, window, world);
             calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
             calculateButtonLogic(buttonsLogic, buttonsInfo, window, world, scaleWorldinWindow);
-            calculateButtonMenu(buttonsMass, buttonsSpeed, buttonsCamera, buttonsCloseAndDelete, window, world, scaleWorldinWindow);
             background.setTexture(&back);
             window.draw(background);
 
@@ -392,7 +381,7 @@ int main()
             {
                 if (buttonsPlanet[i].getStatus() || planets[i].getFocus())
                 {
-                    namesPlanet[i].setPosition(Vector2f(planets[i].getPosition().x + 2 * planets[i].getRadius(), planets[i].getPosition().y));
+                    namesPlanet[i].setPosition(Vector2f(planets[i].getPosition().x + 2.0f * planets[i].getRadius(), planets[i].getPosition().y));
                     Texture panelTextur = buttonsPlanet[i].getTextureMessage();
                     namesPlanet[i].setTexture(&panelTextur);
                     window.draw(namesPlanet[i]);
@@ -415,33 +404,30 @@ int main()
             {
                 if (planets[i].getMenuPlanet()) 
                 {
-                    //Vector2f CoordsName = window.mapPixelToCoords(Vector2i(window.getSize().x / 2.56, window.getSize().y / 4.15));
-                    //RenderTexture textureName;
-                    //RenderTexture textureMass;
-                    //RenderTexture textureSpeed;
-                    //Text name;
-                    //Text mass;
-                    //Text speed;
-                    //setStyleText(name, font, scaleWorldinWindow);
-                    //setStyleText(mass, font, scaleWorldinWindow);
-                    //setStyleText(speed, font, scaleWorldinWindow);
-                    //Sprite sprName;
-                    //Sprite sprMass;
-                    //Sprite sprSpeed;
-                    //std::ostringstream massE;
-                    //massE.str("");
-                    //massE << std::scientific << std::setprecision(2) << planets[i].getMass();
-                    //name.setString(planets[i].getName());
-                    //mass.setString(L"Масса" + massE.str());
-                    //speed.setString("Скорость ( " + std::to_string(planets[i].getVelocity().x) + ", " + std::to_string(planets[i].getVelocity().y) + ")");
-                    ////textureName.create(window.getSize().x / 4.8 * scaleWorldinWindow, window.getSize().y / 36 * scaleWorldinWindow);
-                    //textureName.create(400,30);
-                    //textureName.draw(name);
-                    //textureName.display();
-                    //sprName.setPosition(CoordsName.x, CoordsName.y);
-                    //sprName.setTexture(textureName.getTexture());
+                    calculateButtonMenu(buttonsMass, buttonsSpeed, buttonsCamera, buttonsCloseAndDelete, window, world, scaleWorldinWindow);
+                    tgui::Gui gui{ window };
+                    std::wstring name = "<color=white>" + planets[i].getName() + "</color>";
+                    std::ostringstream mass;
+                    std::ostringstream speed;
+                    mass << "<color=white>" << "Mass " << std::scientific << std::setprecision(2) << planets[i].getMass() << "</color>";
+                    speed << "<color=white>Speed (" << std::setprecision(4) << planets[i].getVelocity().x << ", " << std::setprecision(4) << planets[i].getVelocity().y << " )</color>";
+                    tgui::RichTextLabel::Ptr labelName = tgui::RichTextLabel::create();
+                    tgui::RichTextLabel::Ptr labelMass = tgui::RichTextLabel::create();
+                    tgui::RichTextLabel::Ptr labelSpeed = tgui::RichTextLabel::create();
+                    labelName->setText(name);
+                    labelName->setPosition(750, 260);
+                    labelName->setTextSize(18);
+                    labelMass->setText(mass.str());
+                    labelMass->setPosition(750, 290);
+                    labelMass->setTextSize(18);
+                    labelSpeed->setText(speed.str());
+                    labelSpeed->setPosition(750, 360);
+                    labelSpeed->setTextSize(18);
+                    gui.add(labelName);
+                    gui.add(labelMass);
+                    gui.add(labelSpeed);
                     window.draw(panelPlanet);
-                    //window.draw(sprName);
+                    gui.draw();
                     drawButtons(buttonsMass, window);
                     drawButtons(buttonsSpeed, window);
                     drawButtons(buttonsCamera, window);

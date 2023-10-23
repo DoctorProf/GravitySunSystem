@@ -51,7 +51,6 @@
     <None Include="sfml-system-d-2.dll" />
     <None Include="sfml-window-2.dll" />
     <None Include="sfml-window-d-2.dll" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Button.cpp">
@@ -320,5 +319,8 @@
     <Image Include="Texture\deletePlanet.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="spaceSound.mp3" />
   </ItemGroup>
 </Project>
