@@ -187,15 +187,15 @@ void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& butto
 {
     for (int i = 0; i < planets.size(); i++)
     {
-        buttonsPlanet.push_back(Button(window.getSize().x / 76.8, 20.0f + window.getSize().y / 38.4 * i, window.getSize().x / 19.2, window.getSize().y / 64.0f, textureButton[i], textureNamesPlanet[i], 1.0f));
+        buttonsPlanet.push_back(Button(window.getSize().x / 76.8, 20.0f + window.getSize().y / 38.4 * i, window.getSize().x / 19.2, window.getSize().y / 64.0f, textureButtonPlanet[i], textureNamesPlanet[i], 1.0f));
     }
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 9; i++)
     {
-        buttonsLogic.push_back(Button(window.getSize().x / 38.4, window.getSize().y / 2.3 + window.getSize().y / 18.0f * i, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButton[i + 9], "", 1.0f));
+        buttonsLogic.push_back(Button(window.getSize().x / 38.4, window.getSize().y / 2.3 + window.getSize().y / 18.0f * i, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[i], "", 1.0f));
     }
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 9; i++)
     {
-        buttonsInfo.push_back(Button(window.getSize().x / 17.5, window.getSize().y / 2.25 + window.getSize().y / 18.0f * i, window.getSize().x / 64, window.getSize().y / 36, textureButton[17], textureInfo[i], 1.0f));
+        buttonsInfo.push_back(Button(window.getSize().x / 17.5, window.getSize().y / 2.25 + window.getSize().y / 18.0f * i, window.getSize().x / 64.0f, window.getSize().y / 36.0f, textureButtonLogic[9], textureInfo[i], 1.0f));
     }
     for (int i = 0; i < planets.size(); i++) 
     {
@@ -204,20 +204,21 @@ void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& butto
 }
 void gl::genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsCamera, std::vector<Button>& buttonsCloceAndDelete,RenderWindow &window)
 {
-    buttonsCloceAndDelete.push_back(Button(window.getSize().x / 2.56, window.getSize().y / 1.46, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonWindow[10], "", 1.0f));
-    buttonsCloceAndDelete.push_back(Button(window.getSize().x / 1.745, window.getSize().y / 1.46, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButton[16], "", 1.0f));
-    buttonsCamera.push_back(Button(window.getSize().x / 2.16, window.getSize().y / 2.4, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonWindow[8], "", 1.0f));
-    buttonsCamera.push_back(Button(window.getSize().x / 2.02, window.getSize().y / 2.4, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonWindow[9], "", 1.0f));
-    buttonsMass.push_back(Button(window.getSize().x / 2.56, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[0], "", 0.1f));
-    buttonsMass.push_back(Button(window.getSize().x / 2.37, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[1], "", 0.5f));
-    buttonsMass.push_back(Button(window.getSize().x / 2.21, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[2], "", 2.0f));
-    buttonsMass.push_back(Button(window.getSize().x / 2.06, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[3], "", 5.0f));
-    buttonsMass.push_back(Button(window.getSize().x / 1.94, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[4], "", 10.0f));
-    buttonsMass.push_back(Button(window.getSize().x / 1.83, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[7], "", -1.0f));
-    buttonsSpeed.push_back(Button(window.getSize().x / 2.56, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[0], "", 0.1f));
-    buttonsSpeed.push_back(Button(window.getSize().x / 2.37, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[1], "", 0.5f));
-    buttonsSpeed.push_back(Button(window.getSize().x / 2.21, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[5], "", 1.2f));
-    buttonsSpeed.push_back(Button(window.getSize().x / 2.06, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonWindow[6], "", 1.5f));
+    buttonsCloceAndDelete.push_back(Button(window.getSize().x / 2.56, window.getSize().y / 1.46, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[12], "", 1.0f));
+    buttonsCloceAndDelete.push_back(Button(window.getSize().x / 1.745, window.getSize().y / 1.46, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[8], "", 1.0f));
+    buttonsCamera.push_back(Button(window.getSize().x / 2.16, window.getSize().y / 2.4, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[10], "", 1.0f));
+    buttonsCamera.push_back(Button(window.getSize().x / 2.02, window.getSize().y / 2.4, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[11], "", 1.0f));
+    buttonsMass.push_back(Button(window.getSize().x / 2.56, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[0], "", 0.1f));
+    buttonsMass.push_back(Button(window.getSize().x / 2.37, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[1], "", 0.5f));
+    buttonsMass.push_back(Button(window.getSize().x / 2.21, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[2], "", 2.0f));
+    buttonsMass.push_back(Button(window.getSize().x / 2.06, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[3], "", 5.0f));
+    buttonsMass.push_back(Button(window.getSize().x / 1.94, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[4], "", 10.0f));
+    buttonsMass.push_back(Button(window.getSize().x / 1.83, window.getSize().y / 3.375, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[5], "", -1.0f));
+    buttonsSpeed.push_back(Button(window.getSize().x / 2.56, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[1], "", 0.5f));
+    buttonsSpeed.push_back(Button(window.getSize().x / 2.37, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[6], "", 0.7f));
+    buttonsSpeed.push_back(Button(window.getSize().x / 2.21, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[7], "", 0.9f));
+    buttonsSpeed.push_back(Button(window.getSize().x / 2.06, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[8], "", 1.1f));
+    buttonsSpeed.push_back(Button(window.getSize().x / 1.94, window.getSize().y / 2.77, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[9], "", 1.3f));
 }
 void gl::calculateButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsCamera, std::vector<Button>& buttonsCloceAndDelete, RenderWindow& window, View& world, double& scaleWorldinWindow)
 {

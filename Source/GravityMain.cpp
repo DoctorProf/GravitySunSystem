@@ -34,6 +34,7 @@ int main()
     bool trackDraw = false;
     bool speed = false;
     bool panelPlanetOn = false;
+    bool systemBoundary = false;
     Clock clock;
     Clock clock2;
     Clock clock3;
@@ -51,7 +52,7 @@ int main()
     RectangleShape background;
     background.setSize(Vector2f(world.getSize().x, world.getSize().y));
     Texture back;
-    back.loadFromFile(textureButton[18]);
+    back.loadFromFile(textureBackground[0]);
     //Панель для кнопок
     RectangleShape panel;
     panel.setFillColor(Color::Color(25,25,25));
@@ -229,7 +230,11 @@ int main()
                                     timePerFrame = seconds(1.0f / 120.0f);
                                 }
                             }
-                            if (i == 7)
+                            if (i == 7) 
+                            {
+                                systemBoundary = !systemBoundary;
+                            }
+                            if (i == 8)
                             {
                                 window.close();
                             }
@@ -337,7 +342,10 @@ int main()
         {
             accumulatedTime -= timePerFrame;
             if (pause) continue;
-            beyondSolarSystem(planets, buttonsPlanet);
+            if (systemBoundary)
+            {
+                beyondSolarSystem(planets, buttonsPlanet);
+            }
             collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
             logicPlanet(planets, G, scalePhy, world);
             std::cout << planets[0].getPosition().x << " " << planets[0].getPosition().y << "Size view " << world.getSize().x << " " << world.getSize().y << "\n";

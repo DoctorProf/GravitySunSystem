@@ -1,6 +1,6 @@
 #include "../Headers/Texture.h"
 
-std::string textureButton[] =
+std::string textureButtonPlanet[] =
 {
 	"Texture/sun.png",
 	"Texture/mercury.png",
@@ -10,44 +10,9 @@ std::string textureButton[] =
 	"Texture/jupiter.png",
 	"Texture/saturn.png",
 	"Texture/uranus.png",
-	"Texture/neptune.png",
-	"Texture/minus.png",
-	"Texture/plus.png",
-	"Texture/track_on.png",
-	"Texture/track_off.png",
-	"Texture/reload.png",
-	"Texture/pause.png",
-	"Texture/speed.png",
-	"Texture/close.png",
-	"Texture/info.png",
-	"Texture/space.jpg",
+	"Texture/neptune.png"
 };
-std::string textureButtonWindow[] =
-{
-	"Texture/0.1.png",
-	"Texture/0.5.png",
-	"Texture/2.png",
-	"Texture/5.png",
-	"Texture/10.png",
-	"Texture/1.2.png",
-	"Texture/1.5.png",
-	"Texture/-1.png",
-	"Texture/cam_on.png",
-	"Texture/cam_off.png",
-	"Texture/deletePlanet.png"
-};
-extern std::string textureInfo[] =
-{
-	"Texture/zoomout.png",
-	"Texture/zoomin.png",
-	"Texture/orbiton.png",
-	"Texture/orbitoff.png",
-	"Texture/reset.png",
-	"Texture/pauseInfo.png",
-	"Texture/speedInfo.png",
-	"Texture/closeInfo.png"
-};
-extern std::string textureNamesPlanet[] = 
+std::string textureNamesPlanet[] =
 {
 	"Texture/sunN.png",
 	"Texture/mercuryN.png",
@@ -59,3 +24,49 @@ extern std::string textureNamesPlanet[] =
 	"Texture/uranusN.png",
 	"Texture/neptuneN.png"
 };
+std::string textureButtonLogic[] =
+{
+	"Texture/minus.png",
+	"Texture/plus.png",
+	"Texture/track_on.png",
+	"Texture/track_off.png",
+	"Texture/reload.png",
+	"Texture/pause.png",
+	"Texture/speed.png",
+	"Texture/systemBoundary.png",
+	"Texture/close.png",
+	"Texture/info.png",
+	"Texture/cam_on.png",
+	"Texture/cam_off.png",
+	"Texture/deletePlanet.png"
+};
+std::string textureInfo[] =
+{
+	"Texture/zoomout.png",
+	"Texture/zoomin.png",
+	"Texture/orbiton.png",
+	"Texture/orbitoff.png",
+	"Texture/reset.png",
+	"Texture/pauseInfo.png",
+	"Texture/speedInfo.png",
+	"Texture/systemBoundaryInfo.png",
+	"Texture/closeInfo.png"
+};
+std::string textureBackground[] =
+{
+	"Texture/space.jpg"
+};
+std::string textureButtonPanel[] =
+{
+	"Texture/0.1.png",
+	"Texture/0.5.png",
+	"Texture/2.png",
+	"Texture/5.png",
+	"Texture/10.png",
+	"Texture/-1.png",
+	"Texture/0.7.png",
+	"Texture/0.9.png",
+	"Texture/1.1.png",
+	"Texture/1.3.png"
+};
+

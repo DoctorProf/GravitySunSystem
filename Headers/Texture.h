@@ -1,7 +1,12 @@
 #pragma once
 #include <iostream>
 
-extern std::string textureButton[];
-extern std::string textureButtonWindow[];
-extern std::string textureInfo[];
+#include "../Headers/Texture.h"
+
+extern std::string textureButtonPlanet[];
 extern std::string textureNamesPlanet[];
+extern std::string textureButtonLogic[];
+extern std::string textureInfo[];
+extern std::string textureBackground[];
+extern std::string textureButtonPanel[];
+
