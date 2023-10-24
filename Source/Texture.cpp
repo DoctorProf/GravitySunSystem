@@ -67,6 +67,7 @@ std::string textureButtonPanel[] =
 	"Texture/0.7.png",
 	"Texture/0.9.png",
 	"Texture/1.1.png",
-	"Texture/1.3.png"
+	"Texture/1.3.png",
+	"Texture/0.png",
 };
 

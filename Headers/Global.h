@@ -8,7 +8,6 @@ namespace gl
     double distance(Vector2f vec1, Vector2f vec2);
     Vector2f offset(double radius);
     Vector2f normalizeVector(Planet planet1, Planet planet2);
-    void setStyleText(Text &text, Font &font, double &scaleWorldinWindow);
     bool collisionButton(float x, float y, float sizeX, float sizeY, float mouseX, float mouseY);
     void spawnPlanet(std::vector<Planet>& planets, RenderWindow& window);
     void calculatePanel(RectangleShape& panel, RectangleShape& panelInfo, RectangleShape& panelPlanet, RenderWindow& window, View& world, double& scaleWorldinWindow);

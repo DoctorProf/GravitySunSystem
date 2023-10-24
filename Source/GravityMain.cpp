@@ -25,15 +25,10 @@ int main()
     world.setCenter(Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
     world.setSize(Vector2f(window.getSize().x, window.getSize().y));
 
-    //Загрузка стиля текста
-    Font font;
-    font.loadFromFile("C:\\windows\\fonts\\arial.ttf");
     //Глобальные переменныe
-    bool flag = false;
     bool pause = false;
     bool trackDraw = false;
-    bool speed = false;
-    bool panelPlanetOn = false;
+    int speed = 0;
     bool systemBoundary = false;
     Clock clock;
     Clock clock2;
@@ -65,8 +60,8 @@ int main()
     //Панель для планеты
     RectangleShape panelPlanet;
     panelPlanet.setFillColor(Color::Color(50, 50, 50));
-    panelPlanet.setSize(Vector2f(world.getSize().x / 3.84, world.getSize().y / 1.8));
-    panelPlanet.setPosition(Vector2f(world.getSize().x / 2.74, world.getSize().y / 4.5));
+    panelPlanet.setSize(Vector2f(world.getSize().x / 4.8, world.getSize().y / 3.6));
+    panelPlanet.setPosition(Vector2f(world.getSize().x / 1.26, world.getSize().y / 1.385));
     //Масштаб отношение Предсталения к окну
     double scaleWorldinWindow = world.getSize().x / window.getSize().x;
     // инициализация tps и fps
@@ -110,225 +105,207 @@ int main()
                 resetFosucPlanet(planets);
                 world.move(25.0f * scaleWorldinWindow, 0);
             }
+            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
+            {
+                pause = !pause;
+            }
             else if (event.type == Event::MouseMoved)
             {
-                if (!panelPlanetOn)
+                Vector2i mouseCoor = Mouse::getPosition(window);
+                bool mouseOnAnyButton = false;
+                bool mouseOnAnyButtonPlanet = false;
+                for (int i = 0; i < buttonsInfo.size(); i++)
                 {
-                    Vector2i mouseCoor = Mouse::getPosition(window);
-                    bool mouseOnAnyButton = false;
-                    bool mouseOnAnyButtonPlanet = false;
-                    for (int i = 0; i < buttonsInfo.size(); i++)
+                    Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsInfo[i].getPosition().x, buttonsInfo[i].getPosition().y));
+                    if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsInfo[i].getSize().x / scaleWorldinWindow, buttonsInfo[i].getSize().y / scaleWorldinWindow,
+                        mouseCoor.x, mouseCoor.y))
                     {
-                        Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsInfo[i].getPosition().x, buttonsInfo[i].getPosition().y));
-                        if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsInfo[i].getSize().x / scaleWorldinWindow, buttonsInfo[i].getSize().y / scaleWorldinWindow,
-                            mouseCoor.x, mouseCoor.y))
-                        {
-                            buttonsInfo[i].setStatus(true);
-                            mouseOnAnyButton = true;
-                        }
-                        else
-                        {
-                            buttonsInfo[i].setStatus(false);
-                        }
+                        buttonsInfo[i].setStatus(true);
+                        mouseOnAnyButton = true;
                     }
-                    for (int i = 0; i < buttonsPlanet.size(); i++)
+                    else
                     {
-                        Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsPlanet[i].getPosition().x, buttonsPlanet[i].getPosition().y));
-                        if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y / scaleWorldinWindow,
-                            mouseCoor.x, mouseCoor.y))
-                        {
-                            buttonsPlanet[i].setStatus(true);
-                            mouseOnAnyButtonPlanet = true;
-                        }
-                        else
-                        {
-                            buttonsPlanet[i].setStatus(false);
-                        }
+                        buttonsInfo[i].setStatus(false);
                     }
-                    if (!mouseOnAnyButton) resetStatusButton(buttonsInfo);
-                    if (!mouseOnAnyButtonPlanet) resetStatusButton(buttonsPlanet);
                 }
+                for (int i = 0; i < buttonsPlanet.size(); i++)
+                {
+                    Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsPlanet[i].getPosition().x, buttonsPlanet[i].getPosition().y));
+                    if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y / scaleWorldinWindow,
+                        mouseCoor.x, mouseCoor.y))
+                    {
+                        buttonsPlanet[i].setStatus(true);
+                        mouseOnAnyButtonPlanet = true;
+                    }
+                    else
+                    {
+                        buttonsPlanet[i].setStatus(false);
+                    }
+                }
+                if (!mouseOnAnyButton) resetStatusButton(buttonsInfo);
+                if (!mouseOnAnyButtonPlanet) resetStatusButton(buttonsPlanet);
             }
             else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
             {
-                if (!panelPlanetOn)
+                for (int i = 0; i < buttonsPlanet.size(); i++)
                 {
-                    for (int i = 0; i < buttonsPlanet.size(); i++) 
+                    Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsPlanet[i].getPosition().x, buttonsPlanet[i].getPosition().y));
+                    if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y / scaleWorldinWindow, event.mouseButton.x, event.mouseButton.y))
                     {
-                        Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsPlanet[i].getPosition().x, buttonsPlanet[i].getPosition().y));
-                        if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsPlanet[i].getSize().x / scaleWorldinWindow, buttonsPlanet[i].getSize().y / scaleWorldinWindow, event.mouseButton.x, event.mouseButton.y))
-                        {
-                            if (pause) 
-                            {
-                                flag = true;
-                            } 
-                            else 
-                            {
-                                pause = true;
-                            }    
-                            planets[i].setMenuPlanet(true);
-                            panelPlanetOn = true;
-                            genButtonMenu(buttonsMass, buttonsSpeed, buttonsCamera, buttonsCloseAndDelete, window);
-                        }
+                        resetMenuPlanets(planets);
+                        buttonsMass.clear();
+                        buttonsSpeed.clear();
+                        buttonsCamera.clear();
+                        buttonsCloseAndDelete.clear();
+                        planets[i].setMenuPlanet(true);
+                        genButtonMenu(buttonsMass, buttonsSpeed, buttonsCamera, buttonsCloseAndDelete, window);
                     }
-                    for (int i = 0; i < buttonsLogic.size(); i++)
+                }
+                for (int i = 0; i < buttonsLogic.size(); i++)
+                {
+                    Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsLogic[i].getPosition().x, buttonsLogic[i].getPosition().y));
+                    if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsLogic[i].getSize().x / scaleWorldinWindow, buttonsLogic[i].getSize().y / scaleWorldinWindow,
+                        event.mouseButton.x, event.mouseButton.y))
                     {
-                        Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsLogic[i].getPosition().x, buttonsLogic[i].getPosition().y));
-                        if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsLogic[i].getSize().x / scaleWorldinWindow, buttonsLogic[i].getSize().y / scaleWorldinWindow,
-                            event.mouseButton.x, event.mouseButton.y))
+                        if (i == 0 && scaleWorldinWindow < 1e15)
                         {
-                            if (i == 0 && scaleWorldinWindow < 1e15)
+                            world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
+                            break;
+                        }
+                        else if (i == 1 && scaleWorldinWindow >= 0.03)
+                        {
+                            world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
+                            break;
+                        }
+                        else if (i == 2)
+                        {
+                            trackDraw = true;
+                        }
+                        else if (i == 3)
+                        {
+                            trackDraw = false;
+                            for (int i = 0; i < planets.size(); i++)
                             {
-                                world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
-                                break;
+                                planets[i].clearTrack();
                             }
-                            else if (i == 1 && scaleWorldinWindow >= 0.03)
+                        }
+                        else if (i == 4)
+                        {
+                            world.setSize(window.getSize().x, window.getSize().y);
+                            world.setCenter(Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
+                            planets.clear();
+                            buttonsPlanet.clear();
+                            buttonsLogic.clear();
+                            buttonsInfo.clear();
+                            buttonsMass.clear();
+                            buttonsSpeed.clear();
+                            buttonsCamera.clear();
+                            buttonsCloseAndDelete.clear();
+                            spawnPlanet(planets, window);
+                            generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, buttonsInfo, window);
+                        }
+                        else if (i == 5)
+                        {
+                            pause = !pause;
+                        }
+                        else if (i == 6)
+                        { 
+                            if (speed == 0)
                             {
-                                world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
-                                break;
+                                speed++;
+                                timePerFrame = seconds(1.0f / 400.0f);
                             }
-                            else if (i == 2)
+                            else if(speed == 1)
                             {
-                                trackDraw = true;
+                                speed++;
+                                timePerFrame = seconds(1.0f / 700.0f);
                             }
-                            else if (i == 3)
+                            else if (speed == 2)
                             {
-                                trackDraw = false;
-                                for (int i = 0; i < planets.size(); i++)
-                                {
-                                    planets[i].clearTrack();
-                                }
+                                speed++;
+                                timePerFrame = seconds(1.0f / 1100.0f);
                             }
-                            else if (i == 4)
+                            else if (speed == 3) 
                             {
-                                world.setSize(window.getSize().x, window.getSize().y);
-                                world.setCenter(Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
-                                planets.clear();
-                                buttonsPlanet.clear();
-                                buttonsLogic.clear();
-                                buttonsInfo.clear();
-                                buttonsMass.clear();
-                                buttonsSpeed.clear();
-                                buttonsCamera.clear();
-                                buttonsCloseAndDelete.clear();
-                                spawnPlanet(planets, window);
-                                generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, buttonsInfo, window);
+                                timePerFrame = seconds(1.0f / 60.0f);
+                                speed = 0;
                             }
-                            else if (i == 5)
-                            {
-                                pause = !pause;
-                            }
-                            else if (i == 6)
-                            {
-                                speed = !speed;
-                                if (speed)
-                                {
-                                    timePerFrame = seconds(1.0f / 600.0f);
-                                }
-                                else
-                                {
-                                    timePerFrame = seconds(1.0f / 120.0f);
-                                }
-                            }
-                            if (i == 7) 
-                            {
-                                systemBoundary = !systemBoundary;
-                            }
-                            if (i == 8)
-                            {
-                                window.close();
-                            }
+                        }
+                        if (i == 7) 
+                        {
+                            systemBoundary = !systemBoundary;
+                        }
+                        if (i == 8)
+                        {
+                            window.close();
                         }
                     }
                 }
-                else 
+                for (int i = 0; i < planets.size(); i++) 
                 {
-                    for (int i = 0; i < planets.size(); i++) 
+                    if (planets[i].getMenuPlanet()) 
                     {
-                        if (planets[i].getMenuPlanet()) 
+                        for (int j = 0; j < buttonsMass.size(); j++) 
                         {
-                            for (int j = 0; j < buttonsMass.size(); j++) 
+                            Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsMass[j].getPosition().x, buttonsMass[j].getPosition().y));
+                            if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsMass[j].getSize().x / scaleWorldinWindow, buttonsMass[j].getSize().y / scaleWorldinWindow,
+                                event.mouseButton.x, event.mouseButton.y)) 
                             {
-                                Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsMass[j].getPosition().x, buttonsMass[j].getPosition().y));
-                                if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsMass[j].getSize().x / scaleWorldinWindow, buttonsMass[j].getSize().y / scaleWorldinWindow,
-                                    event.mouseButton.x, event.mouseButton.y)) 
+                                planets[i].setMass(planets[i].getMass() * buttonsMass[j].getCoeff());
+                            }
+                        }
+                        for (int j = 0; j < buttonsSpeed.size(); j++)
+                        {
+                            Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsSpeed[j].getPosition().x, buttonsSpeed[j].getPosition().y));
+                            if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsSpeed[j].getSize().x / scaleWorldinWindow, buttonsSpeed[j].getSize().y / scaleWorldinWindow,
+                                event.mouseButton.x, event.mouseButton.y))
+                            {
+                                planets[i].setVelocity(Vector2f(planets[i].getVelocity().x * buttonsSpeed[j].getCoeff(), planets[i].getVelocity().y * buttonsSpeed[j].getCoeff()));
+                            }
+                        }
+                        for (int j = 0; j < buttonsCamera.size(); j++)
+                        {
+                            Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsCamera[j].getPosition().x, buttonsCamera[j].getPosition().y));
+                            if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsCamera[j].getSize().x / scaleWorldinWindow, buttonsCamera[j].getSize().y / scaleWorldinWindow,
+                                event.mouseButton.x, event.mouseButton.y))
+                            {
+                                if (j == 0)
                                 {
-                                    planets[i].setMass(planets[i].getMass() * buttonsMass[j].getCoeff());
+                                    resetFosucPlanet(planets);
+                                    planets[i].setFocus(true);
+                                }
+                                else 
+                                {
+                                    resetFosucPlanet(planets);
+                                    planets[i].setFocus(false);
                                 }
                             }
-                            for (int j = 0; j < buttonsSpeed.size(); j++)
+                        }
+                        for (int j = 0; j < buttonsCloseAndDelete.size(); j++)
+                        {
+                            Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsCloseAndDelete[j].getPosition().x, buttonsCloseAndDelete[j].getPosition().y));
+                            if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsCloseAndDelete[j].getSize().x / scaleWorldinWindow, buttonsCloseAndDelete[j].getSize().y / scaleWorldinWindow,
+                                event.mouseButton.x, event.mouseButton.y))
                             {
-                                Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsSpeed[j].getPosition().x, buttonsSpeed[j].getPosition().y));
-                                if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsSpeed[j].getSize().x / scaleWorldinWindow, buttonsSpeed[j].getSize().y / scaleWorldinWindow,
-                                    event.mouseButton.x, event.mouseButton.y))
+                                if (j == 1)
                                 {
-                                    planets[i].setVelocity(Vector2f(planets[i].getVelocity().x * buttonsSpeed[j].getCoeff(), planets[i].getVelocity().y * buttonsSpeed[j].getCoeff()));
+                                    buttonsMass.clear();
+                                    buttonsSpeed.clear();
+                                    buttonsCamera.clear();
+                                    buttonsCloseAndDelete.clear();
+                                    clock.restart();
+                                    resetMenuPlanets(planets);
                                 }
-                            }
-                            for (int j = 0; j < buttonsCamera.size(); j++)
-                            {
-                                Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsCamera[j].getPosition().x, buttonsCamera[j].getPosition().y));
-                                if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsCamera[j].getSize().x / scaleWorldinWindow, buttonsCamera[j].getSize().y / scaleWorldinWindow,
-                                    event.mouseButton.x, event.mouseButton.y))
+                                else
                                 {
-                                    if (j == 0)
-                                    {
-                                        resetFosucPlanet(planets);
-                                        planets[i].setFocus(true);
-                                    }
-                                    else 
-                                    {
-                                        resetFosucPlanet(planets);
-                                        planets[i].setFocus(false);
-                                    }
-                                }
-                            }
-                            for (int j = 0; j < buttonsCloseAndDelete.size(); j++)
-                            {
-                                Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsCloseAndDelete[j].getPosition().x, buttonsCloseAndDelete[j].getPosition().y));
-                                if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsCloseAndDelete[j].getSize().x / scaleWorldinWindow, buttonsCloseAndDelete[j].getSize().y / scaleWorldinWindow,
-                                    event.mouseButton.x, event.mouseButton.y))
-                                {
-                                    if (j == 0) 
-                                    {
-                                        if (flag)
-                                        {
-                                            pause = true;
-                                        }
-                                        else
-                                        {
-                                            pause = false;
-                                        }
-                                        buttonsMass.clear();
-                                        buttonsSpeed.clear();
-                                        buttonsCamera.clear();
-                                        buttonsCloseAndDelete.clear();
-                                        resetMenuPlanets(planets);
-                                        panelPlanetOn = false;
-                                        flag = false;
-                                        planets.erase(planets.begin() + i);
-                                        buttonsPlanet.erase(buttonsPlanet.begin() + i);
-                                        clock.restart();
-                                    }
-                                    else 
-                                    {
-                                        if (flag)
-                                        {
-                                            pause = true;
-                                        }
-                                        else
-                                        {
-                                            pause = false;
-                                        }
-                                        buttonsMass.clear();
-                                        buttonsSpeed.clear();
-                                        buttonsCamera.clear();
-                                        buttonsCloseAndDelete.clear();
-                                        clock.restart();
-                                        panelPlanetOn = false;
-                                        flag = false;
-                                        resetMenuPlanets(planets);
-                                    }
+                                    buttonsMass.clear();
+                                    buttonsSpeed.clear();
+                                    buttonsCamera.clear();
+                                    buttonsCloseAndDelete.clear();
+                                    resetMenuPlanets(planets);
+                                    planets.erase(planets.begin() + i);
+                                    buttonsPlanet.erase(buttonsPlanet.begin() + i);
+                                    clock.restart();
                                 }
                             }
                         }
@@ -349,17 +326,18 @@ int main()
             collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
             logicPlanet(planets, G, scalePhy, world);
             std::cout << planets[0].getPosition().x << " " << planets[0].getPosition().y << "Size view " << world.getSize().x << " " << world.getSize().y << "\n";
-            Time time = clock3.getElapsedTime();
-            if (trackDraw && time >= interval)
-            {
-                for (int i = 0; i < planets.size(); i++)
-                {
-                    planets[i].addTrack();
-                }
-                clock3.restart();
-            }
+            
         }
         accumulatedTime2 += clock2.restart();
+        Time time = clock3.getElapsedTime();
+        if (trackDraw && time >= interval)
+        {
+            for (int i = 0; i < planets.size(); i++)
+            {
+                planets[i].addTrack();
+            }
+            clock3.restart();
+        }
         if (clockSound.getElapsedTime().asSeconds() > 268) 
         {
             spaceSound.play();
@@ -423,13 +401,13 @@ int main()
                     tgui::RichTextLabel::Ptr labelMass = tgui::RichTextLabel::create();
                     tgui::RichTextLabel::Ptr labelSpeed = tgui::RichTextLabel::create();
                     labelName->setText(name);
-                    labelName->setPosition(window.getSize().x / 2.56, window.getSize().y / 4.15);
+                    labelName->setPosition(window.getSize().x / 1.247, window.getSize().y / 1.355);
                     labelName->setTextSize(window.getSize().x / 106.7);
                     labelMass->setText(mass.str());
-                    labelMass->setPosition(window.getSize().x / 2.56, window.getSize().y / 3.72);
+                    labelMass->setPosition(window.getSize().x / 1.247, window.getSize().y / 1.315);
                     labelMass->setTextSize(window.getSize().x / 106.7);
                     labelSpeed->setText(speed.str());
-                    labelSpeed->setPosition(window.getSize().x / 2.56, window.getSize().y / 3.0f);
+                    labelSpeed->setPosition(window.getSize().x / 1.247, window.getSize().y / 1.23);
                     labelSpeed->setTextSize(window.getSize().x / 106.7);
                     gui.add(labelName);
                     gui.add(labelMass);
