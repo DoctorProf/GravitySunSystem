@@ -15,7 +15,6 @@ private:
     std::wstring name;
     bool focus;
     bool menuPlanet;
-
 public:
     Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name);
     void addTrack();

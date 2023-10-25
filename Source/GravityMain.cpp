@@ -85,29 +85,34 @@ int main()
         Event event;
         while (window.pollEvent(event)) 
         {
-            if (event.type == Event::KeyPressed && event.key.code == Keyboard::W)
+            if (event.type == sf::Event::MouseWheelScrolled)
             {
-                resetFosucPlanet(planets);
-                world.move(0, -25.0f * scaleWorldinWindow);
-            }
-            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::S)
-            {
-                resetFosucPlanet(planets);
-                world.move(0, 25.0f * scaleWorldinWindow);
-            }
-            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::A)
-            {
-                resetFosucPlanet(planets);
-                world.move(-25.0f * scaleWorldinWindow, 0);
-            }
-            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::D)
-            {
-                resetFosucPlanet(planets);
-                world.move(25.0f * scaleWorldinWindow, 0);
+                if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+                {
+                    if (event.mouseWheelScroll.delta > 0 && scaleWorldinWindow >= 0.03)
+                    {
+                        world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
+                        break;
+                    }
+                    else if (event.mouseWheelScroll.delta < 0 && scaleWorldinWindow < 70)
+                    {
+                        world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
+                        break;
+                    }
+                }
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
             {
                 pause = !pause;
+                
+            }
+            else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Escape)
+            {
+                buttonsMass.clear();
+                buttonsSpeed.clear();
+                buttonsCamera.clear();
+                buttonsCloseAndDelete.clear();
+                resetMenuPlanets(planets);
             }
             else if (event.type == Event::MouseMoved)
             {
@@ -167,7 +172,7 @@ int main()
                     if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsLogic[i].getSize().x / scaleWorldinWindow, buttonsLogic[i].getSize().y / scaleWorldinWindow,
                         event.mouseButton.x, event.mouseButton.y))
                     {
-                        if (i == 0 && scaleWorldinWindow < 1e15)
+                        if (i == 0 && scaleWorldinWindow < 70)
                         {
                             world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
                             break;
@@ -293,7 +298,6 @@ int main()
                                     buttonsSpeed.clear();
                                     buttonsCamera.clear();
                                     buttonsCloseAndDelete.clear();
-                                    clock.restart();
                                     resetMenuPlanets(planets);
                                 }
                                 else
@@ -305,7 +309,6 @@ int main()
                                     resetMenuPlanets(planets);
                                     planets.erase(planets.begin() + i);
                                     buttonsPlanet.erase(buttonsPlanet.begin() + i);
-                                    clock.restart();
                                 }
                             }
                         }
@@ -313,11 +316,32 @@ int main()
                 }
             }
         }
+        
         scaleWorldinWindow = world.getSize().x / window.getSize().x;
         accumulatedTime += clock.restart();
         while (accumulatedTime >= timePerFrame)
         {
             accumulatedTime -= timePerFrame;
+            if (Keyboard::isKeyPressed(Keyboard::W))
+            {
+                resetFosucPlanet(planets);
+                world.move(0, -25.0f * scaleWorldinWindow);
+            }
+            if(Keyboard::isKeyPressed(Keyboard::S))
+            {
+                resetFosucPlanet(planets);
+                world.move(0, 25.0f * scaleWorldinWindow);
+            }
+            if (Keyboard::isKeyPressed(Keyboard::A))
+            {
+                resetFosucPlanet(planets);
+                world.move(-25.0f * scaleWorldinWindow, 0);
+            }
+            if (Keyboard::isKeyPressed(Keyboard::D))
+            {
+                resetFosucPlanet(planets);
+                world.move(25.0f * scaleWorldinWindow, 0);
+            }
             if (pause) continue;
             if (systemBoundary)
             {
@@ -365,7 +389,7 @@ int main()
             }
             for (int i = 0; i < buttonsPlanet.size(); i++)
             {
-                if (buttonsPlanet[i].getStatus() || planets[i].getFocus())
+                if (buttonsPlanet[i].getStatus() || planets[i].getFocus() || planets[i].getMenuPlanet())
                 {
                     namesPlanet[i].setPosition(Vector2f(planets[i].getPosition().x + 2.0f * planets[i].getRadius(), planets[i].getPosition().y));
                     Texture panelTextur = buttonsPlanet[i].getTextureMessage();
@@ -396,7 +420,7 @@ int main()
                     std::ostringstream mass;
                     std::ostringstream speed;
                     mass << "<color=white>" << "Mass " << std::scientific << std::setprecision(2) << planets[i].getMass() << "</color>";
-                    speed << "<color=white>Speed (" << std::setprecision(4) << planets[i].getVelocity().x << ", " << std::setprecision(4) << planets[i].getVelocity().y << " )</color>";
+                    speed << "<color=white>Speed " << std::setprecision(5) << pow( pow(planets[i].getVelocity().x, 2) + pow(planets[i].getVelocity().y, 2), 0.5) << " </color>";
                     tgui::RichTextLabel::Ptr labelName = tgui::RichTextLabel::create();
                     tgui::RichTextLabel::Ptr labelMass = tgui::RichTextLabel::create();
                     tgui::RichTextLabel::Ptr labelSpeed = tgui::RichTextLabel::create();
