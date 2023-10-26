@@ -70,4 +70,8 @@ std::string textureButtonPanel[] =
 	"Texture/1.3.png",
 	"Texture/0.png",
 };
+std::string texturePlanet[] =
+{
+	"Texture/sunTexture.png",
+};
 

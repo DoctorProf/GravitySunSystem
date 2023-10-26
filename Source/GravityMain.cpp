@@ -94,7 +94,7 @@ int main()
                         world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
                         break;
                     }
-                    else if (event.mouseWheelScroll.delta < 0 && scaleWorldinWindow < 70)
+                    else if (event.mouseWheelScroll.delta < 0 && scaleWorldinWindow < 1e3)
                     {
                         world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
                         break;
@@ -172,7 +172,7 @@ int main()
                     if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsLogic[i].getSize().x / scaleWorldinWindow, buttonsLogic[i].getSize().y / scaleWorldinWindow,
                         event.mouseButton.x, event.mouseButton.y))
                     {
-                        if (i == 0 && scaleWorldinWindow < 70)
+                        if (i == 0 && scaleWorldinWindow < 1e3)
                         {
                             world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
                             break;
@@ -205,6 +205,7 @@ int main()
                             buttonsMass.clear();
                             buttonsSpeed.clear();
                             buttonsCamera.clear();
+                            namesPlanet.clear();
                             buttonsCloseAndDelete.clear();
                             spawnPlanet(planets, window);
                             generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, buttonsInfo, window);
@@ -317,30 +318,30 @@ int main()
             }
         }
         
-        scaleWorldinWindow = world.getSize().x / window.getSize().x;
         accumulatedTime += clock.restart();
         while (accumulatedTime >= timePerFrame)
         {
+            scaleWorldinWindow = world.getSize().x / window.getSize().x;
             accumulatedTime -= timePerFrame;
             if (Keyboard::isKeyPressed(Keyboard::W))
             {
                 resetFosucPlanet(planets);
-                world.move(0, -25.0f * scaleWorldinWindow);
+                world.move(0, -10.0f * scaleWorldinWindow);
             }
             if(Keyboard::isKeyPressed(Keyboard::S))
             {
                 resetFosucPlanet(planets);
-                world.move(0, 25.0f * scaleWorldinWindow);
+                world.move(0, 10.0f * scaleWorldinWindow);
             }
             if (Keyboard::isKeyPressed(Keyboard::A))
             {
                 resetFosucPlanet(planets);
-                world.move(-25.0f * scaleWorldinWindow, 0);
+                world.move(-10.0f * scaleWorldinWindow, 0);
             }
             if (Keyboard::isKeyPressed(Keyboard::D))
             {
                 resetFosucPlanet(planets);
-                world.move(25.0f * scaleWorldinWindow, 0);
+                world.move(10.0f * scaleWorldinWindow, 0);
             }
             if (pause) continue;
             if (systemBoundary)
@@ -348,9 +349,7 @@ int main()
                 beyondSolarSystem(planets, buttonsPlanet);
             }
             collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
-            logicPlanet(planets, G, scalePhy, world);
-            std::cout << planets[0].getPosition().x << " " << planets[0].getPosition().y << "Size view " << world.getSize().x << " " << world.getSize().y << "\n";
-            
+            logicPlanet(planets, G, scalePhy, world);            
         }
         accumulatedTime2 += clock2.restart();
         Time time = clock3.getElapsedTime();
