@@ -16,6 +16,7 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     this->planet.setFillColor(color);
     this->planet.setPointCount(60);
     this->menuPlanet = false;
+    this->blockMove = false;
 }
 void Planet::addTrack()
 {
@@ -71,9 +72,11 @@ Color Planet::getColor()
 }
 void Planet::update(Vector2f normDir, float a)
 {
+    if (blockMove) return;
     velocity += Vector2f(normDir.x * a, normDir.y * a);
 }
 void Planet::move() {
+    if (blockMove) return;
     position += velocity;
 }
 void Planet::drawTrack(RenderWindow& window)
@@ -100,4 +103,12 @@ void Planet::setMenuPlanet(bool menuPlanet)
 bool Planet::getMenuPlanet()
 {
     return this->menuPlanet;
+}
+void Planet::setBlockMove(bool blockMove) 
+{
+    this->blockMove = blockMove;
+}
+bool Planet::getBlockMove() 
+{
+    return this->blockMove;
 }

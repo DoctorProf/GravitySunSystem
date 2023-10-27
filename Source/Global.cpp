@@ -77,7 +77,7 @@ void gl::calculateButtonPlanet(std::vector<Button>& buttonsPlanet, RenderWindow&
         buttonsPlanet[i].setPosition(Vector2f(buttonCoords.x, buttonCoords.y + window.getSize().y / 21.6 * scaleWorldinWindow * i));
     }
 }
-void gl::calculateButtonLogic(std::vector<Button>& buttonsLogic, std::vector<Button> &buttonsInfo, RenderWindow& window, View& world, double& scaleWorldinWindow)
+void gl::calculateButtonLogic(std::vector<Button>& buttonsLogic, RenderWindow& window, View& world, double& scaleWorldinWindow)
 {
     window.setView(world);
     Vector2f buttonCoordsL = window.mapPixelToCoords(Vector2i(window.getSize().x / 38.4, window.getSize().y / 2.3));
@@ -86,11 +86,6 @@ void gl::calculateButtonLogic(std::vector<Button>& buttonsLogic, std::vector<But
     {
         buttonsLogic[i].setSize(Vector2f(window.getSize().x / 38.4 * scaleWorldinWindow, window.getSize().y / 21.6 * scaleWorldinWindow));
         buttonsLogic[i].setPosition(Vector2f(buttonCoordsL.x, buttonCoordsL.y + window.getSize().y / 18 * scaleWorldinWindow * i));
-    }
-    for (int i = 0; i < buttonsInfo.size(); i++)
-    {
-        buttonsInfo[i].setSize(Vector2f(window.getSize().x / 64.0f  * scaleWorldinWindow, window.getSize().y / 36.0f * scaleWorldinWindow));
-        buttonsInfo[i].setPosition(Vector2f(buttonCoordsI.x, buttonCoordsI.y + window.getSize().y / 18.0f * scaleWorldinWindow * i));
     }
 }
 void gl::calculateNamesPlanet(std::vector<RectangleShape>& namesPlanet, RenderWindow& window, double& scaleWorldinWindow)
@@ -176,7 +171,7 @@ void gl::collisionPlanet(std::vector<Planet>& planets, std::vector<Button>& butt
         }
     }
 }
-void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, std::vector<Button>& buttonsLogic,std::vector<RectangleShape>& namesPlanet, std::vector<Button>& buttonsInfo, RenderWindow& window)
+void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, std::vector<Button>& buttonsLogic,std::vector<RectangleShape>& namesPlanet, RenderWindow& window)
 {
     for (int i = 0; i < planets.size(); i++)
     {
@@ -184,11 +179,7 @@ void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& butto
     }
     for (int i = 0; i < 9; i++)
     {
-        buttonsLogic.push_back(Button(window.getSize().x / 38.4, window.getSize().y / 2.3 + window.getSize().y / 18.0f * i, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[i], "", 1.0f));
-    }
-    for (int i = 0; i < 9; i++)
-    {
-        buttonsInfo.push_back(Button(window.getSize().x / 17.5, window.getSize().y / 2.25 + window.getSize().y / 18.0f * i, window.getSize().x / 64.0f, window.getSize().y / 36.0f, textureButtonLogic[9], textureInfo[i], 1.0f));
+        buttonsLogic.push_back(Button(window.getSize().x / 38.4, window.getSize().y / 2.3 + window.getSize().y / 18.0f * i, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[i], textureInfo[i], 1.0f));
     }
     for (int i = 0; i < planets.size(); i++) 
     {
@@ -197,10 +188,11 @@ void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& butto
 }
 void gl::genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsCamera, std::vector<Button>& buttonsCloceAndDelete,RenderWindow &window)
 {
-    buttonsCloceAndDelete.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[12], "", 1.0f));
-    buttonsCloceAndDelete.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[8], "", 1.0f));
-    buttonsCamera.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[10], "", 1.0f));
-    buttonsCamera.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[11], "", 1.0f));
+    buttonsCloceAndDelete.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[11], textureInfo[9], 1.0f));
+    buttonsCloceAndDelete.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[12], textureInfo[10], 1.0f));
+    buttonsCloceAndDelete.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[8], textureInfo[11], 1.0f));
+    buttonsCamera.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[9], textureInfo[12], 1.0f));
+    buttonsCamera.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[10], textureInfo[13], 1.0f));
     buttonsMass.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[0], "", 0.1f));
     buttonsMass.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[1], "", 0.5f));
     buttonsMass.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[2], "", 2.0f));
@@ -239,6 +231,6 @@ void gl::calculateButtonMenu(std::vector<Button>& buttonsMass, std::vector<Butto
     for (int i = 0; i < buttonsCloceAndDelete.size(); i++)
     {
         buttonsCloceAndDelete[i].setSize(Vector2f(window.getSize().x / 38.4 * scaleWorldinWindow, window.getSize().y / 21.6 * scaleWorldinWindow));
-        buttonsCloceAndDelete[i].setPosition(Vector2f(CoordsButtonCloseAndDelete.x + window.getSize().x / 6.4 * scaleWorldinWindow * i, CoordsButtonCloseAndDelete.y));
+        buttonsCloceAndDelete[i].setPosition(Vector2f(CoordsButtonCloseAndDelete.x + window.getSize().x / 12.0f * scaleWorldinWindow * i, CoordsButtonCloseAndDelete.y));
     }
 }

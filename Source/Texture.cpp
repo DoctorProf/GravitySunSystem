@@ -35,22 +35,27 @@ std::string textureButtonLogic[] =
 	"Texture/speed.png",
 	"Texture/systemBoundary.png",
 	"Texture/close.png",
-	"Texture/info.png",
 	"Texture/cam_on.png",
 	"Texture/cam_off.png",
-	"Texture/deletePlanet.png"
+	"Texture/deletePlanet.png",
+	"Texture/block.png",
 };
 std::string textureInfo[] =
 {
-	"Texture/zoomout.png",
-	"Texture/zoomin.png",
-	"Texture/orbiton.png",
-	"Texture/orbitoff.png",
-	"Texture/reset.png",
+	"Texture/minusInfo.png",
+	"Texture/plusInfo.png",
+	"Texture/track_onInfo.png",
+	"Texture/track_offInfo.png",
+	"Texture/reloadInfo.png",
 	"Texture/pauseInfo.png",
 	"Texture/speedInfo.png",
 	"Texture/systemBoundaryInfo.png",
-	"Texture/closeInfo.png"
+	"Texture/closeInfo.png",
+	"Texture/deletePlanetInfo.png",
+	"Texture/blockPlanetInfo.png",
+	"Texture/closePanelPlanetInfo.png",
+	"Texture/cam_onInfo.png",
+	"Texture/cam_offInfo.png"
 };
 std::string textureBackground[] =
 {
@@ -69,9 +74,5 @@ std::string textureButtonPanel[] =
 	"Texture/1.1.png",
 	"Texture/1.3.png",
 	"Texture/0.png",
-};
-std::string texturePlanet[] =
-{
-	"Texture/sunTexture.png",
 };
 

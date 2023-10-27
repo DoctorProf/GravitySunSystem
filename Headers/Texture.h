@@ -9,4 +9,3 @@ extern std::string textureButtonLogic[];
 extern std::string textureInfo[];
 extern std::string textureBackground[];
 extern std::string textureButtonPanel[];
-extern std::string texturePlanet[];
