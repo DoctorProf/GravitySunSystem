@@ -1,3 +1,3 @@
 # GravitySunSystem
 Симулятор Солнечной системы.
-![SunSystem]()
+![SunSystem]((https://github.com/DoctorProf/GravitySunSystem/blob/master/SunSystem.jpg))
