@@ -1,3 +1,3 @@
 # GravitySunSystem
 Симулятор Солнечной системы.
-![SunSystem]((SunSystem.png))
+![SunSystem](SunSystem.png)
