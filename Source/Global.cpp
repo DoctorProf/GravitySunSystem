@@ -37,15 +37,16 @@ bool gl::collisionButton(float x, float y, float sizeX, float sizeY, float mouse
 }
 void gl::spawnPlanet(std::vector<Planet>& planets, RenderWindow& window)
 {
-    planets.push_back(Planet(70.0f, 2e30, Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f), Vector2f(0, 0), Color::Color(255, 255, 0), L"Солнце"));
-    planets.push_back(Planet(0.3, 3.33e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 58, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.03), Color::Color(209, 159, 120), L"Меркурий"));
-    planets.push_back(Planet(0.6, 4.87e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 108, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.9), Color::Color(167, 92, 21), L"Венера"));
-    planets.push_back(Planet(0.6, 5.97e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 150, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.8), Color::Color(85, 118, 145), L"Земля"));
-    planets.push_back(Planet(0.4, 6.42e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 228, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.68), Color::Color(255, 0, 0), L"Марс"));
-    planets.push_back(Planet(7, 1.89e27, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 778, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.4), Color::Color(172, 153, 128), L"Юпитер"));
-    planets.push_back(Planet(6, 5.68e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 1400, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.30), Color::Color(222, 189, 110), L"Сатурн"));
-    planets.push_back(Planet(2.5, 8.68e25, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 2800, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.22), Color::Color(111, 231, 234), L"Уран"));
-    planets.push_back(Planet(2.4, 1.024e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 4550, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.17), Color::Color(0, 0, 255), L"Нептун"));
+    //1.03
+    planets.push_back(Planet(7.0f, 2e30, Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f), Vector2f(0, 0), Color::Color(255, 255, 0), L"Солнце"));
+    planets.push_back(Planet(0.03, 3.33e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 58, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.4), Color::Color(209, 159, 120), L"Меркурий"));
+    planets.push_back(Planet(0.06, 4.87e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 108, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.07), Color::Color(167, 92, 21), L"Венера"));
+    planets.push_back(Planet(0.06, 5.97e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 150, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.9), Color::Color(85, 118, 145), L"Земля"));
+    planets.push_back(Planet(0.04, 6.42e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 228, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 0.74), Color::Color(255, 0, 0), L"Марс"));
+    planets.push_back(Planet(0.7f, 1.89e27, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 778, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.40), Color::Color(172, 153, 128), L"Юпитер"));
+    planets.push_back(Planet(0.6f, 5.68e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 1400, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.30), Color::Color(222, 189, 110), L"Сатурн"));
+    planets.push_back(Planet(0.25f, 8.68e25, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 2800, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.22), Color::Color(111, 231, 234), L"Уран"));
+    planets.push_back(Planet(0.24f, 1.024e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 4550, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.17), Color::Color(0, 0, 255), L"Нептун"));
 }
 void gl::calculatePanel(RectangleShape& panel, RectangleShape &panelInfo, RectangleShape &panelPlanet, RenderWindow& window, View& world, double& scaleWorldinWindow)
 {
@@ -153,16 +154,18 @@ void gl::collisionPlanet(std::vector<Planet>& planets, std::vector<Button>& butt
 
             if (distance(planets[i].getPosition() + offset(planets[i].getRadius()), planets[j].getPosition() + offset(planets[j].getRadius())) <= planets[i].getRadius() + planets[j].getRadius())
             {
-                if (planets[i].getMass() > planets[j].getMass())
+                if (abs(planets[i].getMass()) > abs(planets[j].getMass()))
                 {
                     planets[i].setMass(planets[i].getMass() + planets[j].getMass());
+                    planets[i].setVelocity((planets[i].getVelocity() * (float)planets[i].getMass() + planets[j].getVelocity() * (float)planets[j].getMass()) / (float)planets[i].getMass());
                     planets.erase(planets.begin() + j);
                     buttonsPlanet.erase(buttonsPlanet.begin() + j);
                     calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
                 }
-                else if (planets[j].getMass() > planets[i].getMass())
+                else if (abs(planets[j].getMass()) > abs(planets[i].getMass()))
                 {
                     planets[j].setMass(planets[j].getMass() + planets[i].getMass());
+                    planets[j].setVelocity((planets[i].getVelocity() * (float)planets[i].getMass() + planets[j].getVelocity() * (float)planets[j].getMass()) / (float)planets[j].getMass());
                     planets.erase(planets.begin() + i);
                     buttonsPlanet.erase(buttonsPlanet.begin() + i);
                     calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
@@ -186,13 +189,13 @@ void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& butto
         namesPlanet.push_back(RectangleShape(Vector2f(window.getSize().x / 21.8, window.getSize().y / 77.1)));
     }
 }
-void gl::genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsCamera, std::vector<Button>& buttonsCloceAndDelete,RenderWindow &window)
+void gl::genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsLogicPanelPlanet,RenderWindow &window)
 {
-    buttonsCloceAndDelete.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[11], textureInfo[9], 1.0f));
-    buttonsCloceAndDelete.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[12], textureInfo[10], 1.0f));
-    buttonsCloceAndDelete.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[8], textureInfo[11], 1.0f));
-    buttonsCamera.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[9], textureInfo[12], 1.0f));
-    buttonsCamera.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[10], textureInfo[13], 1.0f));
+    buttonsLogicPanelPlanet.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[11], textureInfo[9], 1.0f));
+    buttonsLogicPanelPlanet.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[9], textureInfo[12], 1.0f));
+    buttonsLogicPanelPlanet.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[10], textureInfo[13], 1.0f));
+    buttonsLogicPanelPlanet.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[12], textureInfo[10], 1.0f));
+    buttonsLogicPanelPlanet.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogic[8], textureInfo[11], 1.0f));
     buttonsMass.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[0], "", 0.1f));
     buttonsMass.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[1], "", 0.5f));
     buttonsMass.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[2], "", 2.0f));
@@ -206,7 +209,7 @@ void gl::genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& bu
     buttonsSpeed.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[9], "", 1.3f));
     buttonsSpeed.push_back(Button(1, 1, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonPanel[10], "", 0.0f));
 }
-void gl::calculateButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsCamera, std::vector<Button>& buttonsCloceAndDelete, RenderWindow& window, View& world, double& scaleWorldinWindow)
+void gl::calculateButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsLogicPanelPlanet, RenderWindow& window, View& world, double& scaleWorldinWindow)
 {
     window.setView(world);
     Vector2f CoordsButtonMass = window.mapPixelToCoords(Vector2i(window.getSize().x / 1.247, window.getSize().y / 1.27));
@@ -223,14 +226,9 @@ void gl::calculateButtonMenu(std::vector<Button>& buttonsMass, std::vector<Butto
         buttonsSpeed[i].setSize(Vector2f(window.getSize().x / 38.4 * scaleWorldinWindow, window.getSize().y / 43.2 * scaleWorldinWindow));
         buttonsSpeed[i].setPosition(Vector2f(CoordsButtonSpeed.x + window.getSize().x / 32.0f * scaleWorldinWindow * i, CoordsButtonSpeed.y));
     }
-    for (int i = 0; i < buttonsCamera.size(); i++)
+    for (int i = 0; i < buttonsLogicPanelPlanet.size(); i++)
     {
-        buttonsCamera[i].setSize(Vector2f(window.getSize().x / 38.4 * scaleWorldinWindow, window.getSize().y / 21.6 * scaleWorldinWindow));
-        buttonsCamera[i].setPosition(Vector2f(CoordsButtonCamera.x + window.getSize().x / 27.4 * scaleWorldinWindow * i, CoordsButtonCamera.y));
-    }
-    for (int i = 0; i < buttonsCloceAndDelete.size(); i++)
-    {
-        buttonsCloceAndDelete[i].setSize(Vector2f(window.getSize().x / 38.4 * scaleWorldinWindow, window.getSize().y / 21.6 * scaleWorldinWindow));
-        buttonsCloceAndDelete[i].setPosition(Vector2f(CoordsButtonCloseAndDelete.x + window.getSize().x / 12.0f * scaleWorldinWindow * i, CoordsButtonCloseAndDelete.y));
+        buttonsLogicPanelPlanet[i].setSize(Vector2f(window.getSize().x / 38.4 * scaleWorldinWindow, window.getSize().y / 21.6 * scaleWorldinWindow));
+        buttonsLogicPanelPlanet[i].setPosition(Vector2f(CoordsButtonCloseAndDelete.x + window.getSize().x / 25.0f * scaleWorldinWindow * i, CoordsButtonCloseAndDelete.y));
     }
 }

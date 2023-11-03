@@ -4,8 +4,6 @@
 #include <string>
 #include <iomanip>
 #include "SFML/Audio.hpp"
-#include <TGUI/TGUI.hpp>
-#include <TGUI/Backend/SFML-Graphics.hpp>
 using namespace sf;
 using namespace gl;
 
@@ -27,13 +25,13 @@ int main()
 
     //Глобальные переменныe
     bool pause = false;
-    bool trackDraw = false;
+    bool trackDraw = true;
     int speed = 0;
     bool systemBoundary = false;
     Clock clock;
     Clock clock2;
     Clock clock3;
-    Time interval = seconds(0.02);
+    Time interval = seconds(0.01);
     double G = 6.67e-11;
     double scalePhy = 1e9;
 
@@ -67,15 +65,13 @@ int main()
     Time accumulatedTime = Time::Zero;
     Time accumulatedTime2 = Time::Zero;
 
-    Time timePerFrame = seconds(1.0f / 60.0f); // tps
+    Time timePerFrame = seconds(1.0f / 30.0f); // tps
     Time timePerFrame2 = seconds(1.0f / 60.0f); // fps    
     
     //Вектора кнопок для панели редактирования планеты
     std::vector<Button> buttonsMass;
     std::vector<Button> buttonsSpeed;
-    std::vector<Button> buttonsCamera;
-    std::vector<Button> buttonsCloseAndDelete;
-    
+    std::vector<Button> buttonsLogicPanelPlanet;
     //Изначальный спавн планет и кнопок панели
     spawnPlanet(planets, window);
     generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, window);
@@ -88,7 +84,7 @@ int main()
             {
                 if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
                 {
-                    if (event.mouseWheelScroll.delta > 0 && scaleWorldinWindow >= 0.03)
+                    if (event.mouseWheelScroll.delta > 0 && scaleWorldinWindow >= 0.003)
                     {
                         world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
                         break;
@@ -109,8 +105,7 @@ int main()
             {
                 buttonsMass.clear();
                 buttonsSpeed.clear();
-                buttonsCamera.clear();
-                buttonsCloseAndDelete.clear();
+                buttonsLogicPanelPlanet.clear();
                 resetMenuPlanets(planets);
             }
             else if (event.type == Event::MouseMoved)
@@ -118,34 +113,19 @@ int main()
                 Vector2i mouseCoor = Mouse::getPosition(window);
                 bool mouseOnAnyButton = false;
                 bool mouseOnAnyButtonPlanet = false;
-                bool mouseOnAnyButtonCamera = false;
-                bool mouseOnAnyButtonCloseAndDelete = false;
-                for (int i = 0; i < buttonsCamera.size(); i++)
+                bool mouseOnAnyButtonLogicPanelPlanet = false;
+                for (int i = 0; i < buttonsLogicPanelPlanet.size(); i++)
                 {
-                    Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsCamera[i].getPosition().x, buttonsCamera[i].getPosition().y));
-                    if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsCamera[i].getSize().x / scaleWorldinWindow, buttonsCamera[i].getSize().y / scaleWorldinWindow,
+                    Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsLogicPanelPlanet[i].getPosition().x, buttonsLogicPanelPlanet[i].getPosition().y));
+                    if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsLogicPanelPlanet[i].getSize().x / scaleWorldinWindow, buttonsLogicPanelPlanet[i].getSize().y / scaleWorldinWindow,
                         mouseCoor.x, mouseCoor.y))
                     {
-                        buttonsCamera[i].setStatus(true);
-                        mouseOnAnyButtonCamera = true;
+                        buttonsLogicPanelPlanet[i].setStatus(true);
+                        mouseOnAnyButtonLogicPanelPlanet = true;
                     }
                     else
                     {
-                        buttonsCamera[i].setStatus(false);
-                    }
-                }
-                for (int i = 0; i < buttonsCloseAndDelete.size(); i++)
-                {
-                    Vector2i buttonCoor = window.mapCoordsToPixel(Vector2f(buttonsCloseAndDelete[i].getPosition().x, buttonsCloseAndDelete[i].getPosition().y));
-                    if (collisionButton(buttonCoor.x, buttonCoor.y, buttonsCloseAndDelete[i].getSize().x / scaleWorldinWindow, buttonsCloseAndDelete[i].getSize().y / scaleWorldinWindow,
-                        mouseCoor.x, mouseCoor.y))
-                    {
-                        buttonsCloseAndDelete[i].setStatus(true);
-                        mouseOnAnyButtonCloseAndDelete = true;
-                    }
-                    else
-                    {
-                        buttonsCloseAndDelete[i].setStatus(false);
+                        buttonsLogicPanelPlanet[i].setStatus(false);
                     }
                 }
                 for (int i = 0; i < buttonsLogic.size(); i++)
@@ -178,8 +158,7 @@ int main()
                 }
                 if (!mouseOnAnyButton) resetStatusButton(buttonsLogic);
                 if (!mouseOnAnyButtonPlanet) resetStatusButton(buttonsPlanet);
-                if (!mouseOnAnyButtonCamera) resetStatusButton(buttonsCamera);
-                if (!mouseOnAnyButtonCloseAndDelete) resetStatusButton(buttonsCloseAndDelete);
+                if (!mouseOnAnyButtonLogicPanelPlanet) resetStatusButton(buttonsLogicPanelPlanet);
             }
             else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
             {
@@ -191,10 +170,9 @@ int main()
                         resetMenuPlanets(planets);
                         buttonsMass.clear();
                         buttonsSpeed.clear();
-                        buttonsCamera.clear();
-                        buttonsCloseAndDelete.clear();
+                        buttonsLogicPanelPlanet.clear();
                         planets[i].setMenuPlanet(true);
-                        genButtonMenu(buttonsMass, buttonsSpeed, buttonsCamera, buttonsCloseAndDelete, window);
+                        genButtonMenu(buttonsMass, buttonsSpeed, buttonsLogicPanelPlanet, window);
                     }
                 }
                 for (int i = 0; i < buttonsLogic.size(); i++)
@@ -208,7 +186,7 @@ int main()
                             world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
                             break;
                         }
-                        else if (i == 1 && scaleWorldinWindow >= 0.03)
+                        else if (i == 1 && scaleWorldinWindow >= 0.003)
                         {
                             world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
                             break;
@@ -234,9 +212,8 @@ int main()
                             buttonsLogic.clear();
                             buttonsMass.clear();
                             buttonsSpeed.clear();
-                            buttonsCamera.clear();
                             namesPlanet.clear();
-                            buttonsCloseAndDelete.clear();
+                            buttonsLogicPanelPlanet.clear();
                             spawnPlanet(planets, window);
                             generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, window);
                         }
@@ -249,21 +226,21 @@ int main()
                             if (speed == 0)
                             {
                                 speed++;
-                                timePerFrame = seconds(1.0f / 400.0f);
+                                timePerFrame = seconds(1.0f / 300.0f);
                             }
                             else if(speed == 1)
                             {
                                 speed++;
-                                timePerFrame = seconds(1.0f / 700.0f);
+                                timePerFrame = seconds(1.0f / 600.0f);
                             }
                             else if (speed == 2)
                             {
                                 speed++;
-                                timePerFrame = seconds(1.0f / 1100.0f);
+                                timePerFrame = seconds(1.0f / 900.0f);
                             }
                             else if (speed == 3) 
                             {
-                                timePerFrame = seconds(1.0f / 60.0f);
+                                timePerFrame = seconds(1.0f / 30.0f);
                                 speed = 0;
                             }
                         }
@@ -299,50 +276,48 @@ int main()
                                 planets[i].setVelocity(Vector2f(planets[i].getVelocity().x * buttonsSpeed[j].getCoeff(), planets[i].getVelocity().y * buttonsSpeed[j].getCoeff()));
                             }
                         }
-                        for (int j = 0; j < buttonsCamera.size(); j++)
+                        for (int j = 0; j < buttonsLogicPanelPlanet.size(); j++)
                         {
-                            Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsCamera[j].getPosition().x, buttonsCamera[j].getPosition().y));
-                            if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsCamera[j].getSize().x / scaleWorldinWindow, buttonsCamera[j].getSize().y / scaleWorldinWindow,
+                            Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsLogicPanelPlanet[j].getPosition().x, buttonsLogicPanelPlanet[j].getPosition().y));
+                            if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsLogicPanelPlanet[j].getSize().x / scaleWorldinWindow, buttonsLogicPanelPlanet[j].getSize().y / scaleWorldinWindow,
                                 event.mouseButton.x, event.mouseButton.y))
                             {
-                                if (j == 0)
+                                if (j == 1)
                                 {
                                     resetFosucPlanet(planets);
                                     planets[i].setFocus(true);
                                 }
-                                else 
+                                else if(j == 2)
                                 {
                                     resetFosucPlanet(planets);
                                     planets[i].setFocus(false);
                                 }
                             }
                         }
-                        for (int j = 0; j < buttonsCloseAndDelete.size(); j++)
+                        for (int j = 0; j < buttonsLogicPanelPlanet.size(); j++)
                         {
-                            Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsCloseAndDelete[j].getPosition().x, buttonsCloseAndDelete[j].getPosition().y));
-                            if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsCloseAndDelete[j].getSize().x / scaleWorldinWindow, buttonsCloseAndDelete[j].getSize().y / scaleWorldinWindow,
+                            Vector2i buttonCoords = window.mapCoordsToPixel(Vector2f(buttonsLogicPanelPlanet[j].getPosition().x, buttonsLogicPanelPlanet[j].getPosition().y));
+                            if (collisionButton(buttonCoords.x, buttonCoords.y, buttonsLogicPanelPlanet[j].getSize().x / scaleWorldinWindow, buttonsLogicPanelPlanet[j].getSize().y / scaleWorldinWindow,
                                 event.mouseButton.x, event.mouseButton.y))
                             {
                                 if (j == 0)
                                 {
                                     buttonsMass.clear();
                                     buttonsSpeed.clear();
-                                    buttonsCamera.clear();
-                                    buttonsCloseAndDelete.clear();
+                                    buttonsLogicPanelPlanet.clear();
                                     resetMenuPlanets(planets);
                                     planets.erase(planets.begin() + i);
                                     buttonsPlanet.erase(buttonsPlanet.begin() + i);
                                 }
-                                else if (j == 1)
+                                else if (j == 3)
                                 {
                                     planets[i].setBlockMove(!planets[i].getBlockMove());
                                 }
-                                else if (j == 2) 
+                                else if (j == 4) 
                                 {
                                     buttonsMass.clear();
                                     buttonsSpeed.clear();
-                                    buttonsCamera.clear();
-                                    buttonsCloseAndDelete.clear();
+                                    buttonsLogicPanelPlanet.clear();
                                     resetMenuPlanets(planets);
                                 }
                             }
@@ -385,12 +360,11 @@ int main()
             collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
             logicPlanet(planets, G, scalePhy, world);    
         }
-        calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
-        calculatePanel(panel, panelInfo, panelPlanet, window, world, scaleWorldinWindow);
         calculateBackground(background, window, world);
+        calculatePanel(panel, panelInfo, panelPlanet, window, world, scaleWorldinWindow);
+        calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
         calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
         calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
-        accumulatedTime2 += clock2.restart();
         Time time = clock3.getElapsedTime();
         if (trackDraw && time >= interval)
         {
@@ -405,6 +379,7 @@ int main()
             spaceSound.play();
             clockSound.restart();
         }
+        accumulatedTime2 += clock2.restart();
         if (accumulatedTime2 >= timePerFrame2)
         {
             accumulatedTime2 -= timePerFrame2;
@@ -441,20 +416,11 @@ int main()
                     window.draw(panelInfo);
                 }
             }
-            for (int i = 0; i < buttonsCamera.size(); i++)
+            for (int i = 0; i < buttonsLogicPanelPlanet.size(); i++)
             {
-                if (buttonsCamera[i].getStatus())
+                if (buttonsLogicPanelPlanet[i].getStatus())
                 {
-                    Texture panelTextur = buttonsCamera[i].getTextureMessage();
-                    panelInfo.setTexture(&panelTextur);
-                    window.draw(panelInfo);
-                }
-            }
-            for (int i = 0; i < buttonsCloseAndDelete.size(); i++)
-            {
-                if (buttonsCloseAndDelete[i].getStatus())
-                {
-                    Texture panelTextur = buttonsCloseAndDelete[i].getTextureMessage();
+                    Texture panelTextur = buttonsLogicPanelPlanet[i].getTextureMessage();
                     panelInfo.setTexture(&panelTextur);
                     window.draw(panelInfo);
                 }
@@ -465,16 +431,18 @@ int main()
             {
                 if (planets[i].getMenuPlanet()) 
                 {
-                    calculateButtonMenu(buttonsMass, buttonsSpeed, buttonsCamera, buttonsCloseAndDelete, window, world, scaleWorldinWindow);
+                    calculateButtonMenu(buttonsMass, buttonsSpeed, buttonsLogicPanelPlanet, window, world, scaleWorldinWindow);
                     tgui::Gui gui{ window };
                     std::wstring name = "<color=white>" + planets[i].getName() + "</color>";
                     std::ostringstream mass;
                     std::ostringstream speed;
+                    std::ostringstream distanceToPlanet;
                     mass << "<color=white>" << "Mass " << std::scientific << std::setprecision(2) << planets[i].getMass() << "</color>";
                     speed << "<color=white>Speed " << std::setprecision(5) << pow( pow(planets[i].getVelocity().x, 2) + pow(planets[i].getVelocity().y, 2), 0.5) << " </color>";
                     tgui::RichTextLabel::Ptr labelName = tgui::RichTextLabel::create();
                     tgui::RichTextLabel::Ptr labelMass = tgui::RichTextLabel::create();
                     tgui::RichTextLabel::Ptr labelSpeed = tgui::RichTextLabel::create();
+                    tgui::RichTextLabel::Ptr labelDistanceToPlanet = tgui::RichTextLabel::create();
                     labelName->setText(name);
                     labelName->setPosition(window.getSize().x / 1.247, window.getSize().y / 1.355);
                     labelName->setTextSize(window.getSize().x / 106.7);
@@ -491,8 +459,7 @@ int main()
                     gui.draw();
                     drawButtons(buttonsMass, window);
                     drawButtons(buttonsSpeed, window);
-                    drawButtons(buttonsCamera, window);
-                    drawButtons(buttonsCloseAndDelete, window);
+                    drawButtons(buttonsLogicPanelPlanet, window);
                 }
             }
             window.display();

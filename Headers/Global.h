@@ -22,6 +22,6 @@ namespace gl
     void drawButtons(std::vector<Button>& buttons, RenderWindow& window);
     void collisionPlanet(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, RenderWindow& window, View& world, double scaleWorldinWindow);
     void generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, std::vector<Button>& buttonsLogic, std::vector<RectangleShape>& namesPlanet, RenderWindow& window);
-    void genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsCamera, std::vector<Button>& buttonsCloceAndDelete, RenderWindow& window);
-    void calculateButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsCamera, std::vector<Button>& buttonsCloceAndDelete, RenderWindow& window, View& world, double& scaleWorldinWindow);
+    void genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsLogicPanelPlanet, RenderWindow& window);
+    void calculateButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsLogicPanelPlanet, RenderWindow& window, View& world, double& scaleWorldinWindow);
 }
