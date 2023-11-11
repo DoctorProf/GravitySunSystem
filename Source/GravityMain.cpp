@@ -25,7 +25,7 @@ int main()
 
     //Глобальные переменныe
     bool pause = false;
-    bool trackDraw = true;
+    bool trackDraw = false;
     int speed = 0;
     bool systemBoundary = false;
     Clock clock;
@@ -80,9 +80,9 @@ int main()
         Event event;
         while (window.pollEvent(event)) 
         {
-            if (event.type == sf::Event::MouseWheelScrolled)
+            if (event.type == Event::MouseWheelScrolled)
             {
-                if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+                if (event.mouseWheelScroll.wheel == Mouse::VerticalWheel)
                 {
                     if (event.mouseWheelScroll.delta > 0 && scaleWorldinWindow >= 0.003)
                     {
@@ -360,11 +360,6 @@ int main()
             collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
             logicPlanet(planets, G, scalePhy, world);    
         }
-        calculateBackground(background, window, world);
-        calculatePanel(panel, panelInfo, panelPlanet, window, world, scaleWorldinWindow);
-        calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
-        calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
-        calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
         Time time = clock3.getElapsedTime();
         if (trackDraw && time >= interval)
         {
@@ -379,6 +374,11 @@ int main()
             spaceSound.play();
             clockSound.restart();
         }
+        calculateBackground(background, window, world);
+        calculatePanel(panel, panelInfo, panelPlanet, window, world, scaleWorldinWindow);
+        calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
+        calculateButtonPlanet(buttonsPlanet, window, world, scaleWorldinWindow);
+        calculateButtonLogic(buttonsLogic, window, world, scaleWorldinWindow);
         accumulatedTime2 += clock2.restart();
         if (accumulatedTime2 >= timePerFrame2)
         {

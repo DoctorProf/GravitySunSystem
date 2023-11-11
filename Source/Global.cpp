@@ -14,7 +14,6 @@ void gl::beyondSolarSystem(std::vector<Planet>& planets, std::vector<Button>& bu
         }
     }
 }
-
 double gl::distance(Vector2f vec1, Vector2f vec2)
 {
     double dx = vec1.x - vec2.x;
@@ -37,7 +36,6 @@ bool gl::collisionButton(float x, float y, float sizeX, float sizeY, float mouse
 }
 void gl::spawnPlanet(std::vector<Planet>& planets, RenderWindow& window)
 {
-    //1.03
     planets.push_back(Planet(7.0f, 2e30, Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f), Vector2f(0, 0), Color::Color(255, 255, 0), L"Солнце"));
     planets.push_back(Planet(0.03, 3.33e23, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 58, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.4), Color::Color(209, 159, 120), L"Меркурий"));
     planets.push_back(Planet(0.06, 4.87e24, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 108, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, 1.07), Color::Color(167, 92, 21), L"Венера"));
