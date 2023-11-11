@@ -85,11 +85,17 @@
     <Image Include="Texture\10.png" />
     <Image Include="Texture\2.png" />
     <Image Include="Texture\5.png" />
+    <Image Include="Texture\block.png" />
+    <Image Include="Texture\blockPlanetInfo.png" />
     <Image Include="Texture\cam_off.png" />
+    <Image Include="Texture\cam_offInfo.png" />
     <Image Include="Texture\cam_on.png" />
+    <Image Include="Texture\cam_onInfo.png" />
     <Image Include="Texture\close.png" />
     <Image Include="Texture\closeInfo.png" />
+    <Image Include="Texture\closePanelPlanetInfo.png" />
     <Image Include="Texture\deletePlanet.png" />
+    <Image Include="Texture\deletePlanetInfo.png" />
     <Image Include="Texture\earth.png" />
     <Image Include="Texture\earthN.png" />
     <Image Include="Texture\info.png" />
@@ -100,6 +106,7 @@
     <Image Include="Texture\mercury.png" />
     <Image Include="Texture\mercuryN.png" />
     <Image Include="Texture\minus.png" />
+    <Image Include="Texture\minusInfo.png" />
     <Image Include="Texture\neptune.png" />
     <Image Include="Texture\neptuneN.png" />
     <Image Include="Texture\orbitoff.png" />
@@ -107,7 +114,9 @@
     <Image Include="Texture\pause.png" />
     <Image Include="Texture\pauseInfo.png" />
     <Image Include="Texture\plus.png" />
+    <Image Include="Texture\plusInfo.png" />
     <Image Include="Texture\reload.png" />
+    <Image Include="Texture\reloadInfo.png" />
     <Image Include="Texture\reset.png" />
     <Image Include="Texture\saturn.png" />
     <Image Include="Texture\saturnN.png" />
@@ -155,7 +164,9 @@
     <Image Include="Texture\TexturePlanet\uranus.jpg" />
     <Image Include="Texture\TexturePlanet\venus.jpg" />
     <Image Include="Texture\track_off.png" />
+    <Image Include="Texture\track_offInfo.png" />
     <Image Include="Texture\track_on.png" />
+    <Image Include="Texture\track_onInfo.png" />
     <Image Include="Texture\uranus.png" />
     <Image Include="Texture\uranusN.png" />
     <Image Include="Texture\venus.png" />
@@ -341,15 +352,15 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\TGUI-1.0\include;C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\TGUI-1.0\lib;C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>tgui.lib;tgui-s.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
@@ -361,11 +372,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProjectTest|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\TGUI-1.0\include;C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
-      <AdditionalLibraryDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\TGUI-1.0\lib;C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\С++\LIBRARY C++\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>tgui.lib;tgui-d.lib;tgui-s.lib;tgui-s-d.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-audio-d.lib;sfml-audio-s-d.lib;sfml-audio-s.lib;sfml-audio.lib;sfml-graphics-d.lib;sfml-graphics-s-d.lib;sfml-graphics-s.lib;sfml-graphics.lib;sfml-main-d.lib;sfml-main.lib;sfml-network-d.lib;sfml-network-s-d.lib;sfml-network-s.lib;sfml-network.lib;sfml-system-d.lib;sfml-system-s-d.lib;sfml-system-s.lib;sfml-system.lib;sfml-window-d.lib;sfml-window-s-d.lib;sfml-window-s.lib;sfml-window.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
