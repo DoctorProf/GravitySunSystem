@@ -37,7 +37,8 @@ int main()
     Clock clockTps;
     Clock clockFps;
     Clock clockInterval;
-    Time interval = seconds(0.01);
+    Clock clockOfRev;
+    Time interval = seconds(0.03);
     double G = 6.67e-11;
     double scalePhy = 1e9;
 
@@ -46,7 +47,7 @@ int main()
     std::vector<Button> buttonsPlanet;
     std::vector<Button> buttonsLogic;
     std::vector<RectangleShape> namesPlanet;
-    
+
     RectangleShape background;
     background.setSize(Vector2f(guiPanel.getSize().x, guiPanel.getSize().y));
     Texture back;
@@ -105,7 +106,6 @@ int main()
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
             {
                 pause = !pause;
-                
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Escape)
             {
@@ -323,7 +323,6 @@ int main()
                 }
             }
         }
-        
         accumulatedTime += clockTps.restart();
         while (accumulatedTime >= timePerFrame)
         {
@@ -357,7 +356,6 @@ int main()
             collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
             logicPlanet(planets, G, scalePhy, world);    
         }
-        
         Time time = clockInterval.getElapsedTime();
         if (trackDraw && time >= interval)
         {
@@ -380,7 +378,6 @@ int main()
             window.setView(guiPanel);
             window.draw(background);
             window.setView(world);
-
             for (int i = 0; i < planets.size(); i++)
             {
                 planets[i].drawTrack(window);
@@ -393,10 +390,10 @@ int main()
             {
                 if (buttonsPlanet[i].getStatus() || planets[i].getFocus() || planets[i].getMenuPlanet())
                 {
+                    namesPlanet[i].setSize(Vector2f(window.getSize().x / 21.8 * scaleWorldinWindow, window.getSize().y / 77.1 * scaleWorldinWindow));
                     namesPlanet[i].setPosition(Vector2f(planets[i].getPosition().x + 2.0f * planets[i].getRadius(), planets[i].getPosition().y));
                     Texture panelTextur = buttonsPlanet[i].getTextureMessage();
                     namesPlanet[i].setTexture(&panelTextur);
-                    calculateNamesPlanet(namesPlanet, window, scaleWorldinWindow);
                     window.draw(namesPlanet[i]);
                 }
             }
@@ -420,7 +417,6 @@ int main()
                     window.draw(panelInfo);
                 }
             }
-            
             drawButtons(buttonsPlanet, window);
             drawButtons(buttonsLogic, window);
             for (int i = 0; i < planets.size(); i++) 
@@ -433,21 +429,25 @@ int main()
                     std::ostringstream massPlanet;
                     std::ostringstream speedPlanet;
                     std::ostringstream distancePlanet;
-                    std::ostringstream numberRevolutions;
+                    std::ostringstream radiusPlanet;
                     Text name;
                     Text mass;
                     Text speed;
                     Text distancePlanetToPlanetMin;
+                    Text radius;
                     setStyleText(name, font);
                     setStyleText(mass, font);
                     setStyleText(speed, font);
+                    setStyleText(radius, font);
                     setStyleText(distancePlanetToPlanetMin, font);
                     name.setPosition(Vector2f(window.getSize().x / 1.247, window.getSize().y / 1.355));
                     mass.setPosition(Vector2f(window.getSize().x / 1.247, window.getSize().y / 1.315));
                     speed.setPosition(Vector2f(window.getSize().x / 1.247, window.getSize().y / 1.23));
-                    distancePlanetToPlanetMin.setPosition(Vector2f(window.getSize().x / 1.247, window.getSize().y / 1.15));
+                    radius.setPosition(Vector2f(window.getSize().x / 1.247, window.getSize().y / 1.15));
+                    distancePlanetToPlanetMin.setPosition(Vector2f(window.getSize().x / 1.247, window.getSize().y / 1.12));
                     massPlanet << std::scientific << std::setprecision(2) << planets[i].getMass();
                     speedPlanet << std::setprecision(4) << pow(pow(planets[i].getVelocity().x, 2) + pow(planets[i].getVelocity().y, 2), 0.5);
+                    radiusPlanet << std::setprecision(10) << planets[i].getRadius() * 100000;
                     for (Planet planet : planets) 
                     {
                         if (planet.getMass() == planets[i].getMass()) continue;
@@ -455,14 +455,16 @@ int main()
                         names.push_back(planet.getName());
                     }
                     distancePlanet << std::setprecision(3) << *std::min_element(distances.begin(), distances.end());
-                    distancePlanetToPlanetMin.setString(distancePlanet.str() + L" млн км до " + names[std::distance(distances.begin(), std::min_element(distances.begin(), distances.end()))]);
                     name.setString(namePlanet);
-                    mass.setString(L"Масса " + massPlanet.str());
-                    speed.setString(L"Скорость " + speedPlanet.str());
+                    mass.setString(L"Масса " + massPlanet.str() + " *");
+                    speed.setString(L"Скорость " + speedPlanet.str() + " *");
+                    radius.setString(L"Радиус " + radiusPlanet.str() + L" км");
+                    distancePlanetToPlanetMin.setString(distancePlanet.str() + L" млн км до " + names[std::distance(distances.begin(), std::min_element(distances.begin(), distances.end()))]);
                     window.draw(panelPlanet);
                     window.draw(name);
                     window.draw(mass);
                     window.draw(speed);
+                    window.draw(radius);
                     window.draw(distancePlanetToPlanetMin);
                     drawButtons(buttonsMass, window);
                     drawButtons(buttonsSpeed, window);

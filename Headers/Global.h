@@ -11,7 +11,6 @@ namespace gl
     void setStyleText(Text& text, Font& font);
     bool collisionButton(float x, float y, float sizeX, float sizeY, float mouseX, float mouseY);
     void spawnPlanet(std::vector<Planet>& planets, RenderWindow& window);
-    void calculateNamesPlanet(std::vector<RectangleShape>& namesPlanet, RenderWindow& window, double& scaleWorldinWindow);
     void resetFosucPlanet(std::vector<Planet>& planets);
     void resetStatusButton(std::vector<Button>& buttons);
     void resetMenuPlanets(std::vector<Planet>& planets);
