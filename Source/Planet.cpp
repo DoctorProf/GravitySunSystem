@@ -1,13 +1,14 @@
 #include "../Headers/Planet.h"
 #include "../Headers/Texture.h"
 
-Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name):
+Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name, double radiusOrbit):
     radius(radius),
     mass(mass),
     position(position - Vector2f(radius, radius)),
     velocity(velocity),
     color(color),
-    name(name)
+    name(name),
+    radiusOrbit(radiusOrbit)
 {
     this->focus = false;
     this->track.setPrimitiveType(LinesStrip);
@@ -36,6 +37,10 @@ VertexArray Planet::getTrack()
 double Planet::getRadius()
 {
     return radius;
+}
+double Planet::getRadiusOrbit() 
+{
+    return radiusOrbit;
 }
 double Planet::getMass()
 {

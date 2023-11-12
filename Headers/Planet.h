@@ -7,6 +7,7 @@ class Planet
 private:
     CircleShape planet;
     double radius;
+    double radiusOrbit;
     double mass;
     Vector2f position;
     Vector2f velocity;
@@ -17,11 +18,12 @@ private:
     bool menuPlanet;
     bool blockMove;
 public:
-    Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name);
+    Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name, double radiusOrbit);
     void addTrack();
     void clearTrack();
     VertexArray getTrack();
     double getRadius();
+    double getRadiusOrbit();
     double getMass();
     void setMass(double mass);
     std::wstring getName();
