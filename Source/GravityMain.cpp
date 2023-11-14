@@ -33,11 +33,10 @@ int main()
     bool pause = false;
     bool trackDraw = false;
     int speed = 0;
-    bool systemBoundary = false;
+    bool volume = true;
     Clock clockTps;
     Clock clockFps;
     Clock clockInterval;
-    Clock clockOfRev;
     Time interval = seconds(0.03);
     double G = 6.67e-11;
     double scalePhy = 1e9;
@@ -105,14 +104,15 @@ int main()
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
             {
+                buttonsLogic[4].setOn(!buttonsLogic[4].getOn());
                 pause = !pause;
             }
             else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Escape)
             {
+                resetMenuPlanets(planets);
                 buttonsMass.clear();
                 buttonsSpeed.clear();
                 buttonsLogicPanelPlanet.clear();
-                resetMenuPlanets(planets);
             }
             else if (event.type == Event::MouseMoved)
             {
@@ -194,17 +194,14 @@ int main()
                         }
                         else if (i == 2)
                         {
-                            trackDraw = true;
-                        }
-                        else if (i == 3)
-                        {
-                            trackDraw = false;
+                            buttonsLogic[i].setOn(!buttonsLogic[i].getOn());
+                            trackDraw = !trackDraw;
                             for (int i = 0; i < planets.size(); i++)
                             {
                                 planets[i].clearTrack();
                             }
                         }
-                        else if (i == 4)
+                        else if (i == 3)
                         {
                             world.setSize(window.getSize().x, window.getSize().y);
                             world.setCenter(Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
@@ -218,11 +215,12 @@ int main()
                             spawnPlanet(planets, window);
                             generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, window);
                         }
-                        else if (i == 5)
+                        else if (i == 4)
                         {
+                            buttonsLogic[i].setOn(!buttonsLogic[i].getOn());
                             pause = !pause;
                         }
-                        else if (i == 6)
+                        else if (i == 5)
                         { 
                             if (speed == 0)
                             {
@@ -245,11 +243,20 @@ int main()
                                 speed = 0;
                             }
                         }
-                        if (i == 7) 
+                        if (i == 6) 
                         {
-                            systemBoundary = !systemBoundary;
+                            buttonsLogic[i].setOn(!buttonsLogic[i].getOn());
+                            volume = !volume;
+                            if (volume) {
+                                clockSound.restart();
+                                spaceSound.play();
+                            }
+                            else 
+                            {
+                                spaceSound.stop();
+                            }
                         }
-                        if (i == 8)
+                        if (i == 7)
                         {
                             window.close();
                         }
@@ -280,23 +287,6 @@ int main()
                             if (collisionButton(buttonsLogicPanelPlanet[j].getPosition().x, buttonsLogicPanelPlanet[j].getPosition().y, buttonsLogicPanelPlanet[j].getSize().x, buttonsLogicPanelPlanet[j].getSize().y,
                                 event.mouseButton.x, event.mouseButton.y))
                             {
-                                if (j == 1)
-                                {
-                                    resetFosucPlanet(planets);
-                                    planets[i].setFocus(true);
-                                }
-                                else if(j == 2)
-                                {
-                                    resetFosucPlanet(planets);
-                                    planets[i].setFocus(false);
-                                }
-                            }
-                        }
-                        for (int j = 0; j < buttonsLogicPanelPlanet.size(); j++)
-                        {
-                            if (collisionButton(buttonsLogicPanelPlanet[j].getPosition().x, buttonsLogicPanelPlanet[j].getPosition().y, buttonsLogicPanelPlanet[j].getSize().x, buttonsLogicPanelPlanet[j].getSize().y,
-                                event.mouseButton.x, event.mouseButton.y))
-                            {
                                 if (j == 0)
                                 {
                                     buttonsMass.clear();
@@ -306,17 +296,23 @@ int main()
                                     planets.erase(planets.begin() + i);
                                     buttonsPlanet.erase(buttonsPlanet.begin() + i);
                                 }
-                                else if (j == 3)
+                                else if (j == 1)
                                 {
+                                    buttonsLogicPanelPlanet[j].setOn(!buttonsLogicPanelPlanet[j].getOn());
+                                    planets[i].setFocus(!planets[i].getFocus());
+                                }
+                                else if (j == 2)
+                                {
+                                    buttonsLogicPanelPlanet[j].setOn(!buttonsLogicPanelPlanet[j].getOn());
                                     planets[i].setBlockMove(!planets[i].getBlockMove());
                                 }
-                                else if (j == 4) 
+                                else if (j == 3)
                                 {
                                     buttonsMass.clear();
                                     buttonsSpeed.clear();
                                     buttonsLogicPanelPlanet.clear();
                                     resetMenuPlanets(planets);
-                                }
+                                }                                
                             }
                         }
                     }
@@ -348,16 +344,19 @@ int main()
                 resetFosucPlanet(planets);
                 world.move(10.0f * scaleWorldinWindow, 0);
             }
-            if (pause) continue;
-            if (systemBoundary)
+            for (int i = 0; i < planets.size(); i++)
             {
-                beyondSolarSystem(planets, buttonsPlanet);
+                if (planets[i].getFocus())
+                {
+                    world.setCenter(Vector2f((float)(planets[i].getPosition().x + planets[i].getRadius()), (float)(planets[i].getPosition().y + planets[i].getRadius())));
+                }
             }
-            collisionPlanet(planets, buttonsPlanet, window, world, scaleWorldinWindow);
-            logicPlanet(planets, G, scalePhy, world);    
+            if (pause) continue;
+            collisionPlanet(planets, buttonsPlanet);
+            logicPlanet(planets, G, scalePhy);    
         }
         Time time = clockInterval.getElapsedTime();
-        if (trackDraw && time >= interval)
+        if (!pause && trackDraw && time >= interval)
         {
             for (int i = 0; i < planets.size(); i++)
             {
@@ -365,7 +364,7 @@ int main()
             }
             clockInterval.restart();
         }
-        if (clockSound.getElapsedTime().asSeconds() > 268) 
+        if (volume && clockSound.getElapsedTime().asSeconds() > 268 )
         {
             spaceSound.play();
             clockSound.restart();
@@ -378,14 +377,7 @@ int main()
             window.setView(guiPanel);
             window.draw(background);
             window.setView(world);
-            for (int i = 0; i < planets.size(); i++)
-            {
-                planets[i].drawTrack(window);
-            }
-            for (int i = 0; i < planets.size(); i++)
-            {
-                planets[i].drawPlanet(window); 
-            }
+            drawTrackAndPlanet(planets, window);
             for (int i = 0; i < buttonsPlanet.size(); i++)
             {
                 if (buttonsPlanet[i].getStatus() || planets[i].getFocus() || planets[i].getMenuPlanet())
@@ -451,10 +443,10 @@ int main()
                     for (Planet planet : planets) 
                     {
                         if (planet.getMass() == planets[i].getMass()) continue;
-                        distances.push_back(distance(planet.getPosition() + offset(planet.getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())));
+                        distances.push_back(distance(planet.getPosition() + offset(planet.getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) - (planet.getRadius() + planets[i].getRadius()));
                         names.push_back(planet.getName());
                     }
-                    distancePlanet << std::setprecision(3) << *std::min_element(distances.begin(), distances.end());
+                    distancePlanet << std::setprecision(4) << *std::min_element(distances.begin(), distances.end());
                     name.setString(namePlanet);
                     mass.setString(L"Масса " + massPlanet.str() + " *");
                     speed.setString(L"Скорость " + speedPlanet.str() + " *");

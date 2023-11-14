@@ -11,12 +11,14 @@ private:
 	float y;
 	float sizeX;
 	float sizeY;
-	Texture texturButton;
-	Texture texturMessage;
+	Texture textureButtonOn;
+	Texture textureButtonOff;
+	Texture textureMessage;
 	double coeff;
 	bool status;
+	bool on;
 public:
-	Button(float x, float y, float sizeX, float sizeY, std::string &texturButton, std::string texturMessage, double coeff);
+	Button(float x, float y, float sizeX, float sizeY, std::string textureButtonOff, std::string textureButtonOn, std::string texturMessage, double coeff);
 	void draw(RenderWindow& window);
 	void setPosition(Vector2f positition);
 	Vector2f getPosition();
@@ -26,4 +28,6 @@ public:
 	Texture getTextureMessage();
 	bool getStatus();
 	void setStatus(bool status);
+	bool getOn();
+	void setOn(bool on);
 };

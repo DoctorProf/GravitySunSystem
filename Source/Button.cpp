@@ -3,25 +3,34 @@
 #include <string>
 #include <iomanip>
 
-Button::Button(float x, float y, float sizeX, float sizeY, std::string &texturButton, std::string texturMessage, double coeff)
+Button::Button(float x, float y, float sizeX, float sizeY, std::string textureButtonOff, std::string textureButtonOn, std::string texturMessage, double coeff)
 {
 	this->x = x;
 	this->y = y;
 	this->sizeX = sizeX;
 	this->sizeY = sizeY;
 	this->coeff = coeff;
-	this->texturButton.loadFromFile(texturButton);
+	this->textureButtonOff.loadFromFile(textureButtonOff);
+	this->textureButtonOn.loadFromFile(textureButtonOn);
 	if (texturMessage != "")
 	{
-		this->texturMessage.loadFromFile(texturMessage);
+		this->textureMessage.loadFromFile(texturMessage);
 	}
 	this->status = false;
+	this->on = false;
 	this->button.setPosition(x, y);
 	this->button.setSize(Vector2f(sizeX, sizeY));
 }
 void Button::draw(RenderWindow& window)
 {
-	button.setTexture(&texturButton);
+	if (this->on)
+	{
+		this->button.setTexture(&textureButtonOn);
+	}
+	else 
+	{
+		this->button.setTexture(&textureButtonOff);
+	}
 	window.draw(button);
 }
 void Button::setPosition(Vector2f position)
@@ -50,7 +59,7 @@ double Button::getCoeff()
 }
 Texture Button::getTextureMessage() 
 {
-	return this->texturMessage;
+	return this->textureMessage;
 }
 bool Button::getStatus() 
 {
@@ -59,4 +68,12 @@ bool Button::getStatus()
 void Button::setStatus(bool status)
 {
 	this->status = status;
+}
+bool Button::getOn()
+{
+	return this->on;
+}
+void Button::setOn(bool on)
+{
+	this->on = on;
 }
