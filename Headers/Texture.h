@@ -14,3 +14,4 @@ extern std::string textureButtonMass[];
 extern std::string textureButtonSpeed[];
 extern std::string textureLogicButtonPanelOff[];
 extern std::string textureLogicButtonPanelOn[];
+extern std::string textureSpeedButton[];

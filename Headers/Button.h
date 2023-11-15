@@ -30,4 +30,5 @@ public:
 	void setStatus(bool status);
 	bool getOn();
 	void setOn(bool on);
+	void setTextureButton(std::string textureButton);
 };

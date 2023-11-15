@@ -19,6 +19,7 @@ private:
     bool blockMove;
 public:
     Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name, double radiusOrbit);
+    Planet();
     void addTrack();
     void clearTrack();
     VertexArray getTrack();

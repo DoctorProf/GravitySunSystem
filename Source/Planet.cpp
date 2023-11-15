@@ -19,6 +19,10 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     this->menuPlanet = false;
     this->blockMove = false;
 }
+Planet::Planet()
+{
+
+}
 void Planet::addTrack()
 {
     Vertex pos;

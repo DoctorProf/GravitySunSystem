@@ -3,17 +3,7 @@
 #include <ppl.h>
 
 using namespace sf;
-void gl::beyondSolarSystem(std::vector<Planet>& planets, std::vector<Button>& buttonPlanets) 
-{
-    for (int i = 0; i < planets.size(); i++)
-    {
-        if ( -34500 > planets[i].getPosition().x || planets[i].getPosition().x > 34500 || -34500 > planets[i].getPosition().y  || planets[i].getPosition().y > 34500)
-        {
-            planets.erase(planets.begin() + i);
-            buttonPlanets.erase(buttonPlanets.begin() + i);
-        }
-    }
-}
+
 double gl::distance(Vector2f vec1, Vector2f vec2)
 {
     double dx = vec1.x - vec2.x;
@@ -52,10 +42,11 @@ void gl::spawnPlanet(std::vector<Planet>& planets, RenderWindow& window)
     planets.push_back(Planet(0.25362, 8.68e25, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 2800, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.22), Color::Color(111, 231, 234), L"Уран", 2800));
     planets.push_back(Planet(0.24622, 1.024e26, Vector2f(planets[0].getPosition().x + planets[0].getRadius() * 2 + 4550, planets[0].getPosition().y + planets[0].getRadius()), Vector2f(0, -0.17), Color::Color(0, 0, 255), L"Нептун", 4550));
 }
-void gl::resetFosucPlanet(std::vector<Planet>& planets)
+void gl::resetFosucPlanet(std::vector<Planet>& planets, Planet *planet1)
 {
-    for (int i = 0; i < planets.size(); i++)
+    for (int i = 0; i < planets.size(); i++) 
     {
+        if (planets[i].getName() == planet1->getName()) continue;
         planets[i].setFocus(false);
     }
 }
@@ -155,7 +146,7 @@ void gl::genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& bu
     float startX = window.getSize().x / 1.247;
     for (int i = 0; i < 4; i++) 
     {
-        buttonsLogicPanelPlanet.push_back(Button(startX + window.getSize().x / 25.6f * i, window.getSize().y / 1.069 , window.getSize().x / 38.4, window.getSize().y / 21.6, textureLogicButtonPanelOff[i], textureLogicButtonPanelOn[i], textureInfo[9], 1.0f));
+        buttonsLogicPanelPlanet.push_back(Button(startX + window.getSize().x / 25.6f * i, window.getSize().y / 1.069 , window.getSize().x / 38.4, window.getSize().y / 21.6, textureLogicButtonPanelOff[i], textureLogicButtonPanelOn[i], textureInfo[8 + i], 1.0f));
 
     }
     buttonsMass.push_back(Button(startX, window.getSize().y / 1.27, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonMass[0], "", "", 0.1f));

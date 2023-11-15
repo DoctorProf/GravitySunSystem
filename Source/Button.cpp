@@ -77,3 +77,7 @@ void Button::setOn(bool on)
 {
 	this->on = on;
 }
+void Button::setTextureButton(std::string textureButton) 
+{
+	this->textureButtonOff.loadFromFile(textureButton);
+}
