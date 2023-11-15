@@ -213,6 +213,8 @@ int main()
                         }
                         else if (i == 3)
                         {
+                            speed = 0;
+                            timePerFrame = seconds(1.0f / 30.0f);
                             world.setSize(window.getSize().x, window.getSize().y);
                             world.setCenter(Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
                             planets.clear();
