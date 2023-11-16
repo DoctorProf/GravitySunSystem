@@ -10,6 +10,7 @@ Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity,
     name(name),
     radiusOrbit(radiusOrbit)
 {
+    this->defaultMass = mass;
     this->focus = false;
     this->track.setPrimitiveType(LinesStrip);
     this->planet.setRadius(radius);
@@ -53,6 +54,10 @@ double Planet::getMass()
 void Planet::setMass(double mass)
 {
     this->mass = mass;
+}
+void Planet::setDefaultMass() 
+{
+    this->mass = this->defaultMass;
 }
 std::wstring Planet::getName()
 {

@@ -13,7 +13,7 @@ namespace gl
     void resetFosucPlanet(std::vector<Planet>& planets, Planet* planet1 = new Planet());
     void resetStatusButton(std::vector<Button>& buttons);
     void resetMenuPlanets(std::vector<Planet>& planets);
-    void logicPlanet(std::vector<Planet>& planets, double& G, double& scalePhy);
+    void logicPlanet(std::vector<Planet>& planets, double& G, double& scalePhy, bool gravity);
     void drawButtons(std::vector<Button>& buttons, RenderWindow& window);
     void drawTrackAndPlanet(std::vector<Planet>& planets, RenderWindow& window);
     void collisionPlanet(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet);

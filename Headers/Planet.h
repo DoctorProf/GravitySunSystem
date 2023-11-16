@@ -9,6 +9,7 @@ private:
     double radius;
     double radiusOrbit;
     double mass;
+    double defaultMass;
     Vector2f position;
     Vector2f velocity;
     VertexArray track;
@@ -27,6 +28,7 @@ public:
     double getRadiusOrbit();
     double getMass();
     void setMass(double mass);
+    void setDefaultMass();
     std::wstring getName();
     Vector2f getPosition();
     Vector2f getVelocity();

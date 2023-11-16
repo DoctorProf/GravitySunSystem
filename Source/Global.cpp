@@ -65,17 +65,20 @@ void gl::resetMenuPlanets(std::vector<Planet>& planets)
     }
 }
 
-void gl::logicPlanet(std::vector<Planet>& planets, double& G, double& scalePhy)
+void gl::logicPlanet(std::vector<Planet>& planets, double& G, double& scalePhy, bool gravity)
 {
     Concurrency::parallel_for(0, (int)planets.size(), [&](int j)
         {
-            for (int i = 0; i < planets.size(); i++)
+            if (gravity)
             {
-                if (i == j) continue;
+                for (int i = 0; i < planets.size(); i++)
+                {
+                    if (i == j) continue;
 
-                double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * scalePhy;
-                double a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
-                planets[j].update(normalizeVector(planets[i], planets[j]), a);
+                    double distan = distance(planets[j].getPosition() + offset(planets[j].getRadius()), planets[i].getPosition() + offset(planets[i].getRadius())) * scalePhy;
+                    double a = (double)(G * (planets[j].getMass() * planets[i].getMass()) / pow(distan, 2)) / planets[j].getMass();
+                    planets[j].update(normalizeVector(planets[i], planets[j]), a);
+                }
             }
             planets[j].move();
         });
@@ -132,11 +135,11 @@ void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& butto
     {
         buttonsPlanet.push_back(Button(window.getSize().x / 76.8, window.getSize().y / 54.0f + window.getSize().y / 21.6 * i, window.getSize().x / 19.2, window.getSize().y / 36.0f, textureButtonPlanet[i], "", textureNamesPlanet[i], 1.0f));
     }
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 9; i++)
     {
         buttonsLogic.push_back(Button(window.getSize().x / 38.4, window.getSize().y / 2.3 + window.getSize().y / 18.0f * i, window.getSize().x / 38.4, window.getSize().y / 21.6, textureButtonLogicOff[i], textureButtonLogicOn[i], textureInfo[i], 1.0f));
     }
-    for (int i = 0; i < planets.size(); i++) 
+    for (int i = 0; i < 9; i++) 
     {
         namesPlanet.push_back(RectangleShape(Vector2f(window.getSize().x / 21.8, window.getSize().y / 77.1)));
     }
@@ -144,9 +147,9 @@ void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& butto
 void gl::genButtonMenu(std::vector<Button>& buttonsMass, std::vector<Button>& buttonsSpeed, std::vector<Button>& buttonsLogicPanelPlanet,RenderWindow &window)
 {
     float startX = window.getSize().x / 1.247;
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 5; i++) 
     {
-        buttonsLogicPanelPlanet.push_back(Button(startX + window.getSize().x / 25.6f * i, window.getSize().y / 1.069 , window.getSize().x / 38.4, window.getSize().y / 21.6, textureLogicButtonPanelOff[i], textureLogicButtonPanelOn[i], textureInfo[8 + i], 1.0f));
+        buttonsLogicPanelPlanet.push_back(Button(startX + window.getSize().x / 25.6f * i, window.getSize().y / 1.069 , window.getSize().x / 38.4, window.getSize().y / 21.6, textureLogicButtonPanelOff[i], textureLogicButtonPanelOn[i], textureInfo[9 + i], 1.0f));
 
     }
     buttonsMass.push_back(Button(startX, window.getSize().y / 1.27, window.getSize().x / 38.4, window.getSize().y / 43.2, textureButtonMass[0], "", "", 0.1f));

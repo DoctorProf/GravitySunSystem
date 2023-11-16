@@ -29,6 +29,7 @@ std::string textureButtonLogicOff[] =
 	"Texture/minus.png",
 	"Texture/plus.png",
 	"Texture/track_off.png",
+	"Texture/gravity_on.png",
 	"Texture/reload.png",
 	"Texture/pause_off.png",
 	"Texture/speed1.png",
@@ -40,6 +41,7 @@ std::string textureButtonLogicOn[] =
 	"",
 	"",
 	"Texture/track_on.png",
+	"Texture/gravity_off.png",
 	"",
 	"Texture/pause_on.png",
 	"",
@@ -51,6 +53,7 @@ std::string textureInfo[] =
 	"Texture/minusInfo.png",
 	"Texture/plusInfo.png",
 	"Texture/track_onInfo.png",
+	"Texture/gravityInfo.png",
 	"Texture/reloadInfo.png",
 	"Texture/pauseInfo.png",
 	"Texture/speedInfo.png",
@@ -59,7 +62,8 @@ std::string textureInfo[] =
 	"Texture/deletePlanetInfo.png",	
 	"Texture/cam_onInfo.png",
 	"Texture/blockPlanetInfo.png",
-	"Texture/closePanelPlanetInfo.png",
+	"Texture/massDefaultInfo.png",
+	"Texture/closePanelPlanetInfo.png"
 };
 std::string textureBackground[] =
 {
@@ -88,6 +92,7 @@ std::string textureLogicButtonPanelOff[] =
 	"Texture/deletePlanet.png",
 	"Texture/cam_on.png",
 	"Texture/block_off.png",
+	"Texture/reloadMass.png",
 	"Texture/close.png"
 };
 std::string textureLogicButtonPanelOn[] =
@@ -95,6 +100,7 @@ std::string textureLogicButtonPanelOn[] =
 	"",
 	"Texture/cam_off.png",
 	"Texture/block_on.png",
+	"",
 	""
 };
 extern std::string textureSpeedButton[] = 
