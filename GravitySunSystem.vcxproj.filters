@@ -51,6 +51,7 @@
     <None Include="sfml-system-d-2.dll" />
     <None Include="sfml-window-2.dll" />
     <None Include="sfml-window-d-2.dll" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Button.cpp">
@@ -371,6 +372,42 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="Texture\track_onInfo.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\block_off.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\block_on.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\pause_off.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\pause_on.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\speed1.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\speed10.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\speed20.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\speed30.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\volume.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\volume_off.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Texture\volumeInfo.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="SunSystem.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>

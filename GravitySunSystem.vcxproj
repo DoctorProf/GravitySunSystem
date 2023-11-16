@@ -53,6 +53,7 @@
     <None Include="lib\sfml-window-2.dll" />
     <None Include="lib\sfml-window-d-2.dll" />
     <None Include="openal32.dll" />
+    <None Include="README.md" />
     <None Include="sfml-audio-2.dll" />
     <None Include="sfml-audio-d-2.dll" />
     <None Include="sfml-graphics-2.dll" />
@@ -72,6 +73,7 @@
     <ClCompile Include="Source\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="SunSystem.png" />
     <Image Include="Texture\-1.png" />
     <Image Include="Texture\0.1.png" />
     <Image Include="Texture\0.5.png" />
@@ -87,6 +89,8 @@
     <Image Include="Texture\5.png" />
     <Image Include="Texture\block.png" />
     <Image Include="Texture\blockPlanetInfo.png" />
+    <Image Include="Texture\block_off.png" />
+    <Image Include="Texture\block_on.png" />
     <Image Include="Texture\cam_off.png" />
     <Image Include="Texture\cam_offInfo.png" />
     <Image Include="Texture\cam_on.png" />
@@ -113,6 +117,8 @@
     <Image Include="Texture\orbiton.png" />
     <Image Include="Texture\pause.png" />
     <Image Include="Texture\pauseInfo.png" />
+    <Image Include="Texture\pause_off.png" />
+    <Image Include="Texture\pause_on.png" />
     <Image Include="Texture\plus.png" />
     <Image Include="Texture\plusInfo.png" />
     <Image Include="Texture\reload.png" />
@@ -122,6 +128,10 @@
     <Image Include="Texture\saturnN.png" />
     <Image Include="Texture\space.jpg" />
     <Image Include="Texture\speed.png" />
+    <Image Include="Texture\speed1.png" />
+    <Image Include="Texture\speed10.png" />
+    <Image Include="Texture\speed20.png" />
+    <Image Include="Texture\speed30.png" />
     <Image Include="Texture\speedInfo.png" />
     <Image Include="Texture\sun.png" />
     <Image Include="Texture\sunN.png" />
@@ -171,6 +181,9 @@
     <Image Include="Texture\uranusN.png" />
     <Image Include="Texture\venus.png" />
     <Image Include="Texture\venusN.png" />
+    <Image Include="Texture\volume.png" />
+    <Image Include="Texture\volumeInfo.png" />
+    <Image Include="Texture\volume_off.png" />
     <Image Include="Texture\zoomin.png" />
     <Image Include="Texture\zoomout.png" />
   </ItemGroup>
