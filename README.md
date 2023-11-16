@@ -1,3 +1,3 @@
-# GravitySunSystem
+#GravitySunSystem
 Симулятор Солнечной системы.
 ![SunSystem](SunSystem.png)
