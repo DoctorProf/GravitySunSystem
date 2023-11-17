@@ -131,7 +131,7 @@ void gl::collisionPlanet(std::vector<Planet>& planets, std::vector<Button>& butt
 }
 void gl::generateButton(std::vector<Planet>& planets, std::vector<Button>& buttonsPlanet, std::vector<Button>& buttonsLogic,std::vector<RectangleShape>& namesPlanet, RenderWindow& window)
 {
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 9 ; i++)
     {
         buttonsPlanet.push_back(Button(window.getSize().x / 76.8, window.getSize().y / 54.0f + window.getSize().y / 21.6 * i, window.getSize().x / 19.2, window.getSize().y / 36.0f, textureButtonPlanet[i], "", textureNamesPlanet[i], 1.0f));
     }
