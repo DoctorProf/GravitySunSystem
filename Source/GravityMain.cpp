@@ -112,22 +112,6 @@ int main()
 				buttonsLogic[5].setOn(!buttonsLogic[5].getOn());
 				pause = !pause;
 			}
-			else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Up)
-			{
-				if (scaleWorldinWindow >= 0.003)
-				{
-					world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
-					break;
-				}
-			}
-			else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Down)
-			{
-				if (scaleWorldinWindow < 1e3)
-				{
-					world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
-					break;
-				}
-			}
 			else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Escape)
 			{
 				resetMenuPlanets(planets);
