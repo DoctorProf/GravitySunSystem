@@ -27,7 +27,7 @@ void Button::draw(RenderWindow& window)
 	{
 		this->button.setTexture(&textureButtonOn);
 	}
-	else 
+	else
 	{
 		this->button.setTexture(&textureButtonOff);
 	}
@@ -39,7 +39,7 @@ void Button::setPosition(Vector2f position)
 	this->y = position.y;
 	this->button.setPosition(Vector2f(this->x, this->y));
 }
-Vector2f Button::getPosition() 
+Vector2f Button::getPosition()
 {
 	return this->button.getPosition();
 }
@@ -49,19 +49,19 @@ void Button::setSize(Vector2f size)
 	this->sizeY = size.y;
 	this->button.setSize(Vector2f(this->sizeX, this->sizeY));
 }
-Vector2f Button::getSize() 
+Vector2f Button::getSize()
 {
 	return this->button.getSize();
 }
-double Button::getCoeff() 
+double Button::getCoeff()
 {
 	return this->coeff;
 }
-Texture Button::getTextureMessage() 
+Texture Button::getTextureMessage()
 {
 	return this->textureMessage;
 }
-bool Button::getStatus() 
+bool Button::getStatus()
 {
 	return this->status;
 }
@@ -77,7 +77,7 @@ void Button::setOn(bool on)
 {
 	this->on = on;
 }
-void Button::setTextureButton(std::string textureButton) 
+void Button::setTextureButton(std::string textureButton)
 {
 	this->textureButtonOff.loadFromFile(textureButton);
 }

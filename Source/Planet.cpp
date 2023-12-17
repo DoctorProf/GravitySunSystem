@@ -1,128 +1,127 @@
 #include "../Headers/Planet.h"
 #include "../Headers/Texture.h"
 
-Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name, double radiusOrbit):
-    radius(radius),
-    mass(mass),
-    position(position - Vector2f(radius, radius)),
-    velocity(velocity),
-    color(color),
-    name(name),
-    radiusOrbit(radiusOrbit)
+Planet::Planet(double radius, double mass, Vector2f position, Vector2f velocity, Color color, std::wstring name, double radiusOrbit) :
+	radius(radius),
+	mass(mass),
+	position(position - Vector2f(radius, radius)),
+	velocity(velocity),
+	color(color),
+	name(name),
+	radiusOrbit(radiusOrbit)
 {
-    this->defaultMass = mass;
-    this->focus = false;
-    this->track.setPrimitiveType(LinesStrip);
-    this->planet.setRadius(radius);
-    this->planet.setPosition(this->position);
-    this->planet.setFillColor(color);
-    this->planet.setPointCount(60);
-    this->menuPlanet = false;
-    this->blockMove = false;
+	this->defaultMass = mass;
+	this->focus = false;
+	this->track.setPrimitiveType(LinesStrip);
+	this->planet.setRadius(radius);
+	this->planet.setPosition(this->position);
+	this->planet.setFillColor(color);
+	this->planet.setPointCount(60);
+	this->menuPlanet = false;
+	this->blockMove = false;
 }
-Planet::Planet()
-{
+Planet::Planet() {
 
 }
 void Planet::addTrack()
 {
-    Vertex pos;
-    pos.position = Vector2f(position.x + radius, position.y + radius);
-    pos.color = Color::Color(color.r, color.g, color.b, color.a / 2);
-    track.append(pos);
+	Vertex pos;
+	pos.position = Vector2f(position.x + radius, position.y + radius);
+	pos.color = Color::Color(color.r, color.g, color.b, color.a / 2);
+	track.append(pos);
 }
 void Planet::clearTrack()
 {
-    track.clear();
+	track.clear();
 }
 VertexArray Planet::getTrack()
 {
-    return track;
+	return track;
 }
 double Planet::getRadius()
 {
-    return radius;
+	return radius;
 }
-double Planet::getRadiusOrbit() 
+double Planet::getRadiusOrbit()
 {
-    return radiusOrbit;
+	return radiusOrbit;
 }
 double Planet::getMass()
 {
-    return mass;
+	return mass;
 }
 void Planet::setMass(double mass)
 {
-    this->mass = mass;
+	this->mass = mass;
 }
-void Planet::setDefaultMass() 
+void Planet::setDefaultMass()
 {
-    this->mass = this->defaultMass;
+	this->mass = this->defaultMass;
 }
 std::wstring Planet::getName()
 {
-    return name;
+	return name;
 }
 Vector2f Planet::getPosition()
 {
-    return position;
+	return position;
 }
-Vector2f Planet::getVelocity() 
+Vector2f Planet::getVelocity()
 {
-    return velocity;
+	return velocity;
 }
 void Planet::setPosition(Vector2f position)
 {
-    this->position = position;
+	this->position = position;
 }
 void Planet::setVelocity(Vector2f velocity)
 {
-    if (velocity.x > 50 || velocity.x < -50 || velocity.y > 50 || velocity.y < -50) return;
-    this->velocity = velocity;
+	if (velocity.x > 50 || velocity.x < -50 || velocity.y > 50 || velocity.y < -50) return;
+	this->velocity = velocity;
 }
 Color Planet::getColor()
 {
-    return color;
+	return color;
 }
 void Planet::update(Vector2f normDir, float a)
 {
-    if (blockMove) return;
-    velocity += Vector2f(normDir.x * a, normDir.y * a);
+	if (blockMove) return;
+	velocity += Vector2f(normDir.x * a, normDir.y * a);
 }
 void Planet::move() {
-    if (blockMove) return;
-    position += velocity;
+	if (blockMove) return;
+	position += velocity;
 }
 void Planet::drawTrack(RenderWindow& window)
 {
-    window.draw(track);
+	window.draw(track);
 }
 void Planet::drawPlanet(RenderWindow& window)
 {
-    planet.setPosition(position);
-    window.draw(planet);
+	planet.setPosition(position);
+	window.draw(planet);
 }
-void Planet::setFocus(bool focus) 
+void Planet::setFocus(bool focus)
 {
-    this->focus = focus;
+	this->focus = focus;
 }
 bool Planet::getFocus()
 {
-    return this->focus;
+	return this->focus;
 }
-void Planet::setMenuPlanet(bool menuPlanet) 
+void Planet::setMenuPlanet(bool menuPlanet)
 {
-    this->menuPlanet = menuPlanet;
+	this->menuPlanet = menuPlanet;
 }
 bool Planet::getMenuPlanet()
 {
-    return this->menuPlanet;
+	return this->menuPlanet;
 }
-void Planet::setBlockMove(bool blockMove) 
+void Planet::setBlockMove(bool blockMove)
 {
-    this->blockMove = blockMove;
+	this->blockMove = blockMove;
 }
-bool Planet::getBlockMove() 
+bool Planet::getBlockMove()
 {
-    return this->blockMove;
+	return this->blockMove;
 }

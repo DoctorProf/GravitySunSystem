@@ -75,7 +75,7 @@ int main()
 	Time accumulatedTime2 = Time::Zero;
 
 	Time timePerFrame = seconds(1.0f / 30.0f); // tps
-	Time timePerFrame2 = seconds(1.0f / 60.0f); // fps    
+	Time timePerFrame2 = seconds(1.0f / 60.0f); // fps
 
 	//Вектора кнопок для панели редактирования планеты
 	std::vector<Button> buttonsMass;
@@ -88,23 +88,20 @@ int main()
 	spaceSound.play();
 	while (window.isOpen()) {
 		Event event;
-		
+
 		while (window.pollEvent(event))
 		{
-			if (event.type == Event::MouseWheelScrolled)
+			if (event.type == Event::MouseWheelScrolled && event.mouseWheelScroll.wheel == Mouse::VerticalWheel)
 			{
-				if (event.mouseWheelScroll.wheel == Mouse::VerticalWheel)
+				if (event.mouseWheelScroll.delta > 0 && scaleWorldinWindow >= 0.003)
 				{
-					if (event.mouseWheelScroll.delta > 0 && scaleWorldinWindow >= 0.003)
-					{
-						world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
-						break;
-					}
-					else if (event.mouseWheelScroll.delta < 0 && scaleWorldinWindow < 1e3)
-					{
-						world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
-						break;
-					}
+					world.setSize(world.getSize().x / 2.0f, world.getSize().y / 2.0f);
+					break;
+				}
+				else if (event.mouseWheelScroll.delta < 0 && scaleWorldinWindow < 1e3)
+				{
+					world.setSize(world.getSize().x * 2.0f, world.getSize().y * 2.0f);
+					break;
 				}
 			}
 			else if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space)
@@ -173,14 +170,7 @@ int main()
 					{
 						resetMenuPlanets(planets);
 						planets[i].setMenuPlanet(true);
-						if (!planets[i].getBlockMove())
-						{
-							buttonsLogicPanelPlanet[2].setOn(false);
-						}
-						else
-						{
-							buttonsLogicPanelPlanet[2].setOn(true);
-						}
+						buttonsLogicPanelPlanet[2].setOn(planets[i].getBlockMove());
 					}
 				}
 				for (int i = 0; i < buttonsLogic.size(); i++)
@@ -225,38 +215,10 @@ int main()
 							namesPlanet.clear();
 							spawnPlanet(planets, window);
 							generateButton(planets, buttonsPlanet, buttonsLogic, namesPlanet, window);
-							if (!pause)
-							{
-								buttonsLogic[5].setOn(false);
-							}
-							else
-							{
-								buttonsLogic[5].setOn(true);
-							}
-							if (!trackDraw)
-							{
-								buttonsLogic[2].setOn(false);
-							}
-							else
-							{
-								buttonsLogic[2].setOn(true);
-							}
-							if (volume)
-							{
-								buttonsLogic[7].setOn(false);
-							}
-							else
-							{
-								buttonsLogic[7].setOn(true);
-							}
-							if (gravity)
-							{
-								buttonsLogic[3].setOn(false);
-							}
-							else
-							{
-								buttonsLogic[3].setOn(true);
-							}
+							buttonsLogic[5].setOn(pause);
+							buttonsLogic[2].setOn(trackDraw);
+							buttonsLogic[7].setOn(!volume);
+							buttonsLogic[3].setOn(!gravity);
 						}
 						else if (i == 5)
 						{
@@ -267,19 +229,16 @@ int main()
 						{
 							if (speed == 0)
 							{
-								speed++;
 								timePerFrame = seconds(1.0f / 300.0f);
 								buttonsLogic[i].setTextureButton(textureSpeedButton[1]);
 							}
 							else if (speed == 1)
 							{
-								speed++;
 								timePerFrame = seconds(1.0f / 600.0f);
 								buttonsLogic[i].setTextureButton(textureSpeedButton[2]);
 							}
 							else if (speed == 2)
 							{
-								speed++;
 								timePerFrame = seconds(1.0f / 900.0f);
 								buttonsLogic[i].setTextureButton(textureSpeedButton[3]);
 							}
@@ -313,7 +272,6 @@ int main()
 				{
 					if (planets[i].getMenuPlanet())
 					{
-
 						for (int j = 0; j < buttonsMass.size(); j++)
 						{
 							if (collisionButton(buttonsMass[j].getPosition().x, buttonsMass[j].getPosition().y, buttonsMass[j].getSize().x, buttonsMass[j].getSize().y,
@@ -484,14 +442,7 @@ int main()
 			{
 				if (planets[i].getMenuPlanet())
 				{
-					if (!planets[i].getFocus())
-					{
-						buttonsLogicPanelPlanet[1].setOn(false);
-					}
-					else
-					{
-						buttonsLogicPanelPlanet[1].setOn(true);
-					}
+					buttonsLogicPanelPlanet[1].setOn(planets[i].getFocus());
 					std::vector<float> distances;
 					std::vector<std::wstring> names;
 					std::wstring namePlanet = planets[i].getName();

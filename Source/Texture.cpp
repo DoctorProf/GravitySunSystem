@@ -59,7 +59,7 @@ std::string textureInfo[] =
 	"Texture/speedInfo.png",
 	"Texture/volumeInfo.png",
 	"Texture/closeInfo.png",
-	"Texture/deletePlanetInfo.png",	
+	"Texture/deletePlanetInfo.png",
 	"Texture/cam_onInfo.png",
 	"Texture/blockPlanetInfo.png",
 	"Texture/massDefaultInfo.png",
@@ -103,11 +103,10 @@ std::string textureLogicButtonPanelOn[] =
 	"",
 	""
 };
-extern std::string textureSpeedButton[] = 
+extern std::string textureSpeedButton[] =
 {
 	"Texture/speed1.png",
 	"Texture/speed10.png",
 	"Texture/speed20.png",
 	"Texture/speed30.png"
 };
-
